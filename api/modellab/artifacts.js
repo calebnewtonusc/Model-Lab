@@ -9,12 +9,12 @@ const fs = require('fs');
 const path = require('path');
 const router = express.Router();
 
-const storage = require(path.join(__dirname, '../../lib/storage'));
+const db = require(path.join(__dirname, '../../lib/database'));
 
 // GET artifacts for a run
 router.get('/:runId', (req, res) => {
   try {
-    const run = storage.getRunById(req.params.runId);
+    const run = db.getRunById(req.params.runId);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -60,7 +60,7 @@ router.get('/:runId', (req, res) => {
 
 // POST upload artifact
 router.post('/:runId', (req, res) => {
-  const run = storage.getRunById(req.params.runId);
+  const run = db.getRunById(req.params.runId);
   if (!run) {
     return res.status(404).json({ error: 'Run not found' });
   }
@@ -140,7 +140,7 @@ router.post('/:runId', (req, res) => {
 // GET download artifact
 router.get('/:runId/download/:artifactPath(*)', (req, res) => {
   try {
-    const run = storage.getRunById(req.params.runId);
+    const run = db.getRunById(req.params.runId);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -188,7 +188,7 @@ router.get('/:runId/download/:artifactPath(*)', (req, res) => {
 // DELETE artifact
 router.delete('/:runId/download/:artifactPath(*)', (req, res) => {
   try {
-    const run = storage.getRunById(req.params.runId);
+    const run = db.getRunById(req.params.runId);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
