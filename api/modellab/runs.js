@@ -1,0 +1,181 @@
+/**
+ * Runs API Routes
+ * Handles ML experiment run tracking and management
+ */
+
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const { exec } = require('child_process');
+const util = require('util');
+const router = express.Router();
+
+const execAsync = util.promisify(exec);
+
+const storage = require(path.join(__dirname, '../../lib/storage'));
+const evalHarness = require(path.join(__dirname, '../../lib/evalHarness'));
+
+// Get git commit hash
+const getGitCommitHash = async () => {
+  try {
+    const { stdout } = await execAsync('git rev-parse HEAD');
+    return stdout.trim();
+  } catch (error) {
+    return 'unknown';
+  }
+};
+
+// GET all runs
+router.get('/', (req, res) => {
+  try {
+    const runs = storage.getRuns();
+    res.json({ runs });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET single run
+router.get('/:id', (req, res) => {
+  try {
+    const run = storage.getRunById(req.params.id);
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    // Load evaluation data if exists
+    const evaluations = storage.getEvaluationsByRunId(req.params.id);
+
+    res.json({ run, evaluations });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST create run
+router.post('/', async (req, res) => {
+  try {
+    const data = req.body;
+
+    // Get git commit hash
+    const commitHash = await getGitCommitHash();
+
+    // Validate dataset exists
+    if (data.datasetId) {
+      const dataset = storage.getDatasetById(data.datasetId);
+      if (!dataset) {
+        return res.status(400).json({ error: 'Dataset not found' });
+      }
+    }
+
+    // Create artifacts directory for this run
+    const runId = storage.generateId();
+    const artifactsDir = path.join(storage.BASE_DIR, 'artifacts', runId);
+    fs.mkdirSync(artifactsDir, { recursive: true });
+
+    // Create run record
+    const run = storage.createRun({
+      id: runId,
+      name: data.name || `Run ${new Date().toLocaleString()}`,
+      description: data.description || '',
+      status: data.status || 'pending',
+      seed: data.seed || Math.floor(Math.random() * 1000000),
+      commitHash,
+      datasetId: data.datasetId || null,
+      datasetVersion: data.datasetVersion || null,
+      hyperparameters: data.hyperparameters || {},
+      config: data.config || {},
+      tags: data.tags || [],
+      artifactsDir,
+      metrics: data.metrics || {},
+      metadata: data.metadata || {}
+    });
+
+    res.status(201).json({
+      run,
+      message: 'Run created successfully'
+    });
+
+  } catch (error) {
+    console.error('Run creation error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PUT update run
+router.put('/:id', (req, res) => {
+  try {
+    const run = storage.updateRun(req.params.id, req.body);
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+    res.json({ run });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE run
+router.delete('/:id', (req, res) => {
+  try {
+    const run = storage.deleteRun(req.params.id);
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    // Delete artifacts directory
+    if (run.artifactsDir && fs.existsSync(run.artifactsDir)) {
+      fs.rmSync(run.artifactsDir, { recursive: true, force: true });
+    }
+
+    res.json({
+      message: 'Run deleted successfully',
+      run
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST evaluate run
+router.post('/:id/evaluate', (req, res) => {
+  try {
+    const { predictions, labels, data, config } = req.body;
+    const run = storage.getRunById(req.params.id);
+
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    // Generate evaluation report
+    const report = evalHarness.generateEvaluationReport(req.params.id, data, predictions, labels, config);
+
+    // Save evaluation files
+    const evalDir = path.join(run.artifactsDir, 'evaluations');
+    const savedPaths = evalHarness.saveEvaluationReport(report, evalDir);
+
+    // Store evaluation in database
+    const evaluation = storage.createEvaluation({
+      runId: req.params.id,
+      ...report,
+      files: savedPaths
+    });
+
+    // Update run with latest metrics
+    storage.updateRun(req.params.id, {
+      metrics: report.metrics,
+      status: 'completed'
+    });
+
+    res.json({
+      evaluation,
+      message: 'Evaluation completed successfully'
+    });
+
+  } catch (error) {
+    console.error('Evaluation error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+module.exports = router;

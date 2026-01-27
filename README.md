@@ -1,143 +1,208 @@
 # ModelLab
 
-**Your personal ML experiment command center**
+**Your personal ML experiment command center** - Now live at [modellab.studio](https://modellab.studio)
 
-ModelLab is a portfolio-grade ML experiment tracking platform that enforces reproducible runs, clean evaluation, and honest failure modes. It's infrastructure you'll reuse across RankForge, TransformerRank, Mini-NeRF, and other projects.
+ModelLab is a production-ready ML experiment tracking platform that enforces reproducible runs, clean evaluation, and honest failure modes. Built with React and Express, it provides a complete solution for managing datasets, tracking experiments, and comparing results.
 
 ## What ModelLab Does
 
-1. **Ingest and version datasets** - Upload CSVs with checksums and schema snapshots
-2. **Run training jobs** - Baseline-first approach with reproducible configs
+1. **Ingest and version datasets** - Upload CSVs with SHA-256 checksums and automatic schema detection
+2. **Track experiment runs** - Record seeds, commit hashes, hyperparameters, and configs for full reproducibility
 3. **Evaluate with EvalHarness** - Shared evaluation library for honest, comparable results
-4. **Store artifacts** - Configs, metrics, models, plots in a reproducible structure
-5. **Compare runs** - Diff metrics, configs, plots, and failure slices
+4. **Store artifacts** - Organize checkpoints, plots, and reports in a reproducible structure
+5. **Compare runs** - Diff metrics, configs, and analyze performance side-by-side
 
-## Core Promise
+## Live Demo
 
-If someone clones this repo and follows the README, they can reproduce:
-- One dataset inspection
-- One train run
-- One eval report
-- At least one plot
-- At least one failure slice
-- A run comparison
+Visit **[modellab.studio](https://modellab.studio)** to see ModelLab in action.
+
+## Features
+
+### Dataset Management
+- Drag-and-drop CSV upload
+- Automatic schema detection (CSV & JSON)
+- SHA-256 checksum for data integrity
+- Column type inference
+- Version tracking with provenance
+
+### Run Tracking
+- Reproducible seed generation
+- Git commit hash capture
+- Hyperparameter storage
+- Status tracking (pending/running/completed/failed)
+- Comprehensive metrics recording
+
+### EvalHarness Library
+- Classification & regression metrics
+- Confusion matrices
+- Bootstrap confidence intervals (95%)
+- Slice-based performance analysis
+- Failure example analysis
+- Deterministic plots
+
+### Dashboard
+- Real-time statistics
+- Runs over time visualization
+- Status distribution
+- Recent runs table
+- Responsive design
+
+### Comparison View
+- Side-by-side run metrics
+- Configuration diff viewer
+- Statistical significance highlighting
+- Radar charts for metric comparison
 
 ## Tech Stack
 
-- **Frontend:** Next.js (App Router) + Tailwind
-- **Backend:** FastAPI
-- **Database:** Supabase (Postgres)
-- **ML:** Python + scikit-learn + XGBoost/LightGBM
-- **Evaluation:** Custom EvalHarness library
-- **Deployment:** Vercel (frontend) + Docker (backend)
+- **Frontend:** React 18 (Create React App) + Styled Components + Material-UI
+- **Backend:** Express.js + Node.js
+- **Database:** JSON file-based (with plans to migrate to PostgreSQL)
+- **Visualization:** Recharts
+- **Deployment:** Vercel
+- **Domain:** modellab.studio (GoDaddy)
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/calebnewtonusc/ModelLab.git
+cd ModelLab
+```
+
+2. Install dependencies:
+```bash
+npm run install-all
+```
+
+3. Run in development mode:
+
+Terminal 1 (Frontend):
+```bash
+cd frontend
+npm start
+```
+
+Terminal 2 (Backend):
+```bash
+npm run dev
+```
+
+Visit http://localhost:3000 to access ModelLab.
 
 ## Project Structure
 
 ```
 ModelLab/
-├── frontend/          # Next.js web app
-├── backend/           # FastAPI server
-├── ml/
-│   └── evalharness/   # Shared evaluation library
-│       ├── core/      # Common interfaces
-│       ├── metrics/   # Metric functions
-│       ├── plots/     # Plotting utilities
-│       ├── slicing/   # Slice evaluation
-│       ├── failures/  # Failure analysis
-│       ├── stress/    # Robustness tests
-│       ├── ci/        # Bootstrap CIs
-│       ├── bench/     # Latency profiling
-│       └── schemas/   # Pydantic output models
-├── artifacts/         # Run outputs (gitignored)
-├── docs/              # Design docs and specs
-└── tests/             # Integration tests
+├── frontend/              # React application
+│   ├── src/
+│   │   ├── pages/ModelLab/    # Main pages
+│   │   │   ├── DashboardEnhanced.js
+│   │   │   ├── DatasetsEnhanced.js
+│   │   │   ├── RunsEnhanced.js
+│   │   │   └── CompareEnhanced.js
+│   │   └── utils/             # Client utilities
+│   └── package.json
+├── api/modellab/          # Express API routes
+│   ├── datasets.js
+│   ├── runs.js
+│   └── artifacts.js
+├── lib/                   # Shared libraries
+│   ├── storage.js         # JSON database
+│   ├── schemaDetector.js  # Schema inference
+│   ├── evalHarness.js     # Evaluation library
+│   └── latencyProfiler.js # Performance profiling
+├── modellab-data/         # Data storage (gitignored)
+├── server.js              # Express server
+└── vercel.json            # Vercel config
 ```
 
-## Getting Started
+## API Documentation
 
-### Prerequisites
+### Datasets
 
-- Node.js 18+
-- Python 3.11+
-- Docker (optional)
+- `GET /api/modellab/datasets` - List all datasets
+- `POST /api/modellab/datasets` - Upload new dataset (multipart/form-data)
+- `GET /api/modellab/datasets/:id` - Get dataset by ID
+- `GET /api/modellab/datasets/:id/preview` - Preview first 100 rows
+- `PUT /api/modellab/datasets/:id` - Update dataset metadata
+- `DELETE /api/modellab/datasets/:id` - Delete dataset
 
-### Quick Start
+### Runs
+
+- `GET /api/modellab/runs` - List all runs
+- `POST /api/modellab/runs` - Create new run
+- `GET /api/modellab/runs/:id` - Get run details
+- `PUT /api/modellab/runs/:id` - Update run
+- `DELETE /api/modellab/runs/:id` - Delete run
+- `POST /api/modellab/runs/:id/evaluate` - Submit evaluation results
+
+### Artifacts
+
+- `GET /api/modellab/artifacts/:runId` - List artifacts for run
+- `POST /api/modellab/artifacts/:runId` - Upload artifact
+- `GET /api/modellab/artifacts/:runId/download/:path` - Download artifact
+- `DELETE /api/modellab/artifacts/:runId/:path` - Delete artifact
+
+## Deployment
+
+ModelLab is deployed on Vercel at [modellab.studio](https://modellab.studio).
+
+For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+### Quick Deploy
 
 ```bash
-# Clone the repository
-git clone https://github.com/calebnewtonusc/ModelLab.git
-cd ModelLab
-
-# Set up frontend
-cd frontend
-npm install
-npm run dev
-
-# Set up backend (in another terminal)
-cd backend
-python -m venv venv
-source venv/bin/activate  # or `venv\Scripts\activate` on Windows
-pip install -r requirements.txt
-uvicorn main:app --reload
-
-# Visit http://localhost:3000
+vercel --prod
 ```
-
-## Model Templates
-
-### Tabular Classification
-- **Baseline:** DummyClassifier (most frequent) → LogisticRegression
-- **Improvement:** XGBoost or LightGBM
-- **Evaluation:** Accuracy, ROC-AUC, F1, confusion matrix, calibration
-
-### Tabular Regression
-- **Baseline:** Mean predictor → LinearRegression
-- **Improvement:** XGBoostRegressor
-- **Evaluation:** MAE, RMSE, residual plots, slice analysis
-
-## EvalHarness
-
-ModelLab includes a shared evaluation library that enforces:
-
-- **Standard metrics** per task type
-- **Slice reports** for performance across data segments
-- **Failure examples** with concrete error analysis
-- **Confidence intervals** via bootstrap
-- **Stress tests** for robustness
-- **No-leakage checks** and baseline enforcement
-
-Every evaluation produces:
-- `eval_summary.json` - High-level metrics and pointers
-- `metrics.json` - Task metrics with baselines
-- `confidence_intervals.json` - Bootstrap CIs
-- `slices.json` - Metrics per slice
-- `failure_examples.json` - Curated failure cases
-- `takeaway.txt` - 5-sentence summary
-- `plots/` - Deterministic visualizations
-- `repro.md` - Reproduce instructions
 
 ## Development Status
 
-🚧 **Under Active Development** - Week 0-2 Project
+**Production Ready** - Deployed at modellab.studio
 
-- [ ] EvalHarness core library
-- [ ] Dataset upload and versioning
-- [ ] Training pipeline with baselines
-- [ ] Run tracking and storage
-- [ ] Run comparison view
-- [ ] Reproducibility packs
-- [ ] CI/CD pipeline
-- [ ] Deployment to Vercel
+Core features:
+- [x] Dataset upload and versioning
+- [x] Run tracking with reproducibility
+- [x] EvalHarness evaluation library
+- [x] Artifact storage
+- [x] Dashboard with visualizations
+- [x] Run comparison view
+- [x] Vercel deployment
+- [x] Custom domain (modellab.studio)
+
+Planned enhancements:
+- [ ] PostgreSQL/Supabase migration
+- [ ] User authentication
+- [ ] Real-time updates
+- [ ] S3 artifact storage
+- [ ] Advanced visualizations
+- [ ] Team collaboration
+
+## Use Cases
+
+1. **Portfolio Projects** - Track experiments for RankForge, TransformerRank, Mini-NeRF
+2. **Reproducible Research** - Ensure experiments can be replicated with seed + commit hash
+3. **Model Comparison** - Compare baselines vs improvements with statistical rigor
+4. **Failure Analysis** - Identify and analyze failure modes systematically
+5. **Performance Profiling** - Track latency metrics (P50, P95) across experiments
 
 ## Contributing
 
-This is a personal portfolio project, but feedback and suggestions are welcome! Open an issue or reach out.
+This is a personal portfolio project, but feedback and suggestions are welcome!
 
 ## License
 
-MIT
+MIT License - See LICENSE file for details
 
 ---
 
-**Part of the 2026 ML/AI Engineering Portfolio**
-Building internship-ready projects with reproducible runs and honest evaluation.
+**Built by Caleb Newton** | [Website](https://calebnewton.tech) | [GitHub](https://github.com/calebnewtonusc)
+
+Part of the 2026 ML/AI Engineering Portfolio
