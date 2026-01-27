@@ -10,13 +10,13 @@ const path = require('path');
 const router = express.Router();
 
 // Import storage and utilities - use absolute paths
-const storage = require(path.join(__dirname, '../../lib/storage'));
+const db = require(path.join(__dirname, '../../lib/database'));
 const schemaDetector = require(path.join(__dirname, '../../lib/schemaDetector'));
 
 // GET all datasets
 router.get('/', (req, res) => {
   try {
-    const datasets = storage.getDatasets();
+    const datasets = db.getDatasets();
     res.json({ datasets });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 // GET single dataset
 router.get('/:id', (req, res) => {
   try {
-    const dataset = storage.getDatasetById(req.params.id);
+    const dataset = db.getDatasetById(req.params.id);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   const form = formidable({
     multiples: false,
-    uploadDir: path.join(storage.BASE_DIR, 'datasets'),
+    uploadDir: path.join(db.BASE_DIR, 'datasets'),
     keepExtensions: true,
     maxFileSize: 100 * 1024 * 1024 // 100MB
   });
@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
       const originalName = Array.isArray(file) ? file[0].originalFilename : file.originalFilename;
 
       // Generate checksum
-      const checksum = storage.generateChecksum(uploadedPath);
+      const checksum = db.generateChecksum(uploadedPath);
 
       // Load and detect schema
       const { data, schema, fileType } = schemaDetector.loadDatasetFile(uploadedPath);
@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
       const ext = path.extname(originalName);
       const baseName = path.basename(originalName, ext);
       const newFileName = `${baseName}-${Date.now()}${ext}`;
-      const newFilePath = path.join(storage.BASE_DIR, 'datasets', newFileName);
+      const newFilePath = path.join(db.BASE_DIR, 'datasets', newFileName);
 
       // Move file to permanent location
       fs.renameSync(uploadedPath, newFilePath);
@@ -98,7 +98,7 @@ router.post('/', (req, res) => {
       }
 
       // Create dataset record
-      const dataset = storage.createDataset({
+      const dataset = db.createDataset({
         name: (Array.isArray(fields.name) ? fields.name[0] : fields.name) || baseName,
         description: (Array.isArray(fields.description) ? fields.description[0] : fields.description) || '',
         fileName: newFileName,
@@ -128,7 +128,7 @@ router.post('/', (req, res) => {
 // PUT update dataset
 router.put('/:id', (req, res) => {
   try {
-    const dataset = storage.updateDataset(req.params.id, req.body);
+    const dataset = db.updateDataset(req.params.id, req.body);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
@@ -141,7 +141,7 @@ router.put('/:id', (req, res) => {
 // GET dataset preview
 router.get('/:id/preview', (req, res) => {
   try {
-    const dataset = storage.getDatasetById(req.params.id);
+    const dataset = db.getDatasetById(req.params.id);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
@@ -163,7 +163,7 @@ router.get('/:id/preview', (req, res) => {
 // DELETE dataset
 router.delete('/:id', (req, res) => {
   try {
-    const dataset = storage.deleteDataset(req.params.id);
+    const dataset = db.getDatasetById(req.params.id);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
@@ -172,6 +172,8 @@ router.delete('/:id', (req, res) => {
     if (dataset.filePath && fs.existsSync(dataset.filePath)) {
       fs.unlinkSync(dataset.filePath);
     }
+
+    db.deleteDataset(req.params.id);
 
     res.json({
       message: 'Dataset deleted successfully',

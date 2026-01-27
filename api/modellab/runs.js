@@ -12,7 +12,7 @@ const router = express.Router();
 
 const execAsync = util.promisify(exec);
 
-const storage = require(path.join(__dirname, '../../lib/storage'));
+const db = require(path.join(__dirname, '../../lib/database'));
 const evalHarness = require(path.join(__dirname, '../../lib/evalHarness'));
 
 // Get git commit hash
@@ -28,7 +28,7 @@ const getGitCommitHash = async () => {
 // GET all runs
 router.get('/', (req, res) => {
   try {
-    const runs = storage.getRuns();
+    const runs = db.getRuns();
     res.json({ runs });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -38,13 +38,13 @@ router.get('/', (req, res) => {
 // GET single run
 router.get('/:id', (req, res) => {
   try {
-    const run = storage.getRunById(req.params.id);
+    const run = db.getRunById(req.params.id);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
 
     // Load evaluation data if exists
-    const evaluations = storage.getEvaluationsByRunId(req.params.id);
+    const evaluations = db.getEvaluationsByRunId(req.params.id);
 
     res.json({ run, evaluations });
   } catch (error) {
@@ -62,19 +62,19 @@ router.post('/', async (req, res) => {
 
     // Validate dataset exists
     if (data.datasetId) {
-      const dataset = storage.getDatasetById(data.datasetId);
+      const dataset = db.getDatasetById(data.datasetId);
       if (!dataset) {
         return res.status(400).json({ error: 'Dataset not found' });
       }
     }
 
     // Create artifacts directory for this run
-    const runId = storage.generateId();
-    const artifactsDir = path.join(storage.BASE_DIR, 'artifacts', runId);
+    const runId = db.generateId();
+    const artifactsDir = path.join(db.BASE_DIR, 'artifacts', runId);
     fs.mkdirSync(artifactsDir, { recursive: true });
 
     // Create run record
-    const run = storage.createRun({
+    const run = db.createRun({
       id: runId,
       name: data.name || `Run ${new Date().toLocaleString()}`,
       description: data.description || '',
@@ -105,7 +105,7 @@ router.post('/', async (req, res) => {
 // PUT update run
 router.put('/:id', (req, res) => {
   try {
-    const run = storage.updateRun(req.params.id, req.body);
+    const run = db.updateRun(req.params.id, req.body);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -118,7 +118,7 @@ router.put('/:id', (req, res) => {
 // DELETE run
 router.delete('/:id', (req, res) => {
   try {
-    const run = storage.deleteRun(req.params.id);
+    const run = db.getRunById(req.params.id);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -127,6 +127,8 @@ router.delete('/:id', (req, res) => {
     if (run.artifactsDir && fs.existsSync(run.artifactsDir)) {
       fs.rmSync(run.artifactsDir, { recursive: true, force: true });
     }
+
+    db.deleteRun(req.params.id);
 
     res.json({
       message: 'Run deleted successfully',
@@ -141,7 +143,7 @@ router.delete('/:id', (req, res) => {
 router.post('/:id/evaluate', (req, res) => {
   try {
     const { predictions, labels, data, config } = req.body;
-    const run = storage.getRunById(req.params.id);
+    const run = db.getRunById(req.params.id);
 
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
@@ -155,14 +157,14 @@ router.post('/:id/evaluate', (req, res) => {
     const savedPaths = evalHarness.saveEvaluationReport(report, evalDir);
 
     // Store evaluation in database
-    const evaluation = storage.createEvaluation({
+    const evaluation = db.createEvaluation({
       runId: req.params.id,
       ...report,
       files: savedPaths
     });
 
     // Update run with latest metrics
-    storage.updateRun(req.params.id, {
+    db.updateRun(req.params.id, {
       metrics: report.metrics,
       status: 'completed'
     });
@@ -182,7 +184,7 @@ router.post('/:id/evaluate', (req, res) => {
 router.post('/:id/latency', (req, res) => {
   try {
     const { latencies } = req.body;
-    const run = storage.getRunById(req.params.id);
+    const run = db.getRunById(req.params.id);
 
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
@@ -198,7 +200,7 @@ router.post('/:id/latency', (req, res) => {
     fs.writeFileSync(latencyPath, JSON.stringify(latencies, null, 2));
 
     // Update run with latency metrics
-    const updatedRun = storage.updateRun(req.params.id, {
+    const updatedRun = db.updateRun(req.params.id, {
       latencyMetrics: {
         p50: latencies.latencies?.p50 || 0,
         p95: latencies.latencies?.p95 || 0,
