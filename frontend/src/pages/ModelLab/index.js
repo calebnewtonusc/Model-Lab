@@ -189,7 +189,7 @@ const ModelLab = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard onNavigate={setActiveTab} />;
       case 'datasets':
         return <Datasets />;
       case 'runs':
@@ -197,7 +197,7 @@ const ModelLab = () => {
       case 'compare':
         return <Compare />;
       default:
-        return <Dashboard />;
+        return <Dashboard onNavigate={setActiveTab} />;
     }
   };
 
