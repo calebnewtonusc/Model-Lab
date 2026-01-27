@@ -63,6 +63,35 @@ Visit **[modellab.studio](https://modellab.studio)** to see ModelLab in action.
 - **Deployment:** Vercel
 - **Domain:** modellab.studio (GoDaddy)
 
+## Production Features
+
+ModelLab includes enterprise-grade production features:
+
+### Security
+- **Helmet.js Integration** - Security headers (CSP, HSTS, XSS protection)
+- **Input Validation** - Joi schema validation on all API endpoints
+- **CORS Protection** - Configurable origin whitelist
+- **Rate Limiting** - 100 API requests / 20 uploads per 15 minutes (production)
+- **Sanitized Error Messages** - No stack traces in production
+
+### Reliability
+- **Graceful Shutdown** - Clean database closure on SIGTERM/SIGINT
+- **Health Check Endpoint** - `/api/health` with database connectivity test
+- **Uncaught Exception Handling** - Process-level error recovery
+- **Request Logging** - Morgan logger with Apache combined format
+
+### Monitoring & Documentation
+- **API Documentation** - Auto-generated docs at `/api/docs`
+- **Structured Logging** - Timestamped error logs with request context
+- **Performance Metrics** - Request duration tracking
+- **Uptime Tracking** - Health endpoint includes process uptime
+
+### Configuration
+- **Environment Variables** - Configurable via `.env` file
+- **Multi-environment Support** - Development/production modes
+- **Flexible CORS** - Environment-based origin configuration
+- **Adjustable Rate Limits** - Per-environment request throttling
+
 ## Python SDK
 
 Track experiments with one line of code:

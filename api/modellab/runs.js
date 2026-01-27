@@ -14,6 +14,7 @@ const execAsync = util.promisify(exec);
 
 const db = require(path.join(__dirname, '../../lib/database'));
 const evalHarness = require(path.join(__dirname, '../../lib/evalHarness'));
+const { validate, validateId, schemas } = require(path.join(__dirname, '../../lib/validation'));
 
 // Get git commit hash
 const getGitCommitHash = async () => {
@@ -36,7 +37,7 @@ router.get('/', (req, res) => {
 });
 
 // GET single run
-router.get('/:id', (req, res) => {
+router.get('/:id', validateId('id'), (req, res) => {
   try {
     const run = db.getRunById(req.params.id);
     if (!run) {
@@ -53,7 +54,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST create run
-router.post('/', async (req, res) => {
+router.post('/', validate(schemas.run.create), async (req, res) => {
   try {
     const data = req.body;
 
@@ -103,7 +104,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT/PATCH update run (support both methods for SDK compatibility)
-const updateRunHandler = (req, res) => {
+const updateRunHandler = [validateId('id'), validate(schemas.run.update), (req, res) => {
   try {
     const run = db.updateRun(req.params.id, req.body);
     if (!run) {
@@ -113,13 +114,13 @@ const updateRunHandler = (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}];
 
-router.put('/:id', updateRunHandler);
-router.patch('/:id', updateRunHandler);
+router.put('/:id', ...updateRunHandler);
+router.patch('/:id', ...updateRunHandler);
 
 // DELETE run
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateId('id'), (req, res) => {
   try {
     const run = db.getRunById(req.params.id);
     if (!run) {
@@ -143,7 +144,7 @@ router.delete('/:id', (req, res) => {
 });
 
 // POST evaluate run
-router.post('/:id/evaluate', (req, res) => {
+router.post('/:id/evaluate', validateId('id'), validate(schemas.run.evaluate), (req, res) => {
   try {
     const { predictions, labels, data, config } = req.body;
     const run = db.getRunById(req.params.id);
@@ -184,7 +185,7 @@ router.post('/:id/evaluate', (req, res) => {
 });
 
 // POST latency profile for run
-router.post('/:id/latency', (req, res) => {
+router.post('/:id/latency', validateId('id'), validate(schemas.run.latency), (req, res) => {
   try {
     const { latencies } = req.body;
     const run = db.getRunById(req.params.id);
