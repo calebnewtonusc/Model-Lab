@@ -4,6 +4,8 @@
 
 A comprehensive system for managing machine learning experiments with professional-grade evaluation, reproducibility, and organization.
 
+**🌐 Live Site:** [https://modellab.studio](https://modellab.studio)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
