@@ -217,7 +217,7 @@ const ModelLab = () => {
       <NavBar>
         <NavContent>
           <Logo>
-            <LogoImage src="/modellab-logo.jpg" alt="ModelLab Logo" />
+            <LogoImage src="/modellab-logo.png" alt="ModelLab Logo" />
             ModelLab
           </Logo>
           <NavLinks>
