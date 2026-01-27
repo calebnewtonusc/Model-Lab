@@ -8,35 +8,46 @@ import {
 import { LoadingContainer, Spinner, LoadingText, Card, Badge, EmptyState, Button } from './components/SharedComponents';
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: ${({ theme }) => theme.spacing[8]};
   max-width: 1600px;
   margin: 0 auto;
 `;
 
 const Header = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: ${({ theme }) => theme.spacing[4]};
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
-const HeaderLeft = styled.div``;
+const HeaderLeft = styled.div`
+  flex: 1;
+`;
 
 const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: 0.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const Subtitle = styled.p`
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSize.lg};
   color: ${({ theme }) => theme.text_secondary};
+  line-height: ${({ theme }) => theme.lineHeight.normal};
+  margin: 0;
 `;
 
 const HeaderRight = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.spacing[4]};
   align-items: center;
 `;
 
@@ -45,23 +56,38 @@ const RefreshButton = styled(Button)`
 `;
 
 const LastUpdate = styled.div`
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.text_secondary};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.text_tertiary};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
 const StatCard = styled(Card)`
-  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, ${({ theme }) => theme.primary[400]}, ${({ theme }) => theme.primary[600]});
+    opacity: 0;
+    transition: ${({ theme }) => theme.transition.base};
+  }
+
+  &:hover::before {
+    opacity: 1;
   }
 `;
 
@@ -69,105 +95,122 @@ const StatHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
 `;
 
 const StatIcon = styled.div`
-  width: 48px;
-  height: 48px;
-  background: ${({ theme }) => theme.primary + '20'};
-  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  background: ${({ theme }) => theme.primary[500] + '15'};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  border: 1px solid ${({ theme }) => theme.primary[500] + '30'};
 `;
 
 const StatTrend = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-  color: ${({ positive, theme }) => positive ? '#10b981' : '#ef4444'};
-  font-weight: 600;
+  gap: ${({ theme }) => theme.spacing[1]};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ positive, theme }) => positive ? theme.success : theme.error};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing[2]}`};
+  background: ${({ positive, theme }) => positive ? theme.success + '15' : theme.error + '15'};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
 `;
 
 const StatValue = styled.div`
-  font-size: 2rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.primary};
-  margin-bottom: 0.5rem;
+  font-size: ${({ theme }) => theme.fontSize['3xl']};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.primary[500]};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const StatLabel = styled.div`
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.text_secondary};
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
 
 const ChartsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
   }
 `;
 
-const ChartCard = styled(Card)``;
+const ChartCard = styled(Card)`
+  padding: ${({ theme }) => theme.spacing[6]};
+`;
 
 const ChartHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
 const ChartTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const ChartActions = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const ChartButton = styled.button`
-  background: none;
-  border: 1px solid ${({ theme }) => theme.text_primary + '30'};
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
+  background: ${({ theme }) => theme.bgLight};
+  border: 1px solid ${({ theme }) => theme.border};
+  border-radius: ${({ theme }) => theme.borderRadius.base};
+  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
   color: ${({ theme }) => theme.text_secondary};
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: ${({ theme }) => theme.transition.fast};
 
   &:hover {
-    background: ${({ theme }) => theme.text_primary + '10'};
+    background: ${({ theme }) => theme.hover};
     color: ${({ theme }) => theme.text_primary};
+    border-color: ${({ theme }) => theme.borderMedium};
   }
 `;
 
 const ActivitySection = styled(Card)`
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
 const ActivityHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
 const ActivityTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
 `;
@@ -175,77 +218,90 @@ const ActivityTitle = styled.h3`
 const ActivityList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.spacing[3]};
 `;
 
 const ActivityItem = styled.div`
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background: ${({ theme }) => theme.bg};
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  gap: ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[4]};
+  background: ${({ theme }) => theme.bgLight};
+  border: 1px solid ${({ theme }) => theme.borderLight};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  transition: ${({ theme }) => theme.transition.fast};
+  cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.text_primary + '05'};
+    background: ${({ theme }) => theme.hover};
+    border-color: ${({ theme }) => theme.borderMedium};
+    transform: translateX(4px);
   }
 `;
 
 const ActivityIcon = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
   background: ${({ type, theme }) => {
-    if (type === 'run') return theme.primary + '20';
-    if (type === 'dataset') return '#3b82f6' + '20';
-    if (type === 'evaluation') return '#10b981' + '20';
-    return theme.text_secondary + '20';
+    if (type === 'run') return theme.primary[500] + '15';
+    if (type === 'dataset') return theme.info + '15';
+    if (type === 'evaluation') return theme.success + '15';
+    return theme.neutral[700];
   }};
-  border-radius: 8px;
+  border: 1px solid ${({ type, theme }) => {
+    if (type === 'run') return theme.primary[500] + '30';
+    if (type === 'dataset') return theme.info + '30';
+    if (type === 'evaluation') return theme.success + '30';
+    return theme.neutral[600];
+  }};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  flex-shrink: 0;
+  font-size: ${({ theme }) => theme.fontSize.xl};
 `;
 
 const ActivityContent = styled.div`
   flex: 1;
+  min-width: 0;
 `;
 
 const ActivityText = styled.div`
-  font-size: 0.95rem;
+  font-size: ${({ theme }) => theme.fontSize.base};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: 0.25rem;
+  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  line-height: ${({ theme }) => theme.lineHeight.normal};
 `;
 
 const ActivityTime = styled.div`
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.text_secondary};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.text_tertiary};
 `;
 
 const QuickActionsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
 const QuickActionCard = styled(Card)`
   cursor: pointer;
   text-align: center;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
+  padding: ${({ theme }) => theme.spacing[6]};
+  border: 2px solid ${({ theme }) => theme.border};
+  background: ${({ theme }) => theme.card};
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-color: ${({ theme }) => theme.primary};
+    border-color: ${({ theme }) => theme.primary[500]};
+    background: ${({ theme }) => theme.cardLight};
   }
 `;
 
 const QuickActionIcon = styled.div`
-  font-size: 2rem;
-  margin-bottom: 0.75rem;
+  font-size: ${({ theme }) => theme.fontSize['3xl']};
+  margin-bottom: ${({ theme }) => theme.spacing[3]};
 `;
 
 const QuickActionTitle = styled.div`
