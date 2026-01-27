@@ -67,3 +67,4 @@ htmlcov/
 dist/
 build/
 .vercel
+.env*.local

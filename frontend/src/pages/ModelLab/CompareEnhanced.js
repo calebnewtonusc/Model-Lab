@@ -170,6 +170,7 @@ const Compare = () => {
   const [runs, setRuns] = useState([]);
   const [selectedRunIds, setSelectedRunIds] = useState(['', '', '', '', '']);
   const [selectedRuns, setSelectedRuns] = useState([]);
+  const [artifacts, setArtifacts] = useState({});
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
 
@@ -202,7 +203,21 @@ const Compare = () => {
     try {
       const promises = ids.map(id => fetch(`/api/modellab/runs/${id}`).then(r => r.json()));
       const results = await Promise.all(promises);
-      setSelectedRuns(results.map(r => r.run).filter(Boolean));
+      const runs = results.map(r => r.run).filter(Boolean);
+      setSelectedRuns(runs);
+
+      // Fetch artifacts for each run
+      const artifactPromises = runs.map(run =>
+        fetch(`/api/modellab/artifacts/${run.id}`)
+          .then(r => r.json())
+          .then(data => ({ runId: run.id, artifacts: data.artifacts || [] }))
+      );
+      const artifactResults = await Promise.all(artifactPromises);
+      const artifactMap = {};
+      artifactResults.forEach(result => {
+        artifactMap[result.runId] = result.artifacts;
+      });
+      setArtifacts(artifactMap);
     } catch (error) {
       console.error('Error fetching selected runs:', error);
     }
@@ -220,21 +235,43 @@ const Compare = () => {
     const allKeys = new Set();
     selectedRuns.forEach(run => {
       Object.keys(run.metrics || {}).forEach(key => allKeys.add(key));
+      // Add latency metrics if they exist
+      if (run.latencyMetrics) {
+        ['p50', 'p95', 'p99', 'mean'].forEach(key => {
+          if (run.latencyMetrics[key] !== undefined) {
+            allKeys.add(`latency_${key}`);
+          }
+        });
+      }
     });
 
     return Array.from(allKeys).map(key => {
-      const values = selectedRuns.map(run => run.metrics?.[key] || 0);
-      const numericValues = values.filter(v => typeof v === 'number');
-      const bestValue = numericValues.length > 0 ? Math.max(...numericValues) : null;
+      // Check if this is a latency metric
+      const isLatency = key.startsWith('latency_');
+      const latencyKey = isLatency ? key.replace('latency_', '') : null;
+
+      const values = selectedRuns.map(run => {
+        if (isLatency) {
+          return run.latencyMetrics?.[latencyKey] || 0;
+        }
+        return run.metrics?.[key] || 0;
+      });
+
+      const numericValues = values.filter(v => typeof v === 'number' && v > 0);
+
+      // For latency, lower is better
+      const bestValue = numericValues.length > 0
+        ? (isLatency ? Math.min(...numericValues) : Math.max(...numericValues))
+        : null;
 
       return {
-        key,
+        key: isLatency ? `Latency ${latencyKey.toUpperCase()} (ms)` : key,
         values,
         bestValue,
         runs: selectedRuns.map((run, idx) => ({
           name: run.name,
           value: values[idx],
-          isBest: values[idx] === bestValue && typeof values[idx] === 'number'
+          isBest: values[idx] === bestValue && typeof values[idx] === 'number' && values[idx] > 0
         }))
       };
     });
@@ -283,6 +320,43 @@ const Compare = () => {
     });
   };
 
+  const getArtifactComparison = () => {
+    if (selectedRuns.length === 0) return [];
+
+    // Collect all unique artifact names
+    const allArtifactNames = new Set();
+    Object.values(artifacts).forEach(runArtifacts => {
+      runArtifacts.forEach(artifact => {
+        allArtifactNames.add(artifact.name);
+      });
+    });
+
+    // Build comparison data for each artifact
+    return Array.from(allArtifactNames).map(name => {
+      const comparison = {
+        name,
+        runs: selectedRuns.map(run => {
+          const runArtifacts = artifacts[run.id] || [];
+          const artifact = runArtifacts.find(a => a.name === name);
+          return {
+            runName: run.name,
+            runId: run.id,
+            exists: !!artifact,
+            size: artifact?.size || 0,
+            type: artifact?.type || '-',
+            path: artifact?.path || null
+          };
+        })
+      };
+
+      // Check if artifact sizes differ
+      const sizes = comparison.runs.filter(r => r.exists).map(r => r.size);
+      comparison.different = new Set(sizes).size > 1;
+
+      return comparison;
+    }).sort((a, b) => a.name.localeCompare(b.name));
+  };
+
   const calculateStatisticalSignificance = (metric) => {
     // Simple t-test approximation (mock implementation)
     const values = selectedRuns.map(run => run.metrics?.[metric] || 0).filter(v => typeof v === 'number');
@@ -321,6 +395,7 @@ const Compare = () => {
   const metricComparison = getMetricComparison();
   const radarData = getRadarChartData();
   const hyperparamComparison = getHyperparamComparison();
+  const artifactComparison = getArtifactComparison();
 
   return (
     <Container>
@@ -369,6 +444,7 @@ const Compare = () => {
               { id: 'overview', label: 'Overview' },
               { id: 'metrics', label: 'Metrics' },
               { id: 'hyperparameters', label: 'Hyperparameters' },
+              { id: 'artifacts', label: 'Artifacts' },
               { id: 'statistics', label: 'Statistical Tests' }
             ]}
             activeTab={activeTab}
@@ -479,6 +555,34 @@ const Compare = () => {
                         <Td key={run.id}>{run.commitHash?.substring(0, 8) || 'N/A'}</Td>
                       ))}
                     </tr>
+                    {selectedRuns.some(run => run.latencyMetrics) && (
+                      <>
+                        <tr>
+                          <Td><strong>Latency P50 (ms)</strong></Td>
+                          {selectedRuns.map(run => (
+                            <Td key={run.id}>
+                              {run.latencyMetrics?.p50 ? run.latencyMetrics.p50.toFixed(2) : 'N/A'}
+                            </Td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <Td><strong>Latency P95 (ms)</strong></Td>
+                          {selectedRuns.map(run => (
+                            <Td key={run.id}>
+                              {run.latencyMetrics?.p95 ? run.latencyMetrics.p95.toFixed(2) : 'N/A'}
+                            </Td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <Td><strong>Latency P99 (ms)</strong></Td>
+                          {selectedRuns.map(run => (
+                            <Td key={run.id}>
+                              {run.latencyMetrics?.p99 ? run.latencyMetrics.p99.toFixed(2) : 'N/A'}
+                            </Td>
+                          ))}
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </Table>
               </ComparisonTable>
@@ -538,6 +642,59 @@ const Compare = () => {
                 ))}
               </ConfigDiff>
             </ChartSection>
+          )}
+
+          {activeTab === 'artifacts' && (
+            <ComparisonTable>
+              <ChartTitle style={{ marginBottom: '1rem' }}>Artifact Comparison</ChartTitle>
+              <Table>
+                <thead>
+                  <tr>
+                    <Th>Artifact</Th>
+                    {selectedRuns.map(run => (
+                      <Th key={run.id}>{run.name}</Th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {artifactComparison.map(artifact => (
+                    <tr key={artifact.name}>
+                      <Td>
+                        <strong>{artifact.name}</strong>
+                        {artifact.different && (
+                          <Badge variant="warning" style={{ marginLeft: '0.5rem' }}>
+                            DIFF
+                          </Badge>
+                        )}
+                      </Td>
+                      {artifact.runs.map((runData, idx) => (
+                        <Td key={idx}>
+                          {runData.exists ? (
+                            <div>
+                              <div style={{ fontSize: '0.875rem' }}>
+                                {(runData.size / 1024).toFixed(2)} KB
+                              </div>
+                              <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.25rem' }}>
+                                Type: {runData.type}
+                              </div>
+                            </div>
+                          ) : (
+                            <Badge variant="error">Missing</Badge>
+                          )}
+                        </Td>
+                      ))}
+                    </tr>
+                  ))}
+                  {artifactComparison.length === 0 && (
+                    <tr>
+                      <Td colSpan={selectedRuns.length + 1} style={{ textAlign: 'center', padding: '2rem' }}>
+                        No artifacts found for selected runs
+                      </Td>
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+            </ComparisonTable>
           )}
 
           {activeTab === 'statistics' && (

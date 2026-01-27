@@ -178,4 +178,46 @@ router.post('/:id/evaluate', (req, res) => {
   }
 });
 
+// POST latency profile for run
+router.post('/:id/latency', (req, res) => {
+  try {
+    const { latencies } = req.body;
+    const run = storage.getRunById(req.params.id);
+
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    // Validate latency data
+    if (!latencies || typeof latencies !== 'object') {
+      return res.status(400).json({ error: 'Invalid latency data' });
+    }
+
+    // Save latency profile to artifact directory
+    const latencyPath = path.join(run.artifactsDir, 'latency_profile.json');
+    fs.writeFileSync(latencyPath, JSON.stringify(latencies, null, 2));
+
+    // Update run with latency metrics
+    const updatedRun = storage.updateRun(req.params.id, {
+      latencyMetrics: {
+        p50: latencies.latencies?.p50 || 0,
+        p95: latencies.latencies?.p95 || 0,
+        p99: latencies.latencies?.p99 || 0,
+        mean: latencies.latencies?.mean || 0,
+        timestamp: latencies.timestamp || new Date().toISOString()
+      }
+    });
+
+    res.json({
+      run: updatedRun,
+      message: 'Latency profile saved successfully',
+      latencyPath
+    });
+
+  } catch (error) {
+    console.error('Latency profile error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
