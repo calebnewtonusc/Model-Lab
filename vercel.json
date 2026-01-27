@@ -1,22 +1,26 @@
 {
-  "buildCommand": "npm install && cd frontend && npm install && npm run build",
+  "version": 2,
+  "buildCommand": "cd frontend && DISABLE_ESLINT_PLUGIN=true npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "npm install",
+  "installCommand": "npm install && cd frontend && npm install",
+  "functions": {
+    "api/index.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.js"
-    }
-  ],
-  "headers": [
+      "destination": "/api/index"
+    },
     {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Credentials", "value": "true" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
-      ]
+      "source": "/api-docs/(.*)",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/api-docs",
+      "destination": "/api/index"
     }
   ]
 }

@@ -13,9 +13,9 @@ const db = require(path.join(__dirname, '../../lib/database'));
 const { validate, validateId, schemas } = require(path.join(__dirname, '../../lib/validation'));
 
 // GET artifacts for a run
-router.get('/:runId', validateId('runId'), (req, res) => {
+router.get('/:runId', validateId('runId'), async (req, res) => {
   try {
-    const run = db.getRunById(req.params.runId);
+    const run = await db.getRunById(req.params.runId);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -55,12 +55,13 @@ router.get('/:runId', validateId('runId'), (req, res) => {
     res.json({ artifacts });
 
   } catch (error) {
+    console.error('Get artifacts error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // POST artifact metadata (for Python SDK - JSON only)
-router.post('/', validate(schemas.artifact.log), (req, res) => {
+router.post('/', validate(schemas.artifact.log), async (req, res) => {
   try {
     const { run_id, name, type, size, checksum, path: artifactPath, created_at } = req.body;
 
@@ -68,13 +69,13 @@ router.post('/', validate(schemas.artifact.log), (req, res) => {
       return res.status(400).json({ error: 'Missing required fields: run_id, name' });
     }
 
-    const run = db.getRunById(run_id);
+    const run = await db.getRunById(run_id);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
 
     // Create artifact record in database
-    const artifact = db.createArtifact({
+    const artifact = await db.createArtifact({
       run_id,
       name,
       type: type || 'model',
@@ -96,8 +97,8 @@ router.post('/', validate(schemas.artifact.log), (req, res) => {
 });
 
 // POST upload artifact (with file)
-router.post('/:runId', validateId('runId'), (req, res) => {
-  const run = db.getRunById(req.params.runId);
+router.post('/:runId', validateId('runId'), async (req, res) => {
+  const run = await db.getRunById(req.params.runId);
   if (!run) {
     return res.status(404).json({ error: 'Run not found' });
   }
@@ -175,9 +176,9 @@ router.post('/:runId', validateId('runId'), (req, res) => {
 });
 
 // GET download artifact
-router.get('/:runId/download/:artifactPath(*)', validateId('runId'), (req, res) => {
+router.get('/:runId/download/:artifactPath(*)', validateId('runId'), async (req, res) => {
   try {
-    const run = db.getRunById(req.params.runId);
+    const run = await db.getRunById(req.params.runId);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -218,14 +219,15 @@ router.get('/:runId/download/:artifactPath(*)', validateId('runId'), (req, res) 
     readStream.pipe(res);
 
   } catch (error) {
+    console.error('Download artifact error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // DELETE artifact
-router.delete('/:runId/download/:artifactPath(*)', validateId('runId'), (req, res) => {
+router.delete('/:runId/download/:artifactPath(*)', validateId('runId'), async (req, res) => {
   try {
-    const run = db.getRunById(req.params.runId);
+    const run = await db.getRunById(req.params.runId);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -242,6 +244,7 @@ router.delete('/:runId/download/:artifactPath(*)', validateId('runId'), (req, re
     });
 
   } catch (error) {
+    console.error('Delete artifact error:', error);
     res.status(500).json({ error: error.message });
   }
 });

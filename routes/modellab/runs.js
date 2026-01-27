@@ -27,25 +27,28 @@ const getGitCommitHash = async () => {
 };
 
 // GET all runs
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const runs = db.getRuns();
-    res.json({ runs });
+    const runs = await db.getRuns();
+    // Ensure runs is always an array
+    const runsArray = Array.isArray(runs) ? runs : [];
+    res.json({ runs: runsArray });
   } catch (error) {
+    console.error('Error fetching runs:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // GET single run
-router.get('/:id', validateId('id'), (req, res) => {
+router.get('/:id', validateId('id'), async (req, res) => {
   try {
-    const run = db.getRunById(req.params.id);
+    const run = await db.getRunById(req.params.id);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
 
     // Load evaluation data if exists
-    const evaluations = db.getEvaluationsByRunId(req.params.id);
+    const evaluations = await db.getEvaluationsByRunId(req.params.id);
 
     res.json({ run, evaluations });
   } catch (error) {
@@ -63,19 +66,19 @@ router.post('/', validate(schemas.run.create), async (req, res) => {
 
     // Validate dataset exists
     if (data.datasetId) {
-      const dataset = db.getDatasetById(data.datasetId);
+      const dataset = await db.getDatasetById(data.datasetId);
       if (!dataset) {
         return res.status(400).json({ error: 'Dataset not found' });
       }
     }
 
     // Create artifacts directory for this run
-    const runId = db.generateId();
+    const runId = await db.generateId();
     const artifactsDir = path.join(db.BASE_DIR, 'artifacts', runId);
     fs.mkdirSync(artifactsDir, { recursive: true });
 
     // Create run record
-    const run = db.createRun({
+    const run = await db.createRun({
       id: runId,
       name: data.name || `Run ${new Date().toLocaleString()}`,
       description: data.description || '',
@@ -104,25 +107,26 @@ router.post('/', validate(schemas.run.create), async (req, res) => {
 });
 
 // PUT/PATCH update run (support both methods for SDK compatibility)
-const updateRunHandler = [validateId('id'), validate(schemas.run.update), (req, res) => {
+const updateRunHandler = async (req, res) => {
   try {
-    const run = db.updateRun(req.params.id, req.body);
+    const run = await db.updateRun(req.params.id, req.body);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
     res.json({ run });
   } catch (error) {
+    console.error('Update run error:', error);
     res.status(500).json({ error: error.message });
   }
-}];
+};
 
-router.put('/:id', ...updateRunHandler);
-router.patch('/:id', ...updateRunHandler);
+router.put('/:id', validateId('id'), validate(schemas.run.update), updateRunHandler);
+router.patch('/:id', validateId('id'), validate(schemas.run.update), updateRunHandler);
 
 // DELETE run
-router.delete('/:id', validateId('id'), (req, res) => {
+router.delete('/:id', validateId('id'), async (req, res) => {
   try {
-    const run = db.getRunById(req.params.id);
+    const run = await db.getRunById(req.params.id);
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -132,22 +136,23 @@ router.delete('/:id', validateId('id'), (req, res) => {
       fs.rmSync(run.artifactsDir, { recursive: true, force: true });
     }
 
-    db.deleteRun(req.params.id);
+    await db.deleteRun(req.params.id);
 
     res.json({
       message: 'Run deleted successfully',
       run
     });
   } catch (error) {
+    console.error('Delete run error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // POST evaluate run
-router.post('/:id/evaluate', validateId('id'), validate(schemas.run.evaluate), (req, res) => {
+router.post('/:id/evaluate', validateId('id'), validate(schemas.run.evaluate), async (req, res) => {
   try {
     const { predictions, labels, data, config } = req.body;
-    const run = db.getRunById(req.params.id);
+    const run = await db.getRunById(req.params.id);
 
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
@@ -161,14 +166,14 @@ router.post('/:id/evaluate', validateId('id'), validate(schemas.run.evaluate), (
     const savedPaths = evalHarness.saveEvaluationReport(report, evalDir);
 
     // Store evaluation in database
-    const evaluation = db.createEvaluation({
+    const evaluation = await db.createEvaluation({
       runId: req.params.id,
       ...report,
       files: savedPaths
     });
 
     // Update run with latest metrics
-    db.updateRun(req.params.id, {
+    await db.updateRun(req.params.id, {
       metrics: report.metrics,
       status: 'completed'
     });
@@ -185,10 +190,10 @@ router.post('/:id/evaluate', validateId('id'), validate(schemas.run.evaluate), (
 });
 
 // POST latency profile for run
-router.post('/:id/latency', validateId('id'), validate(schemas.run.latency), (req, res) => {
+router.post('/:id/latency', validateId('id'), validate(schemas.run.latency), async (req, res) => {
   try {
     const { latencies } = req.body;
-    const run = db.getRunById(req.params.id);
+    const run = await db.getRunById(req.params.id);
 
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
@@ -204,7 +209,7 @@ router.post('/:id/latency', validateId('id'), validate(schemas.run.latency), (re
     fs.writeFileSync(latencyPath, JSON.stringify(latencies, null, 2));
 
     // Update run with latency metrics
-    const updatedRun = db.updateRun(req.params.id, {
+    const updatedRun = await db.updateRun(req.params.id, {
       latencyMetrics: {
         p50: latencies.latencies?.p50 || 0,
         p95: latencies.latencies?.p95 || 0,
@@ -222,6 +227,59 @@ router.post('/:id/latency', validateId('id'), validate(schemas.run.latency), (re
 
   } catch (error) {
     console.error('Latency profile error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET repro pack for run
+router.get('/:id/repro', validateId('id'), async (req, res) => {
+  try {
+    const reproPack = require(path.join(__dirname, '../../lib/reproPack'));
+    const pack = await reproPack.generateReproPack(req.params.id);
+    res.json(pack);
+  } catch (error) {
+    console.error('Repro pack generation error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET download repro pack ZIP
+router.get('/:id/repro/download', validateId('id'), async (req, res) => {
+  try {
+    const reproPack = require(path.join(__dirname, '../../lib/reproPack'));
+    const run = db.getRunById(req.params.id);
+
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    // Create temporary ZIP file
+    const tmpDir = path.join(__dirname, '../../tmp');
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir, { recursive: true });
+    }
+
+    const zipPath = path.join(tmpDir, `repro_pack_${req.params.id}.zip`);
+
+    await reproPack.exportReproPackZip(req.params.id, zipPath);
+
+    // Send file
+    res.download(zipPath, `${run.name.replace(/\s+/g, '_')}_repro_pack.zip`, (err) => {
+      // Clean up temp file after download
+      if (fs.existsSync(zipPath)) {
+        fs.unlinkSync(zipPath);
+      }
+
+      if (err) {
+        console.error('Download error:', error);
+        if (!res.headersSent) {
+          res.status(500).json({ error: 'Download failed' });
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Repro pack download error:', error);
     res.status(500).json({ error: error.message });
   }
 });

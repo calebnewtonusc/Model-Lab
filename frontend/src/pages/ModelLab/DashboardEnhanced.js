@@ -292,10 +292,18 @@ const QuickActionCard = styled(Card)`
   padding: ${({ theme }) => theme.spacing[6]};
   border: 2px solid ${({ theme }) => theme.border};
   background: ${({ theme }) => theme.card};
+  user-select: none;
+  transition: ${({ theme }) => theme.transition.base};
 
   &:hover {
     border-color: ${({ theme }) => theme.primary[500]};
     background: ${({ theme }) => theme.cardLight};
+    transform: translateY(-4px);
+    box-shadow: ${({ theme }) => theme.elevation.lg};
+  }
+
+  &:active {
+    transform: translateY(-2px);
   }
 `;
 
@@ -550,17 +558,28 @@ const Dashboard = ({ onNavigate }) => {
       </StatsGrid>
 
       <QuickActionsGrid>
-        <QuickActionCard onClick={() => onNavigate && onNavigate('datasets')}>
+        <QuickActionCard onClick={() => {
+          console.log('Upload Dataset clicked', onNavigate);
+          if (onNavigate) onNavigate('datasets');
+        }}>
           <QuickActionTitle>Upload Dataset</QuickActionTitle>
         </QuickActionCard>
-        <QuickActionCard onClick={() => onNavigate && onNavigate('runs')}>
+        <QuickActionCard onClick={() => {
+          console.log('Create Run clicked', onNavigate);
+          if (onNavigate) onNavigate('runs');
+        }}>
           <QuickActionTitle>Create Run</QuickActionTitle>
         </QuickActionCard>
-        <QuickActionCard onClick={() => onNavigate && onNavigate('compare')}>
+        <QuickActionCard onClick={() => {
+          console.log('Compare Runs clicked', onNavigate);
+          if (onNavigate) onNavigate('compare');
+        }}>
           <QuickActionTitle>Compare Runs</QuickActionTitle>
         </QuickActionCard>
-        <QuickActionCard onClick={() => onNavigate && onNavigate('runs')}>
-
+        <QuickActionCard onClick={() => {
+          console.log('View Artifacts clicked', onNavigate);
+          if (onNavigate) onNavigate('runs');
+        }}>
           <QuickActionTitle>View Artifacts</QuickActionTitle>
         </QuickActionCard>
       </QuickActionsGrid>

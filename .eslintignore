@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+frontend/build/
+dist/
+
+# Data
+data/
+modellab-data/
+
+# Coverage
+coverage/
+
+# Config files
+.eslintrc.js
