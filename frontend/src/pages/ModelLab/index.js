@@ -4,6 +4,7 @@ import Dashboard from './DashboardEnhanced';
 import Datasets from './DatasetsEnhanced';
 import Runs from './RunsEnhanced';
 import Compare from './CompareEnhanced';
+import Projects from './ProjectsEnhanced';
 import { Toast } from './components/SharedComponents';
 import { useToast } from './components/useToast';
 
@@ -39,12 +40,19 @@ const Logo = styled.div`
   margin-right: auto;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing[3]};
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, ${({ theme }) => theme.primary[400]}, ${({ theme }) => theme.primary[600]});
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+`;
+
+const LogoImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  object-fit: cover;
 `;
 
 const NavLinks = styled.div`
@@ -190,6 +198,8 @@ const ModelLab = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard onNavigate={setActiveTab} />;
+      case 'projects':
+        return <Projects />;
       case 'datasets':
         return <Datasets />;
       case 'runs':
@@ -206,13 +216,22 @@ const ModelLab = () => {
       <Toast toasts={toasts} removeToast={removeToast} />
       <NavBar>
         <NavContent>
-          <Logo>ModelLab</Logo>
+          <Logo>
+            <LogoImage src="/modellab-logo.jpg" alt="ModelLab Logo" />
+            ModelLab
+          </Logo>
           <NavLinks>
             <NavLink
               active={activeTab === 'dashboard'}
               onClick={() => setActiveTab('dashboard')}
             >
               Dashboard
+            </NavLink>
+            <NavLink
+              active={activeTab === 'projects'}
+              onClick={() => setActiveTab('projects')}
+            >
+              Projects
             </NavLink>
             <NavLink
               active={activeTab === 'datasets'}
