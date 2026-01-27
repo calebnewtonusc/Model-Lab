@@ -102,8 +102,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT update run
-router.put('/:id', (req, res) => {
+// PUT/PATCH update run (support both methods for SDK compatibility)
+const updateRunHandler = (req, res) => {
   try {
     const run = db.updateRun(req.params.id, req.body);
     if (!run) {
@@ -113,7 +113,10 @@ router.put('/:id', (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
+
+router.put('/:id', updateRunHandler);
+router.patch('/:id', updateRunHandler);
 
 // DELETE run
 router.delete('/:id', (req, res) => {
