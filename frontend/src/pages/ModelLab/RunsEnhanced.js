@@ -320,7 +320,7 @@ const TEMPLATES = [
   {
     id: 'classification',
     name: 'Classification',
-    icon: '🎯',
+    icon: '',
     description: 'Image or text classification model',
     config: {
       model: 'resnet50',
@@ -332,7 +332,7 @@ const TEMPLATES = [
   {
     id: 'regression',
     name: 'Regression',
-    icon: '📈',
+    icon: '',
     description: 'Numerical prediction model',
     config: {
       model: 'mlp',
@@ -344,7 +344,7 @@ const TEMPLATES = [
   {
     id: 'nlp',
     name: 'NLP',
-    icon: '📝',
+    icon: '',
     description: 'Natural language processing',
     config: {
       model: 'transformer',
@@ -356,7 +356,7 @@ const TEMPLATES = [
   {
     id: 'custom',
     name: 'Custom',
-    icon: '⚙️',
+    icon: '',
     description: 'Start from scratch',
     config: {}
   }

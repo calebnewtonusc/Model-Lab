@@ -523,7 +523,6 @@ const Dashboard = ({ onNavigate }) => {
 
         <StatCard>
           <StatHeader>
-            <StatIcon>📊</StatIcon>
             <StatTrend positive={stats.datasetsTrend > 0}>
               {stats.datasetsTrend > 0 ? '↑' : '↓'} {Math.abs(stats.datasetsTrend)}%
             </StatTrend>
@@ -534,7 +533,6 @@ const Dashboard = ({ onNavigate }) => {
 
         <StatCard>
           <StatHeader>
-            <StatIcon>✅</StatIcon>
           </StatHeader>
           <StatValue>{stats.completedRuns}</StatValue>
           <StatLabel>Completed Runs</StatLabel>
@@ -542,7 +540,6 @@ const Dashboard = ({ onNavigate }) => {
 
         <StatCard>
           <StatHeader>
-            <StatIcon>📈</StatIcon>
             <StatTrend positive={stats.accuracyTrend > 0}>
               {stats.accuracyTrend > 0 ? '↑' : '↓'} {Math.abs(stats.accuracyTrend)}%
             </StatTrend>
@@ -554,19 +551,16 @@ const Dashboard = ({ onNavigate }) => {
 
       <QuickActionsGrid>
         <QuickActionCard onClick={() => onNavigate && onNavigate('datasets')}>
-          <QuickActionIcon>📁</QuickActionIcon>
           <QuickActionTitle>Upload Dataset</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => onNavigate && onNavigate('runs')}>
-          <QuickActionIcon>🚀</QuickActionIcon>
           <QuickActionTitle>Create Run</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => onNavigate && onNavigate('compare')}>
-          <QuickActionIcon>🔍</QuickActionIcon>
           <QuickActionTitle>Compare Runs</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => onNavigate && onNavigate('runs')}>
-          <QuickActionIcon>🗂️</QuickActionIcon>
+
           <QuickActionTitle>View Artifacts</QuickActionTitle>
         </QuickActionCard>
       </QuickActionsGrid>
@@ -699,9 +693,6 @@ const Dashboard = ({ onNavigate }) => {
           <ActivityList>
             {recentActivity.map((activity, idx) => (
               <ActivityItem key={idx}>
-                <ActivityIcon type={activity.type}>
-                  {activity.type === 'run' ? '🔬' : '📊'}
-                </ActivityIcon>
                 <ActivityContent>
                   <ActivityText>
                     {activity.text}
