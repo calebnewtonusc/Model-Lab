@@ -4,7 +4,7 @@
  */
 
 const express = require('express');
-const formidable = require('formidable');
+const { formidable } = require('formidable');
 const fs = require('fs');
 const path = require('path');
 const router = express.Router();
@@ -58,7 +58,43 @@ router.get('/:runId', (req, res) => {
   }
 });
 
-// POST upload artifact
+// POST artifact metadata (for Python SDK - JSON only)
+router.post('/', (req, res) => {
+  try {
+    const { run_id, name, type, size, checksum, path: artifactPath, created_at } = req.body;
+
+    if (!run_id || !name) {
+      return res.status(400).json({ error: 'Missing required fields: run_id, name' });
+    }
+
+    const run = db.getRunById(run_id);
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    // Create artifact record in database
+    const artifact = db.createArtifact({
+      run_id,
+      name,
+      type: type || 'model',
+      size: size || 0,
+      checksum: checksum || '',
+      path: artifactPath || name,
+      created_at
+    });
+
+    res.status(201).json({
+      artifact,
+      message: 'Artifact metadata logged successfully'
+    });
+
+  } catch (error) {
+    console.error('Artifact logging error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST upload artifact (with file)
 router.post('/:runId', (req, res) => {
   const run = db.getRunById(req.params.runId);
   if (!run) {
