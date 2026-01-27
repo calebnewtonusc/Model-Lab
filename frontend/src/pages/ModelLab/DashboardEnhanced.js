@@ -312,7 +312,7 @@ const QuickActionTitle = styled.div`
 
 const COLORS = ['#854CE6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
-const Dashboard = () => {
+const Dashboard = ({ onNavigate }) => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalRuns: 0,
@@ -553,19 +553,19 @@ const Dashboard = () => {
       </StatsGrid>
 
       <QuickActionsGrid>
-        <QuickActionCard onClick={() => window.location.href = '#datasets'}>
+        <QuickActionCard onClick={() => onNavigate && onNavigate('datasets')}>
           <QuickActionIcon>📁</QuickActionIcon>
           <QuickActionTitle>Upload Dataset</QuickActionTitle>
         </QuickActionCard>
-        <QuickActionCard onClick={() => window.location.href = '#runs'}>
+        <QuickActionCard onClick={() => onNavigate && onNavigate('runs')}>
           <QuickActionIcon>🚀</QuickActionIcon>
           <QuickActionTitle>Create Run</QuickActionTitle>
         </QuickActionCard>
-        <QuickActionCard onClick={() => window.location.href = '#compare'}>
+        <QuickActionCard onClick={() => onNavigate && onNavigate('compare')}>
           <QuickActionIcon>🔍</QuickActionIcon>
           <QuickActionTitle>Compare Runs</QuickActionTitle>
         </QuickActionCard>
-        <QuickActionCard onClick={() => window.location.href = '#artifacts'}>
+        <QuickActionCard onClick={() => onNavigate && onNavigate('runs')}>
           <QuickActionIcon>🗂️</QuickActionIcon>
           <QuickActionTitle>View Artifacts</QuickActionTitle>
         </QuickActionCard>
