@@ -118,13 +118,14 @@ fi
 
 # 9. Test server startup (quick check)
 echo "Testing server startup..."
-timeout 5 node server.js > /dev/null 2>&1 &
+node server.js > /dev/null 2>&1 &
 SERVER_PID=$!
-sleep 2
+sleep 3
 
 if kill -0 $SERVER_PID 2>/dev/null; then
     test_check "Server starts successfully"
     kill $SERVER_PID 2>/dev/null
+    wait $SERVER_PID 2>/dev/null
 else
     test_check "Server starts successfully" && false
 fi
