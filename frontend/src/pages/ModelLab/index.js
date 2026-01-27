@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import ErrorBoundary from '../../components/ErrorBoundary';
 import Landing from '../Landing';
 import Dashboard from './DashboardEnhanced';
 import Datasets from './DatasetsEnhanced';
@@ -195,23 +196,32 @@ const ModelLab = () => {
   const [activeTab, setActiveTab] = useState('home');
   const { toasts, removeToast } = useToast();
 
+  const handleNavigation = (tab) => {
+    console.log('Navigating to:', tab);
+    setActiveTab(tab);
+  };
+
   const renderContent = () => {
-    switch (activeTab) {
-      case 'home':
-        return <Landing onGetStarted={() => setActiveTab('dashboard')} />;
-      case 'dashboard':
-        return <Dashboard onNavigate={setActiveTab} />;
-      case 'projects':
-        return <Projects />;
-      case 'datasets':
-        return <Datasets />;
-      case 'runs':
-        return <Runs />;
-      case 'compare':
-        return <Compare />;
-      default:
-        return <Landing onGetStarted={() => setActiveTab('dashboard')} />;
-    }
+    const content = (() => {
+      switch (activeTab) {
+        case 'home':
+          return <Landing onGetStarted={() => handleNavigation('dashboard')} />;
+        case 'dashboard':
+          return <Dashboard onNavigate={handleNavigation} />;
+        case 'projects':
+          return <Projects />;
+        case 'datasets':
+          return <Datasets />;
+        case 'runs':
+          return <Runs />;
+        case 'compare':
+          return <Compare />;
+        default:
+          return <Landing onGetStarted={() => handleNavigation('dashboard')} />;
+      }
+    })();
+
+    return <ErrorBoundary>{content}</ErrorBoundary>;
   };
 
   return (
@@ -226,37 +236,37 @@ const ModelLab = () => {
           <NavLinks>
             <NavLink
               active={activeTab === 'home'}
-              onClick={() => setActiveTab('home')}
+              onClick={() => handleNavigation('home')}
             >
               Home
             </NavLink>
             <NavLink
               active={activeTab === 'dashboard'}
-              onClick={() => setActiveTab('dashboard')}
+              onClick={() => handleNavigation('dashboard')}
             >
               Dashboard
             </NavLink>
             <NavLink
               active={activeTab === 'projects'}
-              onClick={() => setActiveTab('projects')}
+              onClick={() => handleNavigation('projects')}
             >
               Projects
             </NavLink>
             <NavLink
               active={activeTab === 'datasets'}
-              onClick={() => setActiveTab('datasets')}
+              onClick={() => handleNavigation('datasets')}
             >
               Datasets
             </NavLink>
             <NavLink
               active={activeTab === 'runs'}
-              onClick={() => setActiveTab('runs')}
+              onClick={() => handleNavigation('runs')}
             >
               Runs
             </NavLink>
             <NavLink
               active={activeTab === 'compare'}
-              onClick={() => setActiveTab('compare')}
+              onClick={() => handleNavigation('compare')}
             >
               Compare
             </NavLink>

@@ -1,0 +1,54 @@
+# Node modules
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+
+# Development files
+.env
+.env.local
+.env.*.local
+
+# Data and logs
+data/
+modellab-data/
+logs/
+*.log
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+coverage/
+.nyc_output/
+test/
+*.test.js
+*.spec.js
+
+# CI/CD
+.github/
+.circleci/
+.travis.yml
+
+# Build artifacts
+dist/
+build/
+*.tgz
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.Python

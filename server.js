@@ -90,23 +90,26 @@ const uploadLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 
 // API Routes
-const datasetsRouter = require('./api/modellab/datasets');
-const runsRouter = require('./api/modellab/runs');
-const artifactsRouter = require('./api/modellab/artifacts');
+const datasetsRouter = require('./routes/modellab/datasets');
+const runsRouter = require('./routes/modellab/runs');
+const artifactsRouter = require('./routes/modellab/artifacts');
+const projectsRouter = require('./routes/modellab/projects');
 
 // Apply upload limiter to dataset uploads
 app.use('/api/modellab/datasets', uploadLimiter);
 app.use('/api/modellab/datasets', datasetsRouter);
 app.use('/api/modellab/runs', runsRouter);
 app.use('/api/modellab/artifacts', artifactsRouter);
+app.use('/api/modellab/projects', projectsRouter);
 
 // Health check endpoint with detailed info
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
   const db = require('./lib/database');
 
   try {
     // Test database connectivity
-    const runs = db.getRuns();
+    const runs = await db.getRuns();
+    const runsArray = Array.isArray(runs) ? runs : [];
 
     res.json({
       status: 'healthy',
@@ -116,7 +119,7 @@ app.get('/api/health', (req, res) => {
       uptime: process.uptime(),
       database: {
         status: 'connected',
-        runs: runs.length
+        runs: runsArray.length
       }
     });
   } catch (error) {
@@ -129,13 +132,19 @@ app.get('/api/health', (req, res) => {
   }
 });
 
-// API documentation endpoint
+// Swagger UI API documentation
+const { swaggerUi, swaggerDocument, options } = require('./api-docs/swagger');
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerDocument, options));
+
+// API documentation endpoint (JSON)
 app.get('/api/docs', (req, res) => {
   res.json({
     name: 'ModelLab API',
     version: '1.0.0',
     description: 'ML experiment tracking and management platform',
     baseUrl: `${req.protocol}://${req.get('host')}`,
+    swaggerUI: `${req.protocol}://${req.get('host')}/api-docs`,
     endpoints: {
       health: {
         path: '/api/health',
@@ -165,6 +174,15 @@ app.get('/api/docs', (req, res) => {
         log: { path: '/api/modellab/artifacts', method: 'POST', description: 'Log artifact metadata' },
         download: { path: '/api/modellab/artifacts/:runId/download/:path', method: 'GET', description: 'Download artifact' },
         delete: { path: '/api/modellab/artifacts/:runId/:path', method: 'DELETE', description: 'Delete artifact' }
+      },
+      projects: {
+        list: { path: '/api/modellab/projects', method: 'GET', description: 'List all projects with stats' },
+        get: { path: '/api/modellab/projects/:id', method: 'GET', description: 'Get project by ID with detailed stats' },
+        create: { path: '/api/modellab/projects', method: 'POST', description: 'Create new project' },
+        update: { path: '/api/modellab/projects/:id', method: 'PUT', description: 'Update project' },
+        delete: { path: '/api/modellab/projects/:id', method: 'DELETE', description: 'Delete project' },
+        datasets: { path: '/api/modellab/projects/:id/datasets', method: 'GET', description: 'List datasets for project' },
+        runs: { path: '/api/modellab/projects/:id/runs', method: 'GET', description: 'List runs for project' }
       }
     },
     rateLimit: {
@@ -262,7 +280,8 @@ const server = app.listen(PORT, () => {
   Port: ${PORT}
   Environment: ${NODE_ENV}
   API: http://localhost:${PORT}/api
-  Docs: http://localhost:${PORT}/api/docs
+  Docs (JSON): http://localhost:${PORT}/api/docs
+  Docs (Swagger): http://localhost:${PORT}/api-docs
   Health: http://localhost:${PORT}/api/health
 
   Features:
@@ -271,6 +290,7 @@ const server = app.listen(PORT, () => {
   ✓ Request Logging
   ✓ CORS Protection
   ✓ Error Handling
+  ✓ Swagger UI Documentation
 
   Database: SQLite (better-sqlite3)
   Python SDK: pip install modellab-client

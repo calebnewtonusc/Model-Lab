@@ -1,307 +1,392 @@
-# ModelLab
+# ModelLab 🔬
 
-**Your personal ML experiment command center** - Now live at [modellab.studio](https://modellab.studio)
+**Production-perfect ML experiment tracking platform**
 
-ModelLab is a production-ready ML experiment tracking platform that enforces reproducible runs, clean evaluation, and honest failure modes. Built with React and Express, it provides a complete solution for managing datasets, tracking experiments, and comparing results.
+A comprehensive system for managing machine learning experiments with professional-grade evaluation, reproducibility, and organization.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
 
 ## What ModelLab Does
 
-1. **Ingest and version datasets** - Upload CSVs with SHA-256 checksums and automatic schema detection
-2. **Track experiment runs** - Record seeds, commit hashes, hyperparameters, and configs for full reproducibility
-3. **Evaluate with EvalHarness** - Shared evaluation library for honest, comparable results
-4. **Store artifacts** - Organize checkpoints, plots, and reports in a reproducible structure
-5. **Compare runs** - Diff metrics, configs, and analyze performance side-by-side
+ModelLab enforces ML best practices through systematic experiment tracking:
 
-## Live Demo
+1. **Projects Workspace** - Organize datasets and runs into logical workspaces
+2. **Dataset Management** - Upload, version, and track with SHA-256 checksums
+3. **Experiment Tracking** - Record seeds, commits, hyperparameters for reproducibility
+4. **Professional Evaluation** - Comprehensive metrics, CIs, slicing, failure analysis
+5. **Reproducibility Packs** - One-click complete experiment reconstruction
+6. **Baseline-First Templates** - Enforced best practices (Dummy → Linear → Complex)
 
-Visit **[modellab.studio](https://modellab.studio)** to see ModelLab in action.
+## Key Features
 
-## Features
+### 🎯 Projects Workspace (NEW)
+- Organize experiments into logical projects
+- Track datasets and runs per project
+- Project-level statistics and activity
+- Clean separation of concerns
 
-### Dataset Management
-- Drag-and-drop CSV upload
-- Automatic schema detection (CSV & JSON)
-- SHA-256 checksum for data integrity
-- Column type inference
-- Version tracking with provenance
+### 🔬 Professional Evaluation
 
-### Run Tracking
-- Reproducible seed generation
-- Git commit hash capture
-- Hyperparameter storage
-- Status tracking (pending/running/completed/failed)
-- Comprehensive metrics recording
+**Python EvalHarness** - Industry-grade evaluation framework
+- **Comprehensive Metrics**: Accuracy, Precision, Recall, F1, ROC-AUC, PR-AUC, ECE, RMSE, R², and more
+- **Statistical Rigor**: Bootstrap confidence intervals (95%)
+- **Data Slicing**: Performance across confidence deciles, features, missingness
+- **Failure Analysis**: High-confidence errors, edge cases, taxonomy (6 categories)
+- **Stress Tests**: Robustness via data corruption, missing values, noise
+- **Deterministic Plots**: Confusion matrices, ROC/PR curves, calibration
+- **Standardized Output**: JSON metrics, 5-sentence takeaways, organized artifacts
 
-### EvalHarness Library
-- Classification & regression metrics
-- Confusion matrices
-- Bootstrap confidence intervals (95%)
-- Slice-based performance analysis
-- Failure example analysis
-- Deterministic plots
+**JavaScript EvalHarness** - Full-stack evaluation
+- ROC-AUC, PR-AUC, Expected Calibration Error
+- Bootstrap confidence intervals
+- Stress testing module
+- Standardized output writer
 
-### Dashboard
-- Real-time statistics
-- Runs over time visualization
-- Status distribution
-- Recent runs table
-- Responsive design
+### 📦 Reproducibility Packs (NEW)
+- Complete environment capture
+- Dataset checksums for verification
+- Exact reproduction commands
+- Dependency specifications
+- Downloadable ZIP with reproduce.md
 
-### Comparison View
-- Side-by-side run metrics
-- Configuration diff viewer
-- Statistical significance highlighting
-- Radar charts for metric comparison
+### 🏗️ Training Templates (NEW)
+**Baseline-First Workflows** - Enforced best practices
 
-## Tech Stack
+- **Tabular Classification**: DummyClassifier → LogisticRegression → XGBoost
+- **Tabular Regression**: MeanPredictor → LinearRegression → XGBoost
+- Automatic ModelLab integration
+- Side-by-side performance comparison
+- Reproducible with fixed seeds
 
-- **Frontend:** React 18 (Create React App) + Styled Components + Material-UI
-- **Backend:** Express.js + Node.js
-- **Database:** SQLite (better-sqlite3 with WAL mode)
-- **Python SDK:** One-line experiment tracking with automatic git integration
-- **Visualization:** Recharts
-- **Deployment:** Vercel
-- **Domain:** modellab.studio (GoDaddy)
+---
 
-## Production Features
+## Quick Start
 
-ModelLab includes enterprise-grade production features:
+### 1. Start Backend
 
-### Security
-- **Helmet.js Integration** - Security headers (CSP, HSTS, XSS protection)
-- **Input Validation** - Joi schema validation on all API endpoints
-- **CORS Protection** - Configurable origin whitelist
-- **Rate Limiting** - 100 API requests / 20 uploads per 15 minutes (production)
-- **Sanitized Error Messages** - No stack traces in production
-
-### Reliability
-- **Graceful Shutdown** - Clean database closure on SIGTERM/SIGINT
-- **Health Check Endpoint** - `/api/health` with database connectivity test
-- **Uncaught Exception Handling** - Process-level error recovery
-- **Request Logging** - Morgan logger with Apache combined format
-
-### Monitoring & Documentation
-- **API Documentation** - Auto-generated docs at `/api/docs`
-- **Structured Logging** - Timestamped error logs with request context
-- **Performance Metrics** - Request duration tracking
-- **Uptime Tracking** - Health endpoint includes process uptime
-
-### Configuration
-- **Environment Variables** - Configurable via `.env` file
-- **Multi-environment Support** - Development/production modes
-- **Flexible CORS** - Environment-based origin configuration
-- **Adjustable Rate Limits** - Per-environment request throttling
-
-## Python SDK
-
-Track experiments with one line of code:
-
-```python
-import modellab
-
-# Configure once
-modellab.configure(api_url="http://localhost:3001")
-
-# Track an experiment
-with modellab.run("my-experiment"):
-    modellab.log_param("learning_rate", 0.001)
-    modellab.log_metric("accuracy", 0.95)
-    modellab.log_artifact("model.pkl")
+```bash
+npm install
+node server.js
 ```
 
-### Installation
+Server at: `http://localhost:3001`
+
+### 2. Install Python SDK
 
 ```bash
 cd python-sdk
 pip install -e .
 ```
 
-### Features
+### 3. Install Python EvalHarness
 
-- **Context Manager API**: Auto-start and complete runs
-- **Git Integration**: Automatically captures commit hash
-- **SHA-256 Checksums**: Verifies artifact integrity
-- **Manual API**: Start/stop runs manually for complex workflows
-- **Framework Support**: Works with PyTorch, TensorFlow, scikit-learn
-
-### Example: PyTorch Training
-
-```python
-import torch
-import modellab
-
-modellab.configure(api_url="http://localhost:3001")
-
-with modellab.run("resnet-training"):
-    # Log hyperparameters
-    modellab.log_param("batch_size", 32)
-    modellab.log_param("learning_rate", 0.001)
-    modellab.log_param("epochs", 10)
-
-    # Train model
-    for epoch in range(10):
-        loss = train_epoch(model, dataloader)
-        acc = evaluate(model, val_loader)
-
-        modellab.log_metric(f"loss_epoch_{epoch}", loss)
-        modellab.log_metric(f"accuracy_epoch_{epoch}", acc)
-
-    # Save artifacts
-    torch.save(model.state_dict(), "model.pth")
-    modellab.log_artifact("model.pth")
-```
-
-See [python-sdk/README.md](python-sdk/README.md) for full documentation.
-
-## Quick Start
-
-### Prerequisites
-
-- Node.js 18+
-- npm
-- Python 3.7+ (for Python SDK)
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone https://github.com/calebnewtonusc/ModelLab.git
-cd ModelLab
+cd ml/evalharness
+pip install -e .
 ```
 
-2. Install dependencies:
+### 4. Run Training Template
+
 ```bash
-npm run install-all
+# Classification example
+python ml/templates/tabular_classification.py \
+  data/iris.csv \
+  --target species \
+  --project-id proj_123 \
+  --seed 42
+
+# Regression example
+python ml/templates/tabular_regression.py \
+  data/housing.csv \
+  --target price \
+  --project-id proj_123
 ```
 
-3. Run in development mode:
+---
 
-Terminal 1 (Frontend):
-```bash
-cd frontend
-npm start
-```
-
-Terminal 2 (Backend):
-```bash
-npm run dev
-```
-
-Visit http://localhost:3000 to access ModelLab.
-
-## Project Structure
+## Architecture
 
 ```
 ModelLab/
-├── frontend/              # React application
-│   ├── src/
-│   │   ├── pages/ModelLab/    # Main pages
-│   │   │   ├── DashboardEnhanced.js
-│   │   │   ├── DatasetsEnhanced.js
-│   │   │   ├── RunsEnhanced.js
-│   │   │   └── CompareEnhanced.js
-│   │   └── utils/             # Client utilities
-│   └── package.json
-├── api/modellab/          # Express API routes
-│   ├── datasets.js
-│   ├── runs.js
-│   └── artifacts.js
-├── lib/                   # Shared libraries
-│   ├── database.js        # SQLite database (better-sqlite3)
-│   ├── storage.js         # Legacy JSON storage (deprecated)
-│   ├── schemaDetector.js  # Schema inference
-│   ├── evalHarness.js     # Evaluation library
-│   └── latencyProfiler.js # Performance profiling
-├── python-sdk/            # Python SDK for experiment tracking
-│   ├── modellab/
-│   │   ├── __init__.py
-│   │   ├── client.py      # Core API client
-│   │   └── config.py      # Configuration
-│   ├── setup.py
-│   └── README.md
-├── data/                  # SQLite database storage
-│   └── modellab.db        # Persistent experiment data
-├── modellab-data/         # File storage for artifacts & datasets
-├── server.js              # Express server
-└── vercel.json            # Vercel config
+├── server.js                    # Express backend
+├── api/modellab/
+│   ├── datasets.js             # Dataset API
+│   ├── runs.js                 # Runs API (+ Repro Packs)
+│   ├── artifacts.js            # Artifacts API
+│   └── projects.js             # Projects API ✨ NEW
+├── lib/
+│   ├── database.js             # SQLite with auto-migrations
+│   ├── evalHarness.js          # JS evaluation (ROC-AUC, PR-AUC, ECE)
+│   ├── reproPack.js            # Reproducibility ✨ NEW
+│   └── evalHarness/
+│       ├── stressTests.js      # Robustness testing ✨ NEW
+│       └── outputWriter.js     # Standard format ✨ NEW
+├── ml/
+│   ├── evalharness/            # Python framework ✨ NEW (2500+ lines)
+│   │   ├── core/               # Base interfaces & schemas
+│   │   ├── metrics/            # Classification & regression
+│   │   ├── plots/              # Deterministic visualizations
+│   │   ├── slicing/            # Performance analysis
+│   │   ├── failures/           # Error analysis & taxonomy
+│   │   ├── ci/                 # Bootstrap confidence intervals
+│   │   ├── stress/             # Corruption tests
+│   │   └── evaluators/         # Complete evaluators
+│   └── templates/              # Training workflows ✨ NEW
+│       ├── tabular_classification.py
+│       └── tabular_regression.py
+├── python-sdk/                 # Python client
+└── frontend/                   # React UI
+    └── src/pages/ModelLab/
+        ├── DashboardEnhanced.js
+        ├── DatasetsEnhanced.js
+        ├── RunsEnhanced.js
+        ├── CompareEnhanced.js
+        └── ProjectsEnhanced.js  ✨ NEW
 ```
 
-## API Documentation
+---
+
+## API Endpoints
+
+### Projects ✨ NEW
+```http
+GET    /api/modellab/projects              # List all with stats
+POST   /api/modellab/projects              # Create project
+GET    /api/modellab/projects/:id          # Get details
+PUT    /api/modellab/projects/:id          # Update
+DELETE /api/modellab/projects/:id          # Delete
+GET    /api/modellab/projects/:id/datasets # List project datasets
+GET    /api/modellab/projects/:id/runs     # List project runs
+```
 
 ### Datasets
-
-- `GET /api/modellab/datasets` - List all datasets
-- `POST /api/modellab/datasets` - Upload new dataset (multipart/form-data)
-- `GET /api/modellab/datasets/:id` - Get dataset by ID
-- `GET /api/modellab/datasets/:id/preview` - Preview first 100 rows
-- `PUT /api/modellab/datasets/:id` - Update dataset metadata
-- `DELETE /api/modellab/datasets/:id` - Delete dataset
+```http
+GET    /api/modellab/datasets              # List all
+POST   /api/modellab/datasets              # Upload (multipart)
+GET    /api/modellab/datasets/:id          # Get dataset
+PUT    /api/modellab/datasets/:id          # Update metadata
+DELETE /api/modellab/datasets/:id          # Delete
+GET    /api/modellab/datasets/:id/preview  # Preview 100 rows
+```
 
 ### Runs
+```http
+GET    /api/modellab/runs                  # List all
+POST   /api/modellab/runs                  # Create run
+GET    /api/modellab/runs/:id              # Get details
+PUT    /api/modellab/runs/:id              # Update
+DELETE /api/modellab/runs/:id              # Delete
+POST   /api/modellab/runs/:id/evaluate     # Submit evaluation
+POST   /api/modellab/runs/:id/latency      # Log latency metrics
+GET    /api/modellab/runs/:id/repro        # Get repro pack ✨ NEW
+GET    /api/modellab/runs/:id/repro/download # Download ZIP ✨ NEW
+```
 
-- `GET /api/modellab/runs` - List all runs
-- `POST /api/modellab/runs` - Create new run
-- `GET /api/modellab/runs/:id` - Get run details
-- `PUT /api/modellab/runs/:id` - Update run
-- `DELETE /api/modellab/runs/:id` - Delete run
-- `POST /api/modellab/runs/:id/evaluate` - Submit evaluation results
+---
 
-### Artifacts
+## Python SDK Usage
 
-- `GET /api/modellab/artifacts/:runId` - List artifacts for run
-- `POST /api/modellab/artifacts/:runId` - Upload artifact
-- `GET /api/modellab/artifacts/:runId/download/:path` - Download artifact
-- `DELETE /api/modellab/artifacts/:runId/:path` - Delete artifact
+```python
+from modellab import configure, start_run, log_metrics, log_params
 
-## Deployment
+# Configure once
+configure(api_url='http://localhost:3001/api/modellab')
 
-ModelLab is deployed on Vercel at [modellab.studio](https://modellab.studio).
+# Track experiment
+with start_run(name='my-experiment', project_id='proj_123', seed=42) as run:
+    # Log parameters
+    log_params({
+        'learning_rate': 0.01,
+        'batch_size': 32,
+        'model': 'xgboost'
+    })
 
-For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+    # Train model...
 
-### Quick Deploy
+    # Log metrics
+    log_metrics({
+        'accuracy': 0.95,
+        'f1_score': 0.93
+    })
+
+    print(f"Run ID: {run.id}")
+```
+
+---
+
+## Python EvalHarness Usage ✨ NEW
+
+```python
+from evalharness import evaluate
+
+# Run comprehensive evaluation
+report = evaluate(
+    task_type='classification',
+    predictions=y_pred,
+    labels=y_true,
+    data=X_test,
+    output_dir='./artifacts/run_123/eval',
+    config={
+        'run_stress_tests': True,
+        'compute_cis': True,
+        'n_failures_per_type': 10
+    }
+)
+
+# Access results
+print(f"Accuracy: {report.metrics['accuracy']:.3f}")
+print(f"ROC-AUC: {report.metrics['roc_auc']:.3f}")
+print(f"ECE: {report.metrics['expected_calibration_error']:.3f}")
+print(f"\nTakeaway:\n{report.get_takeaway()}")
+
+# Generates standardized output:
+# artifacts/run_123/eval/
+# ├── metrics.json
+# ├── confidence_intervals.json
+# ├── slices.json
+# ├── failure_examples.json
+# ├── takeaway.txt (exactly 5 sentences)
+# └── plots/
+#     ├── confusion_matrix.png
+#     ├── roc_curve.png
+#     ├── pr_curve.png
+#     ├── calibration_curve.png
+#     └── confidence_histogram.png
+```
+
+---
+
+## Training Templates Usage ✨ NEW
+
+Templates enforce baseline-first workflow:
 
 ```bash
-vercel --prod
+# Tabular classification
+python ml/templates/tabular_classification.py \
+  data/iris.csv \
+  --target species \
+  --project-id proj_123 \
+  --seed 42
+
+# Output:
+# ============================================================
+# BASELINE 1: DummyClassifier (Most Frequent)
+# Train Accuracy: 0.3333  Test Accuracy: 0.3333
+#
+# BASELINE 2: LogisticRegression
+# Train Accuracy: 0.9667  Test Accuracy: 0.9667
+#
+# IMPROVED MODEL: XGBoost
+# Train Accuracy: 1.0000  Test Accuracy: 1.0000
+#
+# Best Model: XGBoost (Test Accuracy: 1.0000)
+# ============================================================
 ```
+
+Templates automatically log all three runs to ModelLab if `--project-id` provided.
+
+---
+
+## Tech Stack
+
+- **Frontend**: React 18 + Styled Components + Recharts
+- **Backend**: Express.js + Node.js
+- **Database**: SQLite (better-sqlite3 with WAL mode) + auto-migrations
+- **Python**: Python 3.8+ SDK + EvalHarness
+- **Security**: Helmet, CORS, rate limiting, Joi validation
+- **Visualization**: matplotlib, seaborn (Python), Recharts (JS)
+
+---
+
+## Security Features
+
+- Helmet security headers (CSP, HSTS, XSS)
+- CORS protection with origin whitelist
+- Rate limiting (100 req/15min, 20 uploads/15min)
+- Input validation with Joi schemas
+- SQL injection prevention (prepared statements)
+- Graceful error handling (no stack traces in prod)
+
+---
+
+## Database
+
+### SQLite Schema
+- **projects** - Workspace organization ✨ NEW
+- **datasets** - Versioned with checksums
+- **runs** - Experiments with hyperparameters
+- **artifacts** - Model outputs
+- **evaluations** - Evaluation reports
+
+### Auto-Migrations
+Database schema updates automatically on startup. No manual intervention needed.
+
+---
+
+## Reproducibility Guarantee
+
+Every experiment is fully reproducible:
+
+1. **Dataset Checksums** - SHA-256 verification
+2. **Seed Tracking** - All random seeds logged
+3. **Commit Hashes** - Git commits recorded
+4. **Environment Capture** - Node/Python versions
+5. **Complete Config** - All hyperparameters stored
+6. **Repro Packs** - One-click ZIP downloads ✨ NEW
+
+---
 
 ## Development Status
 
-**Production Ready** - Deployed at modellab.studio
+### ✅ Implemented (v1.0)
 
-Core features:
-- [x] Dataset upload and versioning
-- [x] Run tracking with reproducibility
-- [x] EvalHarness evaluation library
-- [x] Artifact storage
-- [x] Dashboard with visualizations
-- [x] Run comparison view
-- [x] SQLite database with persistent storage
-- [x] Python SDK for one-line experiment tracking
-- [x] Automatic git commit hash capture
-- [x] SHA-256 checksum verification
-- [x] Vercel deployment
-- [x] Custom domain (modellab.studio)
+Core Features:
+- [x] Projects workspace ✨ NEW
+- [x] Dataset management with versioning
+- [x] Experiment tracking
+- [x] Python EvalHarness (complete 2500+ lines) ✨ NEW
+- [x] JavaScript EvalHarness (enhanced) ✨ NEW
+- [x] Repro Packs ✨ NEW
+- [x] Training Templates ✨ NEW
+- [x] React frontend
+- [x] SQLite with auto-migrations
+- [x] Python SDK
+- [x] Comprehensive API
 
-Planned enhancements:
-- [ ] User authentication
-- [ ] Real-time updates via WebSockets
-- [ ] S3 artifact storage
+Security & Infrastructure:
+- [x] Helmet security headers
+- [x] Rate limiting
+- [x] Input validation
+- [x] Health checks
+- [x] Graceful shutdown
+
+### 🚧 Planned (v2.0)
+
+- [ ] Authentication (JWT + API keys)
+- [ ] PostgreSQL adapter
+- [ ] Cloud storage (Vercel Blob/S3)
+- [ ] Real-time monitoring
+- [ ] Collaborative features
 - [ ] Advanced visualizations
-- [ ] Team collaboration
-- [ ] Auto-logging for PyTorch/TensorFlow hooks
+
+---
 
 ## Use Cases
 
-1. **Portfolio Projects** - Track experiments for RankForge, TransformerRank, Mini-NeRF
-2. **Reproducible Research** - Ensure experiments can be replicated with seed + commit hash
-3. **Model Comparison** - Compare baselines vs improvements with statistical rigor
-4. **Failure Analysis** - Identify and analyze failure modes systematically
-5. **Performance Profiling** - Track latency metrics (P50, P95) across experiments
+1. **Portfolio Projects** - Track experiments systematically
+2. **Reproducible Research** - Guarantee experiment reproducibility
+3. **Baseline-First Development** - Enforce best practices
+4. **Failure Analysis** - Systematic error categorization
+5. **Model Comparison** - Statistical comparison with CIs
+6. **Performance Profiling** - Latency tracking (P50, P95)
+
+---
 
 ## Contributing
 
-This is a personal portfolio project, but feedback and suggestions are welcome!
+Feedback and suggestions welcome! This is a portfolio project showcasing ML engineering best practices.
 
 ## License
 
@@ -309,6 +394,6 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Built by Caleb Newton** | [Website](https://calebnewton.tech) | [GitHub](https://github.com/calebnewtonusc)
+**Built by Caleb Newton** | [Website](https://calebnewton.me) | [GitHub](https://github.com/calebnewtonusc)
 
-Part of the 2026 ML/AI Engineering Portfolio
+**ModelLab** - Professional ML experiment tracking that enforces best practices 🔬

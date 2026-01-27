@@ -15,19 +15,22 @@ const schemaDetector = require(path.join(__dirname, '../../lib/schemaDetector'))
 const { validate, validateId, schemas } = require(path.join(__dirname, '../../lib/validation'));
 
 // GET all datasets
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const datasets = db.getDatasets();
-    res.json({ datasets });
+    const datasets = await db.getDatasets();
+    // Ensure datasets is always an array
+    const datasetsArray = Array.isArray(datasets) ? datasets : [];
+    res.json({ datasets: datasetsArray });
   } catch (error) {
+    console.error('Error fetching datasets:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // GET single dataset
-router.get('/:id', validateId('id'), (req, res) => {
+router.get('/:id', validateId('id'), async (req, res) => {
   try {
-    const dataset = db.getDatasetById(req.params.id);
+    const dataset = await db.getDatasetById(req.params.id);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
@@ -99,7 +102,7 @@ router.post('/', (req, res) => {
       }
 
       // Create dataset record
-      const dataset = db.createDataset({
+      const dataset = await db.createDataset({
         name: (Array.isArray(fields.name) ? fields.name[0] : fields.name) || baseName,
         description: (Array.isArray(fields.description) ? fields.description[0] : fields.description) || '',
         fileName: newFileName,
@@ -127,22 +130,23 @@ router.post('/', (req, res) => {
 });
 
 // PUT update dataset
-router.put('/:id', validateId('id'), validate(schemas.dataset.update), (req, res) => {
+router.put('/:id', validateId('id'), validate(schemas.dataset.update), async (req, res) => {
   try {
-    const dataset = db.updateDataset(req.params.id, req.body);
+    const dataset = await db.updateDataset(req.params.id, req.body);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
     res.json({ dataset });
   } catch (error) {
+    console.error('Update dataset error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // GET dataset preview
-router.get('/:id/preview', validateId('id'), (req, res) => {
+router.get('/:id/preview', validateId('id'), async (req, res) => {
   try {
-    const dataset = db.getDatasetById(req.params.id);
+    const dataset = await db.getDatasetById(req.params.id);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
@@ -157,14 +161,15 @@ router.get('/:id/preview', validateId('id'), (req, res) => {
       showing: preview.length
     });
   } catch (error) {
+    console.error('Dataset preview error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // DELETE dataset
-router.delete('/:id', validateId('id'), (req, res) => {
+router.delete('/:id', validateId('id'), async (req, res) => {
   try {
-    const dataset = db.getDatasetById(req.params.id);
+    const dataset = await db.getDatasetById(req.params.id);
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
@@ -174,13 +179,14 @@ router.delete('/:id', validateId('id'), (req, res) => {
       fs.unlinkSync(dataset.filePath);
     }
 
-    db.deleteDataset(req.params.id);
+    await db.deleteDataset(req.params.id);
 
     res.json({
       message: 'Dataset deleted successfully',
       dataset
     });
   } catch (error) {
+    console.error('Delete dataset error:', error);
     res.status(500).json({ error: error.message });
   }
 });

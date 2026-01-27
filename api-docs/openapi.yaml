@@ -1,0 +1,803 @@
+openapi: 3.0.0
+info:
+  title: ModelLab API
+  description: |
+    ModelLab is a comprehensive ML experiment tracking platform.
+
+    This API provides endpoints for managing ML projects, datasets, training runs, and artifacts.
+
+    **Key Features:**
+    - Project workspace organization
+    - Dataset upload and management
+    - Training run tracking with metrics and hyperparameters
+    - Reproducibility packs for experiment reproduction
+    - Comprehensive model evaluation with EvalHarness
+
+    **Base URL:** `http://localhost:3001/api/modellab`
+
+    **Authentication:** Not yet implemented (Phase 2)
+
+  version: 1.0.0
+  contact:
+    name: ModelLab Support
+    url: https://github.com/calebnewtonusc/ModelLab
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3001/api/modellab
+    description: Local development server
+  - url: https://modellab.studio/api/modellab
+    description: Production server
+
+tags:
+  - name: Projects
+    description: Workspace organization for datasets and runs
+  - name: Datasets
+    description: Dataset upload and management
+  - name: Runs
+    description: Training run tracking and metrics
+  - name: Artifacts
+    description: Model artifacts and outputs
+  - name: Health
+    description: System health and status
+
+paths:
+  # ==================== Projects ====================
+  /projects:
+    get:
+      tags:
+        - Projects
+      summary: List all projects
+      description: Get all projects with statistics (dataset count, run count, last activity)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectWithStats'
+              example:
+                projects:
+                  - id: "proj_abc123"
+                    name: "Iris Classification"
+                    description: "Iris dataset experiments"
+                    created_at: "2026-01-27T10:00:00Z"
+                    updated_at: "2026-01-27T10:00:00Z"
+                    datasetCount: 2
+                    runCount: 5
+                    lastActivity: "2026-01-27T11:30:00Z"
+
+    post:
+      tags:
+        - Projects
+      summary: Create a new project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+                description:
+                  type: string
+                  maxLength: 1000
+            example:
+              name: "Iris Classification"
+              description: "Experiments on iris dataset"
+      responses:
+        '201':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /projects/{id}:
+    get:
+      tags:
+        - Projects
+      summary: Get a specific project
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Projects
+      summary: Update a project
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Project updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - Projects
+      summary: Delete a project
+      description: Deletes a project and all associated datasets and runs
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '204':
+          description: Project deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /projects/{id}/datasets:
+    get:
+      tags:
+        - Projects
+      summary: List datasets in a project
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  datasets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dataset'
+
+  /projects/{id}/runs:
+    get:
+      tags:
+        - Projects
+      summary: List runs in a project
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  runs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Run'
+
+  # ==================== Datasets ====================
+  /datasets:
+    get:
+      tags:
+        - Datasets
+      summary: List all datasets
+      parameters:
+        - name: project_id
+          in: query
+          schema:
+            type: string
+          description: Filter by project ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  datasets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dataset'
+
+  /datasets/upload:
+    post:
+      tags:
+        - Datasets
+      summary: Upload a new dataset
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - name
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: CSV or JSON file
+                name:
+                  type: string
+                  description: Dataset name
+                description:
+                  type: string
+                  description: Dataset description
+                project_id:
+                  type: string
+                  description: Associated project ID
+      responses:
+        '201':
+          description: Dataset uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dataset:
+                    $ref: '#/components/schemas/Dataset'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /datasets/{id}:
+    get:
+      tags:
+        - Datasets
+      summary: Get a specific dataset
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dataset:
+                    $ref: '#/components/schemas/Dataset'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Datasets
+      summary: Update dataset metadata
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Dataset updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dataset:
+                    $ref: '#/components/schemas/Dataset'
+
+    delete:
+      tags:
+        - Datasets
+      summary: Delete a dataset
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+      responses:
+        '204':
+          description: Dataset deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /datasets/{id}/preview:
+    get:
+      tags:
+        - Datasets
+      summary: Preview dataset rows
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 1000
+          description: Number of rows to return
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+
+  # ==================== Runs ====================
+  /runs:
+    get:
+      tags:
+        - Runs
+      summary: List all runs
+      parameters:
+        - name: project_id
+          in: query
+          schema:
+            type: string
+        - name: model_type
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [created, running, completed, failed]
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  runs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Run'
+
+    post:
+      tags:
+        - Runs
+      summary: Create a new run
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                project_id:
+                  type: string
+                dataset_id:
+                  type: string
+                model_type:
+                  type: string
+                hyperparameters:
+                  type: object
+                seed:
+                  type: integer
+                tags:
+                  type: array
+                  items:
+                    type: string
+            example:
+              name: "LogisticRegression baseline"
+              project_id: "proj_abc123"
+              dataset_id: "ds_xyz789"
+              model_type: "LogisticRegression"
+              hyperparameters:
+                max_iter: 1000
+                C: 1.0
+              seed: 42
+              tags: ["baseline", "experiment-1"]
+      responses:
+        '201':
+          description: Run created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run:
+                    $ref: '#/components/schemas/Run'
+
+  /runs/{id}:
+    get:
+      tags:
+        - Runs
+      summary: Get a specific run
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run:
+                    $ref: '#/components/schemas/Run'
+
+    put:
+      tags:
+        - Runs
+      summary: Update a run
+      description: Update run metadata, status, or metrics
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum: [created, running, completed, failed]
+                metrics:
+                  type: object
+                notes:
+                  type: string
+            example:
+              status: "completed"
+              metrics:
+                accuracy: 0.95
+                precision: 0.93
+                recall: 0.92
+                f1: 0.925
+      responses:
+        '200':
+          description: Run updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run:
+                    $ref: '#/components/schemas/Run'
+
+    delete:
+      tags:
+        - Runs
+      summary: Delete a run
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '204':
+          description: Run deleted successfully
+
+  /runs/{id}/repro:
+    get:
+      tags:
+        - Runs
+      summary: Get reproducibility pack
+      description: Get complete reproducibility information for a run
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reproPack:
+                    $ref: '#/components/schemas/ReproPack'
+
+  /runs/{id}/repro/download:
+    get:
+      tags:
+        - Runs
+      summary: Download reproducibility pack as ZIP
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: ZIP file download
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+
+  # ==================== Artifacts ====================
+  /artifacts/{runId}/{artifactName}:
+    get:
+      tags:
+        - Artifacts
+      summary: Get artifact file
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: artifactName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Artifact file
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+  # ==================== Health ====================
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Check if the server is running and database is connected
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                  environment:
+                    type: string
+                  version:
+                    type: string
+                  uptime:
+                    type: number
+                  database:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      runs:
+                        type: integer
+
+components:
+  parameters:
+    ProjectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Project ID
+
+    DatasetId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Dataset ID
+
+    RunId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Run ID
+
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "proj_abc123"
+        name:
+          type: string
+        description:
+          type: string
+        user_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ProjectWithStats:
+      allOf:
+        - $ref: '#/components/schemas/Project'
+        - type: object
+          properties:
+            datasetCount:
+              type: integer
+            runCount:
+              type: integer
+            lastActivity:
+              type: string
+              format: date-time
+
+    Dataset:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        project_id:
+          type: string
+          nullable: true
+        filePath:
+          type: string
+        fileSize:
+          type: integer
+        rowCount:
+          type: integer
+        columns:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Run:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        project_id:
+          type: string
+          nullable: true
+        dataset_id:
+          type: string
+          nullable: true
+        model_type:
+          type: string
+        hyperparameters:
+          type: object
+        metrics:
+          type: object
+        status:
+          type: string
+          enum: [created, running, completed, failed]
+        seed:
+          type: integer
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ReproPack:
+      type: object
+      properties:
+        run:
+          $ref: '#/components/schemas/Run'
+        dataset:
+          $ref: '#/components/schemas/Dataset'
+        environment:
+          type: object
+          properties:
+            node_version:
+              type: string
+            python_version:
+              type: string
+            packages:
+              type: object
+        reproduceCommand:
+          type: string
+        installCommand:
+          type: string
+        datasetChecksum:
+          type: string
+        artifactPaths:
+          type: array
+          items:
+            type: string
+
+  responses:
+    BadRequest:
+      description: Bad request - Invalid input
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Resource not found"
+
+    ServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

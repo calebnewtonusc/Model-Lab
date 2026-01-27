@@ -279,14 +279,29 @@ const Compare = () => {
         ? (isLatency ? Math.min(...numericValues) : Math.max(...numericValues))
         : null;
 
+      // Calculate deltas from baseline (first run)
+      const baseline = values[0];
+      const deltas = values.map((v, idx) => {
+        if (idx === 0 || typeof v !== 'number' || typeof baseline !== 'number') return null;
+        const delta = v - baseline;
+        const percentChange = baseline !== 0 ? ((delta / baseline) * 100) : null;
+        return {
+          absolute: delta,
+          percent: percentChange,
+          improved: isLatency ? delta < 0 : delta > 0 // For latency, negative is better
+        };
+      });
+
       return {
         key: isLatency ? `Latency ${latencyKey.toUpperCase()} (ms)` : key,
         values,
         bestValue,
+        deltas,
         runs: selectedRuns.map((run, idx) => ({
           name: run.name,
           value: values[idx],
-          isBest: values[idx] === bestValue && typeof values[idx] === 'number' && values[idx] > 0
+          isBest: values[idx] === bestValue && typeof values[idx] === 'number' && values[idx] > 0,
+          delta: deltas[idx]
         }))
       };
     });
@@ -627,6 +642,14 @@ const Compare = () => {
                             {typeof runData.value === 'number'
                               ? runData.value.toFixed(4)
                               : JSON.stringify(runData.value)}
+                            {runData.delta && (
+                              <DiffIndicator positive={runData.delta.improved}>
+                                {runData.delta.improved ? '↑' : '↓'}
+                                {runData.delta.percent !== null
+                                  ? ` ${Math.abs(runData.delta.percent).toFixed(1)}%`
+                                  : ` ${Math.abs(runData.delta.absolute).toFixed(4)}`}
+                              </DiffIndicator>
+                            )}
                             {runData.isBest && (
                               <BestBadge variant="success">BEST</BestBadge>
                             )}
