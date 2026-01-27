@@ -37,6 +37,7 @@ artifacts/
 
 # Data
 data/
+modellab-data/
 *.csv
 *.parquet
 
