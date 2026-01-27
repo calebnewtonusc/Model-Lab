@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import Landing from '../Landing';
 import Dashboard from './DashboardEnhanced';
 import Datasets from './DatasetsEnhanced';
 import Runs from './RunsEnhanced';
@@ -49,10 +50,10 @@ const Logo = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 const NavLinks = styled.div`
@@ -191,11 +192,13 @@ const CreatorName = styled.span`
 `;
 
 const ModelLab = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('home');
   const { toasts, removeToast } = useToast();
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'home':
+        return <Landing onGetStarted={() => setActiveTab('dashboard')} />;
       case 'dashboard':
         return <Dashboard onNavigate={setActiveTab} />;
       case 'projects':
@@ -207,7 +210,7 @@ const ModelLab = () => {
       case 'compare':
         return <Compare />;
       default:
-        return <Dashboard onNavigate={setActiveTab} />;
+        return <Landing onGetStarted={() => setActiveTab('dashboard')} />;
     }
   };
 
@@ -221,6 +224,12 @@ const ModelLab = () => {
             ModelLab
           </Logo>
           <NavLinks>
+            <NavLink
+              active={activeTab === 'home'}
+              onClick={() => setActiveTab('home')}
+            >
+              Home
+            </NavLink>
             <NavLink
               active={activeTab === 'dashboard'}
               onClick={() => setActiveTab('dashboard')}
