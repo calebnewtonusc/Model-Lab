@@ -35,6 +35,18 @@ const Title = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
   line-height: ${({ theme }) => theme.lineHeight.tight};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
+`;
+
+const Subtitle = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  color: ${({ theme }) => theme.text_secondary};
+  line-height: ${({ theme }) => theme.lineHeight.normal};
+  margin: 0;
+`;
+
+const HeaderContent = styled.div`
+  flex: 1;
 `;
 
 const SearchBar = styled(Input)`
@@ -517,7 +529,10 @@ const Datasets = () => {
   return (
     <Container>
       <Header>
-        <Title>Datasets</Title>
+        <HeaderContent>
+          <Title>Datasets</Title>
+          <Subtitle>Manage your training data with automatic versioning, SHA-256 checksums, and schema snapshots for full reproducibility.</Subtitle>
+        </HeaderContent>
         <Button onClick={() => setShowUploadModal(true)}>
           Upload Dataset
         </Button>

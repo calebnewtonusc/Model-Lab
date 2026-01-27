@@ -501,7 +501,7 @@ const Dashboard = () => {
       <Header>
         <HeaderLeft>
           <Title>ModelLab Dashboard</Title>
-          <Subtitle>Real-time insights into your ML experiments and data</Subtitle>
+          <Subtitle>Track your ML experiments with dataset versioning, run tracking, and reproducibility tools. View metrics, compare models, and analyze performance across all your experiments.</Subtitle>
         </HeaderLeft>
         <HeaderRight>
           <LastUpdate>Last updated: {lastUpdate.toLocaleTimeString()}</LastUpdate>
