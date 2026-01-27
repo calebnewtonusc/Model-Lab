@@ -57,10 +57,72 @@ Visit **[modellab.studio](https://modellab.studio)** to see ModelLab in action.
 
 - **Frontend:** React 18 (Create React App) + Styled Components + Material-UI
 - **Backend:** Express.js + Node.js
-- **Database:** JSON file-based (with plans to migrate to PostgreSQL)
+- **Database:** SQLite (better-sqlite3 with WAL mode)
+- **Python SDK:** One-line experiment tracking with automatic git integration
 - **Visualization:** Recharts
 - **Deployment:** Vercel
 - **Domain:** modellab.studio (GoDaddy)
+
+## Python SDK
+
+Track experiments with one line of code:
+
+```python
+import modellab
+
+# Configure once
+modellab.configure(api_url="http://localhost:3001")
+
+# Track an experiment
+with modellab.run("my-experiment"):
+    modellab.log_param("learning_rate", 0.001)
+    modellab.log_metric("accuracy", 0.95)
+    modellab.log_artifact("model.pkl")
+```
+
+### Installation
+
+```bash
+cd python-sdk
+pip install -e .
+```
+
+### Features
+
+- **Context Manager API**: Auto-start and complete runs
+- **Git Integration**: Automatically captures commit hash
+- **SHA-256 Checksums**: Verifies artifact integrity
+- **Manual API**: Start/stop runs manually for complex workflows
+- **Framework Support**: Works with PyTorch, TensorFlow, scikit-learn
+
+### Example: PyTorch Training
+
+```python
+import torch
+import modellab
+
+modellab.configure(api_url="http://localhost:3001")
+
+with modellab.run("resnet-training"):
+    # Log hyperparameters
+    modellab.log_param("batch_size", 32)
+    modellab.log_param("learning_rate", 0.001)
+    modellab.log_param("epochs", 10)
+
+    # Train model
+    for epoch in range(10):
+        loss = train_epoch(model, dataloader)
+        acc = evaluate(model, val_loader)
+
+        modellab.log_metric(f"loss_epoch_{epoch}", loss)
+        modellab.log_metric(f"accuracy_epoch_{epoch}", acc)
+
+    # Save artifacts
+    torch.save(model.state_dict(), "model.pth")
+    modellab.log_artifact("model.pth")
+```
+
+See [python-sdk/README.md](python-sdk/README.md) for full documentation.
 
 ## Quick Start
 
@@ -68,6 +130,7 @@ Visit **[modellab.studio](https://modellab.studio)** to see ModelLab in action.
 
 - Node.js 18+
 - npm
+- Python 3.7+ (for Python SDK)
 
 ### Installation
 
@@ -115,11 +178,21 @@ ModelLab/
 │   ├── runs.js
 │   └── artifacts.js
 ├── lib/                   # Shared libraries
-│   ├── storage.js         # JSON database
+│   ├── database.js        # SQLite database (better-sqlite3)
+│   ├── storage.js         # Legacy JSON storage (deprecated)
 │   ├── schemaDetector.js  # Schema inference
 │   ├── evalHarness.js     # Evaluation library
 │   └── latencyProfiler.js # Performance profiling
-├── modellab-data/         # Data storage (gitignored)
+├── python-sdk/            # Python SDK for experiment tracking
+│   ├── modellab/
+│   │   ├── __init__.py
+│   │   ├── client.py      # Core API client
+│   │   └── config.py      # Configuration
+│   ├── setup.py
+│   └── README.md
+├── data/                  # SQLite database storage
+│   └── modellab.db        # Persistent experiment data
+├── modellab-data/         # File storage for artifacts & datasets
 ├── server.js              # Express server
 └── vercel.json            # Vercel config
 ```
@@ -174,16 +247,20 @@ Core features:
 - [x] Artifact storage
 - [x] Dashboard with visualizations
 - [x] Run comparison view
+- [x] SQLite database with persistent storage
+- [x] Python SDK for one-line experiment tracking
+- [x] Automatic git commit hash capture
+- [x] SHA-256 checksum verification
 - [x] Vercel deployment
 - [x] Custom domain (modellab.studio)
 
 Planned enhancements:
-- [ ] PostgreSQL/Supabase migration
 - [ ] User authentication
-- [ ] Real-time updates
+- [ ] Real-time updates via WebSockets
 - [ ] S3 artifact storage
 - [ ] Advanced visualizations
 - [ ] Team collaboration
+- [ ] Auto-logging for PyTorch/TensorFlow hooks
 
 ## Use Cases
 
