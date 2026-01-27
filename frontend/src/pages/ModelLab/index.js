@@ -60,6 +60,66 @@ const Content = styled.div`
   min-height: calc(100vh - 100px);
 `;
 
+const Footer = styled.footer`
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${({ theme }) => theme.bg};
+  border-top: 1px solid ${({ theme }) => theme.text_primary + '12'};
+`;
+
+const BuiltBySection = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: ${({ theme }) => theme.card};
+  border-radius: 50px;
+  border: 2px solid ${({ theme }) => theme.primary + '33'};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px ${({ theme }) => theme.primary + '33'};
+    border-color: ${({ theme }) => theme.primary};
+  }
+`;
+
+const CreatorImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 30%;
+  box-shadow: 0 3px 10px ${({ theme }) => theme.primary + '50'};
+  border: 2px solid ${({ theme }) => theme.primary + '50'};
+`;
+
+const CreatorInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+`;
+
+const BuiltByLabel = styled.span`
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.text_secondary};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+`;
+
+const CreatorName = styled.span`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.text_primary};
+  font-weight: 700;
+`;
+
 const ModelLab = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const { toasts, removeToast } = useToast();
@@ -117,6 +177,19 @@ const ModelLab = () => {
       <Content>
         {renderContent()}
       </Content>
+
+      <Footer>
+        <BuiltBySection href="https://calebnewton.me" target="_blank" rel="noopener noreferrer">
+          <CreatorImage
+            src="/caleb-usc.jpg"
+            alt="Caleb Newton at USC"
+          />
+          <CreatorInfo>
+            <BuiltByLabel>Built by</BuiltByLabel>
+            <CreatorName>Caleb Newton</CreatorName>
+          </CreatorInfo>
+        </BuiltBySection>
+      </Footer>
     </Container>
   );
 };
