@@ -24,8 +24,15 @@ const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSize['4xl']};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
   line-height: ${({ theme }) => theme.lineHeight.tight};
+`;
+
+const Subtitle = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  color: ${({ theme }) => theme.text_secondary};
+  line-height: ${({ theme }) => theme.lineHeight.normal};
+  margin: 0 0 ${({ theme }) => theme.spacing[6]} 0;
 `;
 
 const SelectionGrid = styled.div`
@@ -409,6 +416,7 @@ const Compare = () => {
     <Container>
       <Header>
         <Title>Compare Runs</Title>
+        <Subtitle>Analyze multiple runs side-by-side with metric diffs, config comparisons, artifact differences, and p50/p95/p99 latency measurements.</Subtitle>
       </Header>
 
       <SelectionGrid>

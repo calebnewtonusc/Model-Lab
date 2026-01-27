@@ -35,6 +35,18 @@ const Title = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
   line-height: ${({ theme }) => theme.lineHeight.tight};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
+`;
+
+const Subtitle = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  color: ${({ theme }) => theme.text_secondary};
+  line-height: ${({ theme }) => theme.lineHeight.normal};
+  margin: 0;
+`;
+
+const HeaderContent = styled.div`
+  flex: 1;
 `;
 
 const FilterBar = styled.div`
@@ -636,7 +648,10 @@ const Runs = () => {
   return (
     <Container>
       <Header>
-        <Title>Runs</Title>
+        <HeaderContent>
+          <Title>Runs</Title>
+          <Subtitle>Execute and track ML experiments with automatic seed tracking, git commit hashes, dataset versions, and artifact storage for complete reproducibility.</Subtitle>
+        </HeaderContent>
         <Button onClick={startWizard}>
           Create Run
         </Button>
