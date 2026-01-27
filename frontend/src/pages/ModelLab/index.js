@@ -10,12 +10,18 @@ import { useToast } from './components/useToast';
 const Container = styled.div`
   min-height: 100vh;
   background: ${({ theme }) => theme.bg};
+  font-family: ${({ theme }) => theme.fontFamily.primary};
 `;
 
 const NavBar = styled.nav`
-  background: ${({ theme }) => theme.card};
-  border-bottom: 1px solid ${({ theme }) => theme.text_primary + '12'};
-  padding: 1rem 2rem;
+  background: ${({ theme }) => theme.cardElevated};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
+  box-shadow: ${({ theme }) => theme.elevation.sm};
+  backdrop-filter: ${({ theme }) => theme.backdropBlur};
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[8]};
 `;
 
 const NavContent = styled.div`
@@ -23,101 +29,157 @@ const NavContent = styled.div`
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: ${({ theme }) => theme.spacing[8]};
 `;
 
 const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.primary};
+  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+  color: ${({ theme }) => theme.primary[500]};
   margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, ${({ theme }) => theme.primary[400]}, ${({ theme }) => theme.primary[600]});
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
 const NavLinks = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const NavLink = styled.button`
-  padding: 0.75rem 1.5rem;
+  padding: ${({ theme }) => `${theme.spacing[3]} ${theme.spacing[6]}`};
   background: ${({ active, theme }) =>
-    active ? theme.primary : 'transparent'};
+    active ? theme.primary[500] : 'transparent'};
   color: ${({ active, theme }) =>
     active ? 'white' : theme.text_primary};
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  border: ${({ active, theme }) =>
+    active ? 'none' : `1px solid ${theme.borderLight}`};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-size: ${({ theme }) => theme.fontSize.base};
+  font-family: ${({ theme }) => theme.fontFamily.primary};
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: ${({ theme }) => theme.transition.base};
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+
+  ${({ active, theme }) => active && `
+    box-shadow: ${theme.elevation.sm};
+  `}
 
   &:hover {
     background: ${({ active, theme }) =>
-      active ? theme.primary : theme.text_primary + '10'};
+      active ? theme.primary[600] : theme.hover};
+    border-color: ${({ active, theme }) =>
+      active ? 'transparent' : theme.borderMedium};
+    transform: translateY(-1px);
+    ${({ active, theme }) => active && `
+      box-shadow: ${theme.elevation.md};
+    `}
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
 const Content = styled.div`
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 200px);
 `;
 
 const Footer = styled.footer`
-  padding: 2rem;
+  padding: ${({ theme }) => theme.spacing[8]};
   display: flex;
   justify-content: center;
   align-items: center;
   background: ${({ theme }) => theme.bg};
-  border-top: 1px solid ${({ theme }) => theme.text_primary + '12'};
+  border-top: 1px solid ${({ theme }) => theme.border};
+  margin-top: ${({ theme }) => theme.spacing[12]};
 `;
 
 const BuiltBySection = styled.a`
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1.5rem 2rem;
-  background: ${({ theme }) => theme.card};
-  border-radius: 50px;
-  border: 2px solid ${({ theme }) => theme.primary + '33'};
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  gap: ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => `${theme.spacing[5]} ${theme.spacing[8]}`};
+  background: ${({ theme }) => theme.cardElevated};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  border: 2px solid ${({ theme }) => theme.primary[500] + '40'};
+  box-shadow: ${({ theme }) => theme.elevation.lg};
+  transition: ${({ theme }) => theme.transition.base};
   text-decoration: none;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, ${({ theme }) => theme.primary[500] + '10'}, transparent);
+    transition: ${({ theme }) => theme.transition.base};
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px ${({ theme }) => theme.primary + '33'};
-    border-color: ${({ theme }) => theme.primary};
+    transform: translateY(-3px);
+    box-shadow: ${({ theme }) => theme.elevation.xl};
+    border-color: ${({ theme }) => theme.primary[500]};
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
   }
 `;
 
 const CreatorImage = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
   object-fit: cover;
   object-position: center 30%;
-  box-shadow: 0 3px 10px ${({ theme }) => theme.primary + '50'};
-  border: 2px solid ${({ theme }) => theme.primary + '50'};
+  box-shadow: ${({ theme }) => theme.elevation.md};
+  border: 3px solid ${({ theme }) => theme.primary[500] + '60'};
+  transition: ${({ theme }) => theme.transition.base};
+
+  ${BuiltBySection}:hover & {
+    border-color: ${({ theme }) => theme.primary[500]};
+    box-shadow: ${({ theme }) => theme.elevation.lg};
+  }
 `;
 
 const CreatorInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
+  gap: ${({ theme }) => theme.spacing[1]};
 `;
 
 const BuiltByLabel = styled.span`
-  font-size: 0.75rem;
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.text_secondary};
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
+  letter-spacing: 0.1em;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 const CreatorName = styled.span`
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSize.lg};
   color: ${({ theme }) => theme.text_primary};
-  font-weight: 700;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const ModelLab = () => {
