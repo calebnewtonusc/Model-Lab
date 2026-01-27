@@ -12,7 +12,7 @@ import {
 } from './components/SharedComponents';
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: ${({ theme }) => theme.spacing[8]};
   max-width: 1600px;
   margin: 0 auto;
 `;
@@ -21,60 +21,66 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing[4]};
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
+  line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const SearchBar = styled(Input)`
   max-width: 400px;
-  margin-bottom: 1.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
 const DatasetsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: ${({ theme }) => theme.spacing[6]};
 `;
 
 const DatasetCard = styled(Card)`
   cursor: pointer;
-  transition: all 0.3s ease;
+  border: 2px solid ${({ theme }) => theme.border};
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-color: ${({ theme }) => theme.primary};
+    border-color: ${({ theme }) => theme.primary[500]};
   }
 `;
 
 const DatasetName = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: 0.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const DatasetDescription = styled.p`
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.text_secondary};
-  margin-bottom: 1rem;
-  line-height: 1.5;
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  line-height: ${({ theme }) => theme.lineHeight.normal};
 `;
 
 const DatasetMeta = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
 `;
 
 const MetaItem = styled.div`
-  font-size: 0.75rem;
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.text_secondary};
 
   span {

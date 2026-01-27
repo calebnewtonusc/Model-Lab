@@ -11,58 +11,66 @@ import {
 } from './components/SharedComponents';
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: ${({ theme }) => theme.spacing[8]};
   max-width: 1600px;
   margin: 0 auto;
 `;
 
 const Header = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
 const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: 1rem;
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const SelectionGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
 const SelectBox = styled.div`
-  background: ${({ theme }) => theme.card};
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.text_primary + '12'};
+  background: ${({ theme }) => theme.cardLight};
+  padding: ${({ theme }) => theme.spacing[5]};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 2px solid ${({ theme }) => theme.border};
+  transition: ${({ theme }) => theme.transition.fast};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.borderMedium};
+  }
 `;
 
 const Label = styled.label`
   display: block;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: 0.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
 `;
 
 const ChartSection = styled(Card)`
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
 const ChartHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
 const ChartTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
 `;
@@ -70,8 +78,8 @@ const ChartTitle = styled.h3`
 const ChartsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
