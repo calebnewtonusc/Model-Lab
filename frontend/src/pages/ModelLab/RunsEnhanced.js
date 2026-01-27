@@ -12,7 +12,7 @@ import {
 } from './components/SharedComponents';
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: ${({ theme }) => theme.spacing[8]};
   max-width: 1600px;
   margin: 0 auto;
 `;
@@ -21,19 +21,26 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing[4]};
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
+  line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const FilterBar = styled.div`
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
   flex-wrap: wrap;
 `;
 
@@ -43,21 +50,20 @@ const SearchInput = styled(Input)`
 `;
 
 const FilterSelect = styled(Select)`
-  min-width: 150px;
+  min-width: 180px;
 `;
 
 const RunsGrid = styled.div`
   display: grid;
-  gap: 1.5rem;
+  gap: ${({ theme }) => theme.spacing[6]};
 `;
 
 const RunCard = styled(Card)`
   cursor: pointer;
-  transition: all 0.3s ease;
+  border: 2px solid ${({ theme }) => theme.border};
 
   &:hover {
-    border-color: ${({ theme }) => theme.primary};
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: ${({ theme }) => theme.primary[500]};
   }
 `;
 
@@ -65,19 +71,23 @@ const RunHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing[4]};
 `;
 
 const RunName = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
+  line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const RunDescription = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.base};
   color: ${({ theme }) => theme.text_secondary};
-  margin-bottom: 1.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  line-height: ${({ theme }) => theme.lineHeight.normal};
   line-height: 1.5;
 `;
 
