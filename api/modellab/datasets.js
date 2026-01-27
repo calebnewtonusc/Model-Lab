@@ -12,6 +12,7 @@ const router = express.Router();
 // Import storage and utilities - use absolute paths
 const db = require(path.join(__dirname, '../../lib/database'));
 const schemaDetector = require(path.join(__dirname, '../../lib/schemaDetector'));
+const { validate, validateId, schemas } = require(path.join(__dirname, '../../lib/validation'));
 
 // GET all datasets
 router.get('/', (req, res) => {
@@ -24,7 +25,7 @@ router.get('/', (req, res) => {
 });
 
 // GET single dataset
-router.get('/:id', (req, res) => {
+router.get('/:id', validateId('id'), (req, res) => {
   try {
     const dataset = db.getDatasetById(req.params.id);
     if (!dataset) {
@@ -126,7 +127,7 @@ router.post('/', (req, res) => {
 });
 
 // PUT update dataset
-router.put('/:id', (req, res) => {
+router.put('/:id', validateId('id'), validate(schemas.dataset.update), (req, res) => {
   try {
     const dataset = db.updateDataset(req.params.id, req.body);
     if (!dataset) {
@@ -139,7 +140,7 @@ router.put('/:id', (req, res) => {
 });
 
 // GET dataset preview
-router.get('/:id/preview', (req, res) => {
+router.get('/:id/preview', validateId('id'), (req, res) => {
   try {
     const dataset = db.getDatasetById(req.params.id);
     if (!dataset) {
@@ -161,7 +162,7 @@ router.get('/:id/preview', (req, res) => {
 });
 
 // DELETE dataset
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateId('id'), (req, res) => {
   try {
     const dataset = db.getDatasetById(req.params.id);
     if (!dataset) {

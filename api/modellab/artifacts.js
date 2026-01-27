@@ -10,9 +10,10 @@ const path = require('path');
 const router = express.Router();
 
 const db = require(path.join(__dirname, '../../lib/database'));
+const { validate, validateId, schemas } = require(path.join(__dirname, '../../lib/validation'));
 
 // GET artifacts for a run
-router.get('/:runId', (req, res) => {
+router.get('/:runId', validateId('runId'), (req, res) => {
   try {
     const run = db.getRunById(req.params.runId);
     if (!run) {
@@ -59,7 +60,7 @@ router.get('/:runId', (req, res) => {
 });
 
 // POST artifact metadata (for Python SDK - JSON only)
-router.post('/', (req, res) => {
+router.post('/', validate(schemas.artifact.log), (req, res) => {
   try {
     const { run_id, name, type, size, checksum, path: artifactPath, created_at } = req.body;
 
@@ -95,7 +96,7 @@ router.post('/', (req, res) => {
 });
 
 // POST upload artifact (with file)
-router.post('/:runId', (req, res) => {
+router.post('/:runId', validateId('runId'), (req, res) => {
   const run = db.getRunById(req.params.runId);
   if (!run) {
     return res.status(404).json({ error: 'Run not found' });
@@ -174,7 +175,7 @@ router.post('/:runId', (req, res) => {
 });
 
 // GET download artifact
-router.get('/:runId/download/:artifactPath(*)', (req, res) => {
+router.get('/:runId/download/:artifactPath(*)', validateId('runId'), (req, res) => {
   try {
     const run = db.getRunById(req.params.runId);
     if (!run) {
@@ -222,7 +223,7 @@ router.get('/:runId/download/:artifactPath(*)', (req, res) => {
 });
 
 // DELETE artifact
-router.delete('/:runId/download/:artifactPath(*)', (req, res) => {
+router.delete('/:runId/download/:artifactPath(*)', validateId('runId'), (req, res) => {
   try {
     const run = db.getRunById(req.params.runId);
     if (!run) {
