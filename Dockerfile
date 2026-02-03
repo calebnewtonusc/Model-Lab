@@ -2,7 +2,7 @@
 # Multi-stage build for production deployment
 
 # Stage 1: Build frontend
-FROM node:18-alpine AS frontend-builder
+FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
@@ -19,7 +19,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Production image
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Install production dependencies
 RUN apk add --no-cache \
