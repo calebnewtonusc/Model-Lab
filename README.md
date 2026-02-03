@@ -12,7 +12,7 @@ ML experiment tracking platform with evaluation, reproducibility, and organizati
 - Projects workspace for organizing experiments
 - Dataset versioning with SHA-256 checksums
 - Experiment tracking (seeds, commits, hyperparameters)
-- Reproducibility packs with one-click reconstruction
+- Reproducibility packs with downloadable ZIP archives
 
 **Evaluation**
 - Multiple metrics (Accuracy, F1, ROC-AUC, PR-AUC, ECE, RMSE, R²)
@@ -210,14 +210,14 @@ Auto-migrations run on startup.
 
 ## Reproducibility
 
-Every experiment is fully reproducible:
+Experiment reproducibility features:
 
 1. **Dataset Checksums** - SHA-256 verification
 2. **Seed Tracking** - All random seeds logged
 3. **Commit Hashes** - Git commits recorded
 4. **Environment Capture** - Node/Python versions
 5. **Complete Config** - All hyperparameters stored
-6. **Repro Packs** - One-click ZIP downloads
+6. **Repro Packs** - ZIP downloads with all experiment data
 
 ## Use Cases
 
