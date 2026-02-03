@@ -68,3 +68,34 @@ dist/
 build/
 .vercel
 .env*.local
+
+# Deployment docs and scripts
+AUDIT.md
+CHANGELOG.md
+CONTRIBUTING.md
+DEPLOYMENT*.md
+DEPLOY*.sh
+DNS*.md
+FEATURES.md
+*_STATUS.md
+QUICK*.md
+SECURITY.md
+SESSION*.md
+UPGRADE*.sh
+docker-compose*.yml
+jest.config.js
+test-install.sh
+
+# Database files
+*.db
+*.db-journal
+
+# Redundant folders
+api/
+api-docs/
+backend/
+
+# Large assets
+*.pdf
+*.png
+*.jpg
