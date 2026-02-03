@@ -1,6 +1,6 @@
 # ModelLab
 
-ML experiment tracking platform with professional-grade evaluation, reproducibility, and organization.
+ML experiment tracking platform with evaluation, reproducibility, and organization features.
 
 **🌐 Live Site:** [https://modellab.studio](https://modellab.studio)
 
@@ -14,12 +14,12 @@ ML experiment tracking platform with professional-grade evaluation, reproducibil
 - Experiment tracking (seeds, commits, hyperparameters)
 - Reproducibility packs with one-click reconstruction
 
-**Professional Evaluation**
-- Comprehensive metrics (Accuracy, F1, ROC-AUC, PR-AUC, ECE, RMSE, R²)
+**Evaluation**
+- Multiple metrics (Accuracy, F1, ROC-AUC, PR-AUC, ECE, RMSE, R²)
 - Bootstrap confidence intervals (95%)
 - Data slicing and performance analysis
 - Failure analysis with error categorization
-- Stress testing for robustness
+- Stress testing with data corruption
 
 **Development Tools**
 - Baseline-first training templates
@@ -222,9 +222,9 @@ Every experiment is fully reproducible:
 ## Use Cases
 
 - Portfolio projects with systematic experiment tracking
-- Reproducible research with guaranteed experiment reconstruction
-- Baseline-first development enforcing best practices
-- Failure analysis with systematic error categorization
+- Reproducible research with experiment reconstruction tools
+- Baseline-first development workflow
+- Failure analysis with error categorization
 - Model comparison with statistical significance
 - Performance profiling with latency tracking
 
