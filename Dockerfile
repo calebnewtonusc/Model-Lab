@@ -42,8 +42,8 @@ RUN npm ci --omit=dev
 
 # Copy backend source
 COPY server.js ./
-COPY api/ ./api/
 COPY lib/ ./lib/
+COPY routes/ ./routes/
 
 # Copy built frontend from builder stage
 COPY --from=frontend-builder /app/frontend/build ./frontend/build
