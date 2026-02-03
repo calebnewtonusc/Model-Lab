@@ -2,25 +2,5 @@
   "version": 2,
   "buildCommand": "cd frontend && DISABLE_ESLINT_PLUGIN=true npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "npm install && cd frontend && npm install",
-  "functions": {
-    "api/index.js": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/index"
-    },
-    {
-      "source": "/api-docs/(.*)",
-      "destination": "/api/index"
-    },
-    {
-      "source": "/api-docs",
-      "destination": "/api/index"
-    }
-  ]
+  "installCommand": "npm install && cd frontend && npm install"
 }
