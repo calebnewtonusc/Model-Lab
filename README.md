@@ -27,27 +27,24 @@ ML experiment tracking platform with professional-grade evaluation, reproducibil
 - Python EvalHarness for evaluation
 - JavaScript EvalHarness for full-stack evaluation
 
-## Quick Start
-
-### Backend Setup
-```bash
-npm install
-node server.js  # Server at http://localhost:3001
-```
+## Usage
 
 ### Python SDK
+
 ```bash
 cd python-sdk
 pip install -e .
 ```
 
 ### Python EvalHarness
+
 ```bash
 cd ml/evalharness
 pip install -e .
 ```
 
-### Run Training Template
+### Training Templates
+
 ```bash
 # Classification example
 python ml/templates/tabular_classification.py \
