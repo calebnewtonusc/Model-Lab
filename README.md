@@ -65,20 +65,27 @@ python ml/templates/tabular_regression.py \
 ```
 ModelLab/
 ├── server.js                    # Express backend
-├── api/modellab/
+├── routes/modellab/             # API route handlers
 │   ├── datasets.js             # Dataset API
 │   ├── runs.js                 # Runs API
 │   ├── artifacts.js            # Artifacts API
 │   └── projects.js             # Projects API
 ├── lib/
-│   ├── database.js             # SQLite with auto-migrations
-│   ├── evalHarness.js          # JS evaluation
-│   └── reproPack.js            # Reproducibility
+│   ├── database.js             # Database with auto-migrations
+│   ├── evalHarness.js          # JS evaluation harness
+│   ├── evalHarness/            # JS evaluation modules
+│   └── reproPack.js            # Reproducibility packs
 ├── ml/
-│   ├── evalharness/            # Python evaluation framework
+│   ├── evalharness/            # Python evaluation framework (14 modules)
 │   └── templates/              # Training workflows
-├── python-sdk/                 # Python client
-└── frontend/                   # React UI
+├── python-sdk/                 # Python client library
+├── frontend/                   # React UI
+│   ├── src/
+│   │   ├── pages/              # Dashboard, Datasets, Runs, Projects, Compare, Landing
+│   │   └── components/         # SharedComponents, Error Boundary, Toast system
+├── Dockerfile                  # Multi-stage Docker build
+├── vercel.json                 # Vercel deployment config
+└── swagger.yaml                # API documentation (optional)
 ```
 
 ## API Endpoints
@@ -110,7 +117,23 @@ GET    /api/modellab/runs/:id              # Get details
 PUT    /api/modellab/runs/:id              # Update
 DELETE /api/modellab/runs/:id              # Delete
 POST   /api/modellab/runs/:id/evaluate     # Submit evaluation
-GET    /api/modellab/runs/:id/repro        # Get repro pack
+GET    /api/modellab/runs/:id/repro        # Get repro pack data
+GET    /api/modellab/runs/:id/repro/download  # Download ZIP
+POST   /api/modellab/runs/:id/profile      # Submit latency profiling
+```
+
+### Artifacts
+```
+GET    /api/modellab/artifacts/:runId      # List artifacts
+POST   /api/modellab/artifacts             # Upload artifact
+GET    /api/modellab/artifacts/:runId/:path  # Download artifact
+```
+
+### System
+```
+GET    /api/health                         # Health check with DB connectivity
+GET    /api/docs                           # API documentation
+GET    /api-docs                           # Swagger UI interface
 ```
 
 ## Python SDK Usage
@@ -191,22 +214,35 @@ Best Model: XGBoost (Test Accuracy: 1.0000)
 
 ## Tech Stack
 
-- **Frontend**: React 18 + Styled Components + Recharts
-- **Backend**: Express.js + Node.js
-- **Database**: SQLite (better-sqlite3 with WAL mode)
+- **Frontend**: React 18 + Material-UI 5 + Emotion + Styled Components + Recharts
+- **Backend**: Express.js 4.18.2 + Node.js 18+
+- **Database**: SQLite 12.6.2 (better-sqlite3 with WAL mode) + PostgreSQL adapter (pg 8.17.2)
+- **API Documentation**: Swagger UI Express 5.0.1 (available at `/api-docs`)
 - **Python**: Python 3.8+ SDK + EvalHarness
-- **Security**: Helmet, CORS, rate limiting, input validation
+- **Security**: Helmet 7.1.0, CORS 2.8.5, express-rate-limit 7.1.5, Joi 17.11.0 input validation
 - **Visualization**: matplotlib, seaborn, Recharts
+- **Deployment**: Docker multi-stage build + Vercel support
 
-## Database Schema
+## Database
 
+### Supported Databases
+ModelLab supports both SQLite and PostgreSQL:
+
+- **SQLite** (Default) - Ideal for local development with WAL mode enabled
+- **PostgreSQL** - Production-ready with automatic adapter selection
+
+Database selection is automatic based on environment variables:
+- Set `DATABASE_URL` for PostgreSQL
+- Otherwise, defaults to SQLite at `./data/modellab.db`
+
+### Schema
 - **projects** - Workspace organization
 - **datasets** - Versioned with checksums
 - **runs** - Experiments with hyperparameters
 - **artifacts** - Model outputs
 - **evaluations** - Evaluation reports
 
-Auto-migrations run on startup.
+Auto-migrations run on startup for both database types.
 
 ## Reproducibility
 
@@ -218,6 +254,45 @@ Experiment reproducibility features:
 4. **Environment Capture** - Node/Python versions
 5. **Complete Config** - All hyperparameters stored
 6. **Repro Packs** - ZIP downloads with all experiment data
+
+## Deployment
+
+### Docker
+```bash
+docker build -t modellab .
+docker run -p 3001:3001 modellab
+```
+
+### Vercel
+Configured with `vercel.json` for serverless deployment. Set environment variables:
+```bash
+DATABASE_URL=postgresql://...  # Optional: For PostgreSQL
+NODE_ENV=production
+```
+
+### Local Development
+```bash
+npm install
+npm start
+```
+Backend runs on `http://localhost:3001`
+
+## Frontend Pages
+
+- **Dashboard** - Project overview with statistics
+- **Datasets** - Upload, preview, version datasets
+- **Runs** - Track experiments with metrics visualization
+- **Projects** - Workspace management
+- **Compare** - Side-by-side run comparison
+- **Landing** - Marketing page
+
+Built with Material-UI theming and responsive design.
+
+## API Documentation
+
+Interactive API documentation available at:
+- **Swagger UI**: `http://localhost:3001/api-docs`
+- **JSON spec**: `http://localhost:3001/api/docs`
 
 ## Use Cases
 
