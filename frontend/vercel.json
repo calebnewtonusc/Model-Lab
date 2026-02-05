@@ -23,6 +23,26 @@
       "dest": "/robots.txt"
     },
     {
+      "src": "/modellab-logo.png",
+      "dest": "/modellab-logo.png"
+    },
+    {
+      "src": "/caleb-usc.jpg",
+      "dest": "/caleb-usc.jpg"
+    },
+    {
+      "src": "/logo192.png",
+      "dest": "/logo192.png"
+    },
+    {
+      "src": "/logo512.png",
+      "dest": "/logo512.png"
+    },
+    {
+      "src": "/(.*\\.(png|jpg|jpeg|gif|svg|ico|webp))",
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
