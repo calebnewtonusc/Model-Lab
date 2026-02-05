@@ -6,6 +6,7 @@
 const express = require('express');
 const { formidable } = require('formidable');
 const fs = require('fs');
+const fsPromises = require('fs').promises;
 const path = require('path');
 const router = express.Router();
 
@@ -176,7 +177,7 @@ router.delete('/:id', validateId('id'), async (req, res) => {
 
     // Delete file
     if (dataset.filePath && fs.existsSync(dataset.filePath)) {
-      fs.unlinkSync(dataset.filePath);
+      await fsPromises.unlink(dataset.filePath);
     }
 
     await db.deleteDataset(req.params.id);

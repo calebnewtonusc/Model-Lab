@@ -5,6 +5,7 @@
 
 const express = require('express');
 const fs = require('fs');
+const fsPromises = require('fs').promises;
 const path = require('path');
 const { exec } = require('child_process');
 const util = require('util');
@@ -92,7 +93,7 @@ router.post('/', validate(schemas.run.create), async (req, res) => {
     // Create artifacts directory for this run
     const runId = await db.generateId();
     const artifactsDir = path.join(db.BASE_DIR, 'artifacts', runId);
-    fs.mkdirSync(artifactsDir, { recursive: true });
+    await fsPromises.mkdir(artifactsDir, { recursive: true });
 
     // Create run record
     const run = await db.createRun({
@@ -155,7 +156,7 @@ router.delete('/:id', validateId('id'), async (req, res) => {
 
     // Delete artifacts directory
     if (run.artifactsDir && fs.existsSync(run.artifactsDir)) {
-      fs.rmSync(run.artifactsDir, { recursive: true, force: true });
+      await fsPromises.rm(run.artifactsDir, { recursive: true, force: true });
     }
 
     await db.deleteRun(req.params.id);
@@ -283,10 +284,10 @@ router.get('/:id/repro/download', validateId('id'), async (req, res) => {
     await reproPack.exportReproPackZip(req.params.id, zipPath);
 
     // Send file
-    res.download(zipPath, `${run.name.replace(/\s+/g, '_')}_repro_pack.zip`, (err) => {
+    res.download(zipPath, `${run.name.replace(/\s+/g, '_')}_repro_pack.zip`, async (err) => {
       // Clean up temp file after download
       if (fs.existsSync(zipPath)) {
-        fs.unlinkSync(zipPath);
+        await fsPromises.unlink(zipPath);
       }
 
       if (err) {
