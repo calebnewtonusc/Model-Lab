@@ -130,7 +130,7 @@ router.delete('/:id', validateId('id'), async (req, res) => {
     }
 
     await db.deleteProject(req.params.id);
-    res.json({ message: 'Project deleted successfully' });
+    res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

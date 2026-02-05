@@ -6,6 +6,7 @@
 const express = require('express');
 const { formidable } = require('formidable');
 const fs = require('fs');
+const fsPromises = require('fs').promises;
 const path = require('path');
 const router = express.Router();
 
@@ -237,11 +238,9 @@ router.delete('/:runId/download/:artifactPath(*)', validateId('runId'), async (r
       return res.status(404).json({ error: 'Artifact not found' });
     }
 
-    fs.unlinkSync(fullPath);
+    await fsPromises.unlink(fullPath);
 
-    res.json({
-      message: 'Artifact deleted successfully'
-    });
+    res.status(204).send();
 
   } catch (error) {
     console.error('Delete artifact error:', error);
