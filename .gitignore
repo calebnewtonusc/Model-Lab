@@ -31,6 +31,13 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+.env.production
+frontend/.env.production
+
+# Keep templates
+!.env.production.template
+!frontend/.env.production.template
+!frontend/.env.development
 
 # Artifacts (runs are local only)
 artifacts/
