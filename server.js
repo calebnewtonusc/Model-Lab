@@ -196,15 +196,9 @@ app.get('/api/docs', (req, res) => {
   });
 });
 
-// Serve static files from the React build in production
-if (NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'frontend/build')));
-
-  // Handle React routing, return all requests to React app
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
-  });
-}
+// Note: Static files are NOT served from backend in production
+// Frontend is deployed separately on Vercel (modellab.studio)
+// Backend on Railway only serves API endpoints
 
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
@@ -243,8 +237,12 @@ app.use((err, req, res, next) => {
     });
   }
 
-  // Database error
-  if (err.message.includes('SQLITE') || err.message.includes('database')) {
+  // Database error (SQLite or PostgreSQL)
+  if (err.message.includes('SQLITE') ||
+      err.message.includes('PostgreSQL') ||
+      err.message.includes('Postgres') ||
+      err.message.includes('database') ||
+      err.code && err.code.startsWith('PG')) {
     return res.status(500).json({
       error: 'Database Error',
       message: 'A database error occurred. Please try again later.'
