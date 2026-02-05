@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { API_ENDPOINTS } from '../../config/api';
 import {
   BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
   LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid,
@@ -204,7 +205,7 @@ const Compare = () => {
 
   const fetchRuns = async () => {
     try {
-      const response = await fetch('/api/modellab/runs');
+      const response = await fetch(API_ENDPOINTS.runs);
       const data = await response.json();
       setRuns(data.runs || []);
       setLoading(false);
@@ -216,14 +217,14 @@ const Compare = () => {
 
   const fetchSelectedRuns = async (ids) => {
     try {
-      const promises = ids.map(id => fetch(`/api/modellab/runs/${id}`).then(r => r.json()));
+      const promises = ids.map(id => fetch(API_ENDPOINTS.run(id)).then(r => r.json()));
       const results = await Promise.all(promises);
       const runs = results.map(r => r.run).filter(Boolean);
       setSelectedRuns(runs);
 
       // Fetch artifacts for each run
       const artifactPromises = runs.map(run =>
-        fetch(`/api/modellab/artifacts/${run.id}`)
+        fetch(API_ENDPOINTS.artifacts(run.id))
           .then(r => r.json())
           .then(data => ({ runId: run.id, artifacts: data.artifacts || [] }))
       );

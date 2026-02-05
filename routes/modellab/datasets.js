@@ -181,10 +181,7 @@ router.delete('/:id', validateId('id'), async (req, res) => {
 
     await db.deleteDataset(req.params.id);
 
-    res.json({
-      message: 'Dataset deleted successfully',
-      dataset
-    });
+    res.status(204).send();
   } catch (error) {
     console.error('Delete dataset error:', error);
     res.status(500).json({ error: error.message });

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LoadingContainer, Spinner, LoadingText, Card, Badge, EmptyState, Button } from './components/SharedComponents';
+import { API_ENDPOINTS } from '../../config/api';
 
 const Container = styled.div`
   padding: ${({ theme }) => theme.spacing[8]};
@@ -236,7 +237,7 @@ const ProjectsEnhanced = () => {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/modellab/projects');
+      const response = await fetch(API_ENDPOINTS.projects);
       if (!response.ok) throw new Error('Failed to fetch projects');
       const data = await response.json();
       setProjects(data.projects || []);
@@ -258,7 +259,7 @@ const ProjectsEnhanced = () => {
     try {
       setCreating(true);
       setCreateError(null);
-      const response = await fetch('http://localhost:3001/api/modellab/projects', {
+      const response = await fetch(API_ENDPOINTS.projects, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

@@ -10,6 +10,7 @@ import {
   Tabs, LoadingContainer, Spinner, LoadingText, EmptyState, EmptyStateTitle,
   EmptyStateText, Skeleton
 } from './components/SharedComponents';
+import { API_ENDPOINTS } from '../../config/api';
 
 const Container = styled.div`
   padding: ${({ theme }) => theme.spacing[8]};
@@ -324,7 +325,7 @@ const Datasets = () => {
 
   const fetchDatasets = async () => {
     try {
-      const response = await fetch('/api/modellab/datasets');
+      const response = await fetch(API_ENDPOINTS.datasets);
       const data = await response.json();
       const datasetsWithQuality = (data.datasets || []).map(d => ({
         ...d,
@@ -466,7 +467,7 @@ const Datasets = () => {
 
     // Fetch preview data
     try {
-      const response = await fetch(`/api/modellab/datasets/${dataset.id}/preview`);
+      const response = await fetch(API_ENDPOINTS.datasetPreview(dataset.id));
       if (response.ok) {
         const data = await response.json();
         setDatasetPreview(data);

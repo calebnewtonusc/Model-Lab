@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { API_ENDPOINTS } from '../../config/api';
 import {
   LineChart, Line, BarChart, Bar, ScatterChart, Scatter, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -348,12 +349,12 @@ const Dashboard = ({ onNavigate }) => {
   const fetchDashboardData = async () => {
     try {
       // Fetch runs
-      const runsResponse = await fetch('/api/modellab/runs');
+      const runsResponse = await fetch(API_ENDPOINTS.runs);
       const runsData = await runsResponse.json();
       const runs = runsData.runs || [];
 
       // Fetch datasets
-      const datasetsResponse = await fetch('/api/modellab/datasets');
+      const datasetsResponse = await fetch(API_ENDPOINTS.datasets);
       const datasetsData = await datasetsResponse.json();
       const datasets = datasetsData.datasets || [];
 

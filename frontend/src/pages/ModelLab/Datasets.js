@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+import { API_ENDPOINTS } from '../../config/api';
 
 const Container = styled.div`
   padding: 2rem;
@@ -264,7 +265,7 @@ const Datasets = () => {
 
   const fetchDatasets = async () => {
     try {
-      const response = await fetch('/api/modellab/datasets');
+      const response = await fetch(API_ENDPOINTS.datasets);
       const data = await response.json();
       setDatasets(data.datasets || []);
     } catch (error) {
