@@ -33,16 +33,16 @@ const Header = styled.div`
 
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
-  line-height: ${({ theme }) => theme.lineHeight.tight};
+  line-height: ${({ theme }) => theme.lineHeight?.tight || "1.25"};
   margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-size: ${({ theme }) => theme.fontSize?.lg || "1.125rem"};
   color: ${({ theme }) => theme.text_secondary};
-  line-height: ${({ theme }) => theme.lineHeight.normal};
+  line-height: ${({ theme }) => theme.lineHeight?.normal || "1.5"};
   margin: 0;
 `;
 
@@ -90,17 +90,17 @@ const RunHeader = styled.div`
 
 const RunName = styled.h3`
   font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
-  line-height: ${({ theme }) => theme.lineHeight.tight};
+  line-height: ${({ theme }) => theme.lineHeight?.tight || "1.25"};
 `;
 
 const RunDescription = styled.p`
   font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   color: ${({ theme }) => theme.text_secondary};
   margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
-  line-height: ${({ theme }) => theme.lineHeight.normal};
+  line-height: ${({ theme }) => theme.lineHeight?.normal || "1.5"};
   line-height: 1.5;
 `;
 

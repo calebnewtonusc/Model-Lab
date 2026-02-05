@@ -24,16 +24,16 @@ const Header = styled.div`
 
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
-  line-height: ${({ theme }) => theme.lineHeight.tight};
+  line-height: ${({ theme }) => theme.lineHeight?.tight || "1.25"};
 `;
 
 const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-size: ${({ theme }) => theme.fontSize?.lg || "1.125rem"};
   color: ${({ theme }) => theme.text_secondary};
-  line-height: ${({ theme }) => theme.lineHeight.normal};
+  line-height: ${({ theme }) => theme.lineHeight?.normal || "1.5"};
   margin-top: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
@@ -65,7 +65,7 @@ const ProjectHeader = styled.div`
 
 const ProjectName = styled.h3`
   font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   color: ${({ theme }) => theme.text_primary};
   margin: 0 0 ${({ theme }) => theme.spacing?.[2] || "0.5rem"} 0;
 `;
@@ -73,7 +73,7 @@ const ProjectName = styled.h3`
 const ProjectDescription = styled.p`
   font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   color: ${({ theme }) => theme.text_secondary};
-  line-height: ${({ theme }) => theme.lineHeight.relaxed};
+  line-height: ${({ theme }) => theme.lineHeight?.relaxed || "1.75"};
   margin: 0 0 ${({ theme }) => theme.spacing?.[4] || "1rem"} 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -95,20 +95,20 @@ const StatItem = styled.div`
 
 const StatValue = styled.div`
   font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.primary};
   margin-bottom: ${({ theme }) => theme.spacing[1]};
 `;
 
 const StatLabel = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize?.xs || "0.75rem"};
   color: ${({ theme }) => theme.text_tertiary};
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
 
 const LastActivity = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize?.xs || "0.75rem"};
   color: ${({ theme }) => theme.text_tertiary};
   margin-top: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   display: flex;
@@ -136,7 +136,7 @@ const ModalOverlay = styled.div`
 
 const Modal = styled.div`
   background: white;
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || "0.75rem"};
   padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 600px;
   width: 100%;
@@ -145,7 +145,7 @@ const Modal = styled.div`
 
 const ModalTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
   margin: 0 0 ${({ theme }) => theme.spacing?.[6] || "1.5rem"} 0;
 `;
@@ -156,8 +156,8 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   display: block;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  font-size: ${({ theme }) => theme.fontSize?.sm || "0.875rem"};
+  font-weight: ${({ theme }) => theme.fontWeight?.medium || 500};
   color: ${({ theme }) => theme.text_primary};
   margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
@@ -218,7 +218,7 @@ const ErrorMessage = styled.div`
   padding: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize?.sm || "0.875rem"};
 `;
 
 const ProjectsEnhanced = () => {

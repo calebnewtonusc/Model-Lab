@@ -33,16 +33,16 @@ const Header = styled.div`
 
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
-  line-height: ${({ theme }) => theme.lineHeight.tight};
+  line-height: ${({ theme }) => theme.lineHeight?.tight || "1.25"};
   margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-size: ${({ theme }) => theme.fontSize?.lg || "1.125rem"};
   color: ${({ theme }) => theme.text_secondary};
-  line-height: ${({ theme }) => theme.lineHeight.normal};
+  line-height: ${({ theme }) => theme.lineHeight?.normal || "1.5"};
   margin: 0;
 `;
 
@@ -71,18 +71,18 @@ const DatasetCard = styled(Card)`
 `;
 
 const DatasetName = styled.h3`
-  font-size: ${({ theme }) => theme.fontSize.xl};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-size: ${({ theme }) => theme.fontSize?.xl || "1.25rem"};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   color: ${({ theme }) => theme.text_primary};
   margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
-  line-height: ${({ theme }) => theme.lineHeight.tight};
+  line-height: ${({ theme }) => theme.lineHeight?.tight || "1.25"};
 `;
 
 const DatasetDescription = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize?.sm || "0.875rem"};
   color: ${({ theme }) => theme.text_secondary};
   margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  line-height: ${({ theme }) => theme.lineHeight.normal};
+  line-height: ${({ theme }) => theme.lineHeight?.normal || "1.5"};
 `;
 
 const DatasetMeta = styled.div`
@@ -93,7 +93,7 @@ const DatasetMeta = styled.div`
 `;
 
 const MetaItem = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize?.xs || "0.75rem"};
   color: ${({ theme }) => theme.text_secondary};
 
   span {

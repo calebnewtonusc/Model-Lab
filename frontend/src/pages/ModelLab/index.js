@@ -13,7 +13,7 @@ import { useToast } from './components/useToast';
 const Container = styled.div`
   min-height: 100vh;
   background: ${({ theme }) => theme.bg};
-  font-family: ${({ theme }) => theme.fontFamily.primary};
+  font-family: ${({ theme }) => theme.fontFamily?.primary || "inherit"};
   position: relative;
 `;
 
@@ -21,7 +21,7 @@ const NavBar = styled.nav`
   background: ${({ theme }) => theme.glass?.medium?.background || theme.cardElevated};
   backdrop-filter: ${({ theme }) => theme.glass?.medium?.backdropFilter || theme.backdropBlur};
   border-bottom: 2px solid ${({ theme }) => theme.glass?.medium?.border || theme.border};
-  box-shadow: ${({ theme }) => theme.elevation?.lg || theme.elevation.sm};
+  box-shadow: ${({ theme }) => theme.elevation?.lg || theme.elevation?.sm || "0 1px 2px rgba(0,0,0,0.05)"};
   position: sticky;
   top: 0;
   z-index: 100;
@@ -75,7 +75,7 @@ const Logo = styled.div`
 const LogoImage = styled.img`
   width: 56px;
   height: 56px;
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || "0.75rem"};
   object-fit: contain;
 `;
 
@@ -236,17 +236,17 @@ const CreatorInfo = styled.div`
 `;
 
 const BuiltByLabel = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize?.xs || "0.75rem"};
   color: ${({ theme }) => theme.text_secondary};
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
 `;
 
 const CreatorName = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-size: ${({ theme }) => theme.fontSize?.lg || "1.125rem"};
   color: ${({ theme }) => theme.text_primary};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
 `;
 
 const ModelLab = () => {
