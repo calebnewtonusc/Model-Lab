@@ -1,0 +1,722 @@
+
+> modellab@1.0.0 test
+> jest --coverage
+
+  console.log
+    [Database] Using SQLite
+
+      at Object.log (lib/database.js:12:11)
+
+  console.log
+    ✓ Added model_type column to runs table
+
+      at Object.log (lib/database.js:150:13)
+
+[0mPOST /api/modellab/projects [32m201[0m 7.984 ms - 188[0m
+[0mPOST /api/modellab/runs [32m201[0m 14.214 ms - 733[0m
+[0mPOST /api/modellab/runs [33m400[0m 0.677 ms - 123[0m
+[0mPOST /api/modellab/runs [32m201[0m 12.617 ms - 735[0m
+[0mGET /api/modellab/runs [32m200[0m 0.519 ms - 12248[0m
+[0mGET /api/modellab/runs?project_id=1770272836614-scwu67hrt [32m200[0m 0.239 ms - 1390[0m
+[0mGET /api/modellab/runs?model_type=LogisticRegression [32m200[0m 0.286 ms - 699[0m
+[0mGET /api/modellab/runs?status=created [32m200[0m 0.229 ms - 1390[0m
+[0mGET /api/modellab/runs/1770272836632-lwr1u7aqx [32m200[0m 0.792 ms - 713[0m
+[0mGET /api/modellab/runs/nonexistent [33m400[0m 0.203 ms - 58[0m
+[0mPUT /api/modellab/runs/1770272836632-lwr1u7aqx [32m200[0m 0.342 ms - 704[0m
+[0mPUT /api/modellab/runs/1770272836632-lwr1u7aqx [32m200[0m 0.245 ms - 752[0m
+[0mPUT /api/modellab/runs/nonexistent [33m400[0m 0.147 ms - 58[0m
+[0mGET /api/modellab/runs/1770272836632-lwr1u7aqx/repro [32m200[0m 154.520 ms - 834[0m
+[0mGET /api/modellab/runs/nonexistent/repro [33m400[0m 0.785 ms - 58[0m
+[0mDELETE /api/modellab/runs/1770272836632-lwr1u7aqx [32m200[0m 0.937 ms - 789[0m
+[0mDELETE /api/modellab/runs/nonexistent [33m400[0m 0.157 ms - 58[0m
+[0mDELETE /api/modellab/projects/1770272836614-scwu67hrt [33m400[0m 0.614 ms - 145[0m
+FAIL tests/backend/api/runs.test.js
+  ● Runs API › GET /api/modellab/runs/:id › should return 404 for non-existent run
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      140 |       await request(app)
+      141 |         .get('/api/modellab/runs/nonexistent')
+    > 142 |         .expect(404);
+          |          ^
+      143 |     });
+      144 |   });
+      145 |
+
+      at Object.expect (tests/backend/api/runs.test.js:142:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Runs API › PUT /api/modellab/runs/:id › should return 404 for non-existent run
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      183 |         .put('/api/modellab/runs/nonexistent')
+      184 |         .send({ name: 'Should Fail' })
+    > 185 |         .expect(404);
+          |          ^
+      186 |     });
+      187 |   });
+      188 |
+
+      at Object.expect (tests/backend/api/runs.test.js:185:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Runs API › GET /api/modellab/runs/:id/repro › should get reproducibility pack
+
+    expect(received).toBeDefined()
+
+    Received: undefined
+
+      193 |         .expect(200);
+      194 |
+    > 195 |       expect(response.body.reproPack).toBeDefined();
+          |                                       ^
+      196 |       expect(response.body.reproPack.run).toBeDefined();
+      197 |       expect(response.body.reproPack.reproduceCommand).toBeDefined();
+      198 |       expect(response.body.reproPack.environment).toBeDefined();
+
+      at Object.toBeDefined (tests/backend/api/runs.test.js:195:39)
+
+  ● Runs API › GET /api/modellab/runs/:id/repro › should return 404 for non-existent run
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      202 |       await request(app)
+      203 |         .get('/api/modellab/runs/nonexistent/repro')
+    > 204 |         .expect(404);
+          |          ^
+      205 |     });
+      206 |   });
+      207 |
+
+      at Object.expect (tests/backend/api/runs.test.js:204:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Runs API › DELETE /api/modellab/runs/:id › should delete a run
+
+    expected 204 "No Content", got 200 "OK"
+
+      210 |       await request(app)
+      211 |         .delete(`/api/modellab/runs/${runId}`)
+    > 212 |         .expect(204);
+          |          ^
+      213 |
+      214 |       // Verify it's deleted
+      215 |       await request(app)
+
+      at Object.expect (tests/backend/api/runs.test.js:212:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Runs API › DELETE /api/modellab/runs/:id › should return 404 for non-existent run
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      221 |       await request(app)
+      222 |         .delete('/api/modellab/runs/nonexistent')
+    > 223 |         .expect(404);
+          |          ^
+      224 |     });
+      225 |   });
+      226 | });
+
+      at Object.expect (tests/backend/api/runs.test.js:223:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+
+  ● Test suite failed to run
+
+    listen EADDRINUSE: address already in use :::3002
+
+      271 |
+      272 | // Start server
+    > 273 | const server = app.listen(PORT, () => {
+          |                    ^
+      274 |   console.log(`
+      275 | ╔════════════════════════════════════════════════════════════╗
+      276 | ║                     ModelLab Server                        ║
+
+      at Function.listen (node_modules/express/lib/application.js:635:24)
+      at Object.listen (server.js:273:20)
+      at Object.require (tests/backend/api/runs.test.js:6:13)
+
+  console.log
+    [Database] Using SQLite
+
+      at Object.log (lib/database.js:12:11)
+
+[0mPOST /api/modellab/projects [32m201[0m 2.263 ms - 196[0m
+[0mPOST /api/modellab/datasets/upload [33m404[0m 0.332 ms - 119[0m
+[0mPOST /api/modellab/datasets/upload [33m404[0m 0.215 ms - 119[0m
+[0mPOST /api/modellab/datasets/upload [33m404[0m 0.207 ms - 119[0m
+[0mGET /api/modellab/datasets [32m200[0m 0.262 ms - 1200[0m
+[0mGET /api/modellab/datasets?project_id=1770272837432-z8tqyqw13 [32m200[0m 0.168 ms - 1200[0m
+[0mGET /api/modellab/datasets/undefined [33m400[0m 0.120 ms - 58[0m
+[0mGET /api/modellab/datasets/nonexistent [33m400[0m 0.108 ms - 58[0m
+[0mGET /api/modellab/datasets/undefined/preview [33m400[0m 0.090 ms - 58[0m
+[0mGET /api/modellab/datasets/undefined/preview?limit=2 [33m400[0m 0.087 ms - 58[0m
+[0mPUT /api/modellab/datasets/undefined [33m400[0m 0.340 ms - 58[0m
+[0mPUT /api/modellab/datasets/nonexistent [33m400[0m 0.207 ms - 58[0m
+[0mDELETE /api/modellab/datasets/undefined [33m400[0m 0.099 ms - 58[0m
+[0mDELETE /api/modellab/datasets/nonexistent [33m400[0m 0.115 ms - 58[0m
+[0mDELETE /api/modellab/projects/1770272837432-z8tqyqw13 [32m200[0m 0.198 ms - 42[0m
+FAIL tests/backend/api/datasets.test.js
+  ● Datasets API › POST /api/modellab/datasets/upload › should upload a CSV dataset
+
+    expected 201 "Created", got 404 "Not Found"
+
+      44 |         .field('project_id', projectId)
+      45 |         .attach('file', testCsvPath)
+    > 46 |         .expect(201);
+         |          ^
+      47 |
+      48 |       expect(response.body.dataset).toBeDefined();
+      49 |       expect(response.body.dataset.id).toBeDefined();
+
+      at Object.expect (tests/backend/api/datasets.test.js:46:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › POST /api/modellab/datasets/upload › should fail without file
+
+    expected 400 "Bad Request", got 404 "Not Found"
+
+      63 |         .post('/api/modellab/datasets/upload')
+      64 |         .field('name', 'No File Dataset')
+    > 65 |         .expect(400);
+         |          ^
+      66 |     });
+      67 |
+      68 |     it('should fail without name', async () => {
+
+      at Object.expect (tests/backend/api/datasets.test.js:65:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › POST /api/modellab/datasets/upload › should fail without name
+
+    expected 400 "Bad Request", got 404 "Not Found"
+
+      73 |         .post('/api/modellab/datasets/upload')
+      74 |         .attach('file', testCsvPath)
+    > 75 |         .expect(400);
+         |          ^
+      76 |
+      77 |       fs.unlinkSync(testCsvPath);
+      78 |     });
+
+      at Object.expect (tests/backend/api/datasets.test.js:75:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › GET /api/modellab/datasets › should filter datasets by project_id
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+       97 |
+       98 |       expect(response.body.datasets).toBeDefined();
+    >  99 |       expect(response.body.datasets.every(d => d.project_id === projectId)).toBe(true);
+          |                                                                             ^
+      100 |     });
+      101 |   });
+      102 |
+
+      at Object.toBe (tests/backend/api/datasets.test.js:99:77)
+
+  ● Datasets API › GET /api/modellab/datasets/:id › should get a specific dataset
+
+    expected 200 "OK", got 400 "Bad Request"
+
+      105 |       const response = await request(app)
+      106 |         .get(`/api/modellab/datasets/${datasetId}`)
+    > 107 |         .expect(200);
+          |          ^
+      108 |
+      109 |       expect(response.body.dataset).toBeDefined();
+      110 |       expect(response.body.dataset.id).toBe(datasetId);
+
+      at Object.expect (tests/backend/api/datasets.test.js:107:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › GET /api/modellab/datasets/:id › should return 404 for non-existent dataset
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      117 |       await request(app)
+      118 |         .get('/api/modellab/datasets/nonexistent')
+    > 119 |         .expect(404);
+          |          ^
+      120 |     });
+      121 |   });
+      122 |
+
+      at Object.expect (tests/backend/api/datasets.test.js:119:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › GET /api/modellab/datasets/:id/preview › should preview dataset rows
+
+    expected 200 "OK", got 400 "Bad Request"
+
+      125 |       const response = await request(app)
+      126 |         .get(`/api/modellab/datasets/${datasetId}/preview`)
+    > 127 |         .expect(200);
+          |          ^
+      128 |
+      129 |       expect(response.body.rows).toBeDefined();
+      130 |       expect(Array.isArray(response.body.rows)).toBe(true);
+
+      at Object.expect (tests/backend/api/datasets.test.js:127:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › GET /api/modellab/datasets/:id/preview › should respect limit parameter
+
+    expected 200 "OK", got 400 "Bad Request"
+
+      136 |         .get(`/api/modellab/datasets/${datasetId}/preview`)
+      137 |         .query({ limit: 2 })
+    > 138 |         .expect(200);
+          |          ^
+      139 |
+      140 |       expect(response.body.rows.length).toBeLessThanOrEqual(2);
+      141 |     });
+
+      at Object.expect (tests/backend/api/datasets.test.js:138:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › PUT /api/modellab/datasets/:id › should update dataset metadata
+
+    expected 200 "OK", got 400 "Bad Request"
+
+      150 |           description: 'Updated description'
+      151 |         })
+    > 152 |         .expect(200);
+          |          ^
+      153 |
+      154 |       expect(response.body.dataset.name).toBe('Updated Test Dataset');
+      155 |       expect(response.body.dataset.description).toBe('Updated description');
+
+      at Object.expect (tests/backend/api/datasets.test.js:152:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › PUT /api/modellab/datasets/:id › should return 404 for non-existent dataset
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      160 |         .put('/api/modellab/datasets/nonexistent')
+      161 |         .send({ name: 'Should Fail' })
+    > 162 |         .expect(404);
+          |          ^
+      163 |     });
+      164 |   });
+      165 |
+
+      at Object.expect (tests/backend/api/datasets.test.js:162:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › DELETE /api/modellab/datasets/:id › should delete a dataset
+
+    expected 204 "No Content", got 400 "Bad Request"
+
+      168 |       await request(app)
+      169 |         .delete(`/api/modellab/datasets/${datasetId}`)
+    > 170 |         .expect(204);
+          |          ^
+      171 |
+      172 |       // Verify it's deleted
+      173 |       await request(app)
+
+      at Object.expect (tests/backend/api/datasets.test.js:170:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Datasets API › DELETE /api/modellab/datasets/:id › should return 404 for non-existent dataset
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      179 |       await request(app)
+      180 |         .delete('/api/modellab/datasets/nonexistent')
+    > 181 |         .expect(404);
+          |          ^
+      182 |     });
+      183 |   });
+      184 | });
+
+      at Object.expect (tests/backend/api/datasets.test.js:181:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+
+  ● Test suite failed to run
+
+    listen EADDRINUSE: address already in use :::3002
+
+      271 |
+      272 | // Start server
+    > 273 | const server = app.listen(PORT, () => {
+          |                    ^
+      274 |   console.log(`
+      275 | ╔════════════════════════════════════════════════════════════╗
+      276 | ║                     ModelLab Server                        ║
+
+      at Function.listen (node_modules/express/lib/application.js:635:24)
+      at Object.listen (server.js:273:20)
+      at Object.require (tests/backend/api/datasets.test.js:8:13)
+
+  console.log
+    [Database] Using SQLite
+
+      at Object.log (lib/database.js:12:11)
+
+[0mPOST /api/modellab/projects [32m201[0m 1.346 ms - 197[0m
+[0mPOST /api/modellab/projects [33m400[0m 0.247 ms - 123[0m
+[0mPOST /api/modellab/projects [33m400[0m 0.209 ms - 138[0m
+[0mGET /api/modellab/projects [32m200[0m 0.305 ms - 521[0m
+[0mGET /api/modellab/projects/1770272838038-x9lr35l1x [32m200[0m 0.203 ms - 339[0m
+[0mGET /api/modellab/projects/nonexistent [33m400[0m 0.119 ms - 58[0m
+[0mPUT /api/modellab/projects/1770272838038-x9lr35l1x [32m200[0m 0.357 ms - 190[0m
+[0mPUT /api/modellab/projects/nonexistent [33m400[0m 0.157 ms - 58[0m
+[0mGET /api/modellab/projects/1770272838038-x9lr35l1x/datasets [32m200[0m 0.188 ms - 15[0m
+[0mGET /api/modellab/projects/1770272838038-x9lr35l1x/runs [32m200[0m 0.157 ms - 11[0m
+[0mDELETE /api/modellab/projects/1770272838038-x9lr35l1x [32m200[0m 0.115 ms - 42[0m
+[0mDELETE /api/modellab/projects/nonexistent [33m400[0m 0.082 ms - 58[0m
+FAIL tests/backend/api/projects.test.js
+  Projects API
+    POST /api/modellab/projects
+      ✕ should create a new project (4 ms)
+      ✓ should fail with invalid data (1 ms)
+      ✓ should fail with empty name (1 ms)
+    GET /api/modellab/projects
+      ✓ should list all projects (2 ms)
+    GET /api/modellab/projects/:id
+      ✓ should get a specific project (1 ms)
+      ✕ should return 404 for non-existent project (1 ms)
+    PUT /api/modellab/projects/:id
+      ✓ should update a project (1 ms)
+      ✕ should return 404 for non-existent project (1 ms)
+    GET /api/modellab/projects/:id/datasets
+      ✓ should list datasets for a project (1 ms)
+    GET /api/modellab/projects/:id/runs
+      ✓ should list runs for a project (1 ms)
+    DELETE /api/modellab/projects/:id
+      ✕ should delete a project (1 ms)
+      ✕ should return 404 for non-existent project (1 ms)
+
+  ● Projects API › POST /api/modellab/projects › should create a new project
+
+    listen EADDRINUSE: address already in use :::3002
+
+      271 |
+      272 | // Start server
+    > 273 | const server = app.listen(PORT, () => {
+          |                    ^
+      274 |   console.log(`
+      275 | ╔════════════════════════════════════════════════════════════╗
+      276 | ║                     ModelLab Server                        ║
+
+      at Function.listen (node_modules/express/lib/application.js:635:24)
+      at Object.listen (server.js:273:20)
+      at Object.require (tests/backend/api/projects.test.js:6:13)
+
+  ● Projects API › GET /api/modellab/projects/:id › should return 404 for non-existent project
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      91 |       await request(app)
+      92 |         .get('/api/modellab/projects/nonexistent')
+    > 93 |         .expect(404);
+         |          ^
+      94 |     });
+      95 |   });
+      96 |
+
+      at Object.expect (tests/backend/api/projects.test.js:93:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Projects API › PUT /api/modellab/projects/:id › should return 404 for non-existent project
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      115 |           name: 'Should Fail'
+      116 |         })
+    > 117 |         .expect(404);
+          |          ^
+      118 |     });
+      119 |   });
+      120 |
+
+      at Object.expect (tests/backend/api/projects.test.js:117:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Projects API › DELETE /api/modellab/projects/:id › should delete a project
+
+    expected 204 "No Content", got 200 "OK"
+
+      145 |       await request(app)
+      146 |         .delete(`/api/modellab/projects/${projectId}`)
+    > 147 |         .expect(204);
+          |          ^
+      148 |
+      149 |       // Verify it's deleted
+      150 |       await request(app)
+
+      at Object.expect (tests/backend/api/projects.test.js:147:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  ● Projects API › DELETE /api/modellab/projects/:id › should return 404 for non-existent project
+
+    expected 404 "Not Found", got 400 "Bad Request"
+
+      156 |       await request(app)
+      157 |         .delete('/api/modellab/projects/nonexistent')
+    > 158 |         .expect(404);
+          |          ^
+      159 |     });
+      160 |   });
+      161 | });
+
+      at Object.expect (tests/backend/api/projects.test.js:158:10)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  console.log
+    [Database] Using SQLite
+
+      at Object.log (lib/database.js:12:11)
+
+[0mGET /api/health [32m200[0m 0.914 ms - 160[0m
+[0mGET /api/health [32m200[0m 0.221 ms - 160[0m
+[0mGET /api/health [32m200[0m 0.261 ms - 163[0m
+[0mGET /api/health [32m200[0m 0.177 ms - 163[0m
+FAIL tests/health.test.js
+  Health Check API
+    GET /api/health
+      ✕ should return 200 and health status (3 ms)
+      ✓ should have database connection info (1 ms)
+      ✓ should return uptime as a number (1 ms)
+      ✓ should include timestamp in ISO format (1 ms)
+
+  ● Health Check API › GET /api/health › should return 200 and health status
+
+    listen EADDRINUSE: address already in use :::3002
+
+      271 |
+      272 | // Start server
+    > 273 | const server = app.listen(PORT, () => {
+          |                    ^
+      274 |   console.log(`
+      275 | ╔════════════════════════════════════════════════════════════╗
+      276 | ║                     ModelLab Server                        ║
+
+      at Function.listen (node_modules/express/lib/application.js:635:24)
+      at Object.listen (server.js:273:20)
+      at Object.require (tests/health.test.js:6:13)
+
+  console.log
+    [Database] Using SQLite
+
+      at Object.log (lib/database.js:12:11)
+
+FAIL tests/database.test.js
+  Database
+    ID Generation
+      ✓ should generate unique IDs
+      ✓ should generate IDs matching the expected format
+      ✓ should generate IDs with correct parts (1 ms)
+    Checksum Generation
+      ✓ should generate SHA-256 checksum
+      ✓ should generate consistent checksums for same content
+      ✓ should generate different checksums for different content (1 ms)
+    Serialization
+      ✕ should serialize JSON fields properly
+      ✕ should deserialize JSON fields properly
+
+  ● Database › Serialization › should serialize JSON fields properly
+
+    TypeError: db.serializeRun is not a function
+
+      80 |       };
+      81 |
+    > 82 |       const serialized = db.serializeRun({ ...data });
+         |                             ^
+      83 |
+      84 |       expect(serialized.array).toBe(JSON.stringify([1, 2, 3]));
+      85 |       expect(serialized.object).toBe(JSON.stringify({ key: 'value' }));
+
+      at Object.serializeRun (tests/database.test.js:82:29)
+
+  ● Database › Serialization › should deserialize JSON fields properly
+
+    TypeError: db.deserializeRun is not a function
+
+      92 |       };
+      93 |
+    > 94 |       const deserialized = db.deserializeRun(serialized);
+         |                               ^
+      95 |
+      96 |       expect(deserialized.hyperparameters).toEqual({ lr: 0.001 });
+      97 |       expect(deserialized.metrics).toEqual({ accuracy: 0.95 });
+
+      at Object.deserializeRun (tests/database.test.js:94:31)
+
+PASS tests/validation.test.js
+  ID Validation
+    validateId middleware
+      ✓ should accept valid ID format (timestamp-randomstring) (1 ms)
+      ✓ should reject ID with invalid timestamp length
+      ✓ should reject ID with invalid random string length
+      ✓ should reject ID without hyphen separator (1 ms)
+      ✓ should reject missing ID
+      ✓ should reject non-string ID
+      ✓ should work with custom parameter name
+
+--------------------------|---------|----------|---------|---------|------------------------------------------------------------------------------------------------------
+File                      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                                                    
+--------------------------|---------|----------|---------|---------|------------------------------------------------------------------------------------------------------
+All files                 |    22.6 |    18.07 |   16.51 |   23.45 |                                                                                                      
+ ModelLab                 |   58.24 |    20.45 |   21.42 |   59.09 |                                                                                                      
+  server.js               |   58.24 |    20.45 |   21.42 |   59.09 | 42-45,57,126,142,201-205,221-263,274,304-325,335-336,341                                             
+ ModelLab/lib             |   17.07 |    16.05 |   12.91 |   17.98 |                                                                                                      
+  database-factory.js     |       0 |        0 |       0 |       0 | 9-24                                                                                                 
+  database-pg.js          |       0 |        0 |       0 |       0 | 7-520                                                                                                
+  database.js             |   69.64 |    34.39 |   54.76 |   71.25 | 8-9,26,31-34,127-128,136-137,153,236,278-279,310-335,339-360,397,422-437,441-461,464-466,483,486,508 
+  evalHarness.js          |    6.88 |        0 |       0 |    7.61 | 11-20,25-39,44-60,65-86,91-119,124-144,149-190,195-231,236-262,267-292,304-379,384-417               
+  latencyProfiler.js      |       0 |        0 |       0 |       0 | 7-212                                                                                                
+  reproPack.js            |   53.84 |       30 |      30 |    54.9 | 19,88,121,131-278                                                                                    
+  schemaDetector.js       |    7.54 |        0 |       0 |    8.51 | 10-45,50-76,81-124,129-178,187-199                                                                   
+  storage-adapter.js      |       0 |        0 |       0 |       0 | 6-360                                                                                                
+  storage.js              |       0 |        0 |       0 |       0 | 6-183                                                                                                
+  validation.js           |     100 |     90.9 |     100 |     100 | 128                                                                                                  
+ ModelLab/lib/evalHarness |       0 |        0 |       0 |       0 |                                                                                                      
+  outputWriter.js         |       0 |        0 |       0 |       0 | 6-167                                                                                                
+  stressTests.js          |       0 |        0 |       0 |       0 | 12-195                                                                                               
+ ModelLab/routes/modellab |   39.44 |    29.12 |   45.23 |   39.08 |                                                                                                      
+  artifacts.js            |   12.26 |        0 |       0 |   12.26 | 17-59,65-95,101-173,180-223,229-248                                                                  
+  datasets.js             |   22.09 |     2.63 |   14.28 |   22.09 | 25-26,32-39,45-127,134-142,148-165,171-190                                                           
+  projects.js             |   77.46 |    57.69 |   66.66 |   77.46 | 36,45,56-59,72,88,103,108,117,135,144,150,159,165                                                    
+  runs.js                 |   51.85 |    48.88 |   66.66 |   51.14 | 25,49,54-55,64,72,86-88,126-127,136,140-141,153,168-169,175-210,216-252,263-264,270-305              
+--------------------------|---------|----------|---------|---------|------------------------------------------------------------------------------------------------------
+Jest: "global" coverage threshold for statements (50%) not met: 22.6%
+Jest: "global" coverage threshold for branches (50%) not met: 18.07%
+Jest: "global" coverage threshold for lines (50%) not met: 23.45%
+Jest: "global" coverage threshold for functions (50%) not met: 16.51%
+Test Suites: 5 failed, 1 passed, 6 total
+Tests:       26 failed, 34 passed, 60 total
+Snapshots:   0 total
+Time:        4.395 s
+Ran all test suites.

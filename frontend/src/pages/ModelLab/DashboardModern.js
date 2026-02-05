@@ -44,7 +44,7 @@ const Container = styled.div`
     );
     pointer-events: none;
     z-index: 0;
-    animation: ${({ theme }) => theme.animation.pulse} 8s ease-in-out infinite;
+    animation: ${({ theme }) => theme.animation?.pulse || 'pulse'} 8s ease-in-out infinite;
   }
 `;
 
@@ -67,42 +67,42 @@ const HeaderLeft = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.typography.display.md};
-  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
-  background: ${({ theme }) => theme.primary.gradient};
+  font-size: ${({ theme }) => theme.typography?.display?.md || '2.25rem'};
+  font-weight: ${({ theme }) => theme.fontWeight?.extrabold || 800};
+  background: ${({ theme }) => theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)'};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0 0 ${({ theme }) => theme.spacing?.[3] || "0.75rem"} 0;
   line-height: 1.2;
   letter-spacing: -0.03em;
-  animation: ${({ theme }) => theme.animation.slideDown} 0.6s ${({ theme }) => theme.easing.spring};
+  animation: ${({ theme }) => theme.animation?.slideDown || 'slideInDown'} 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
 `;
 
 const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.typography.body.lg};
+  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
   color: ${({ theme }) => theme.text_secondary};
   line-height: 1.6;
   margin: 0;
   max-width: 600px;
-  animation: ${({ theme }) => theme.animation.slideDown} 0.6s ${({ theme }) => theme.easing.spring} 0.1s backwards;
+  animation: ${({ theme }) => theme.animation?.slideDown || 'slideInDown'} 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} 0.1s backwards;
 `;
 
 const HeaderActions = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   align-items: flex-start;
-  animation: ${({ theme }) => theme.animation.slideDown} 0.6s ${({ theme }) => theme.easing.spring} 0.2s backwards;
+  animation: ${({ theme }) => theme.animation?.slideDown || 'slideInDown'} 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} 0.2s backwards;
 `;
 
 const LastUpdate = styled.div`
-  font-size: ${({ theme }) => theme.typography.body.sm};
+  font-size: ${({ theme }) => theme.typography?.body?.sm || '0.875rem'};
   color: ${({ theme }) => theme.text_tertiary};
-  background: ${({ theme }) => theme.glass.light.background};
-  backdrop-filter: ${({ theme }) => theme.glass.light.backdropFilter};
-  border: ${({ theme }) => theme.glass.light.border};
+  background: ${({ theme }) => theme.glass?.light?.background || 'rgba(255, 255, 255, 0.05)'};
+  backdrop-filter: ${({ theme }) => theme.glass?.light?.backdropFilter || 'blur(12px)'};
+  border: ${({ theme }) => theme.glass?.light?.border || '1px solid rgba(255, 255, 255, 0.1)'};
   padding: ${({ theme }) => `${theme.spacing?.[2] || "0.5rem"} ${theme.spacing?.[4] || "1rem"}`};
-  border-radius: ${({ theme }) => theme.borderRadius.full};
+  border-radius: ${({ theme }) => theme.borderRadius?.full || '9999px'};
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -130,7 +130,7 @@ const StatsGrid = styled.div`
 const ModernStatCard = styled(GlassCard)`
   position: relative;
   overflow: hidden;
-  animation: ${({ theme }) => theme.animation.scaleIn} 0.5s ${({ theme }) => theme.easing.spring} ${({ delay }) => delay || 0}s backwards;
+  animation: ${({ theme }) => theme.animation?.scaleIn || 'scaleIn'} 0.5s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} ${({ delay }) => delay || 0}s backwards;
 
   &::before {
     content: '';
@@ -139,10 +139,10 @@ const ModernStatCard = styled(GlassCard)`
     left: 0;
     right: 0;
     height: 3px;
-    background: ${({ theme, color }) => color || theme.primary.gradient};
+    background: ${({ theme, color }) => color || theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)'};
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.6s ${({ theme }) => theme.easing.spring};
+    transition: transform 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
   }
 
   &:hover::before {
@@ -151,7 +151,7 @@ const ModernStatCard = styled(GlassCard)`
 
   &:hover {
     transform: translateY(-8px);
-    ${({ theme }) => theme.glass.medium.boxShadow};
+    box-shadow: ${({ theme }) => theme.glass?.medium?.boxShadow || '0 20px 40px rgba(0, 0, 0, 0.3)'};
   }
 `;
 
@@ -163,10 +163,10 @@ const StatHeader = styled.div`
 `;
 
 const ModernStatIcon = styled(StatIcon)`
-  background: ${({ theme, color }) => color || theme.primary.gradient};
+  background: ${({ theme, color }) => color || theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)'};
   background-size: 200% 200%;
-  animation: ${({ theme }) => theme.animation.gradientShift} 6s ease infinite;
-  box-shadow: ${({ theme }) => theme.elevation.primaryGlow};
+  animation: ${({ theme }) => theme.animation?.gradientShift || 'gradientShift'} 6s ease infinite;
+  box-shadow: ${({ theme }) => theme.elevation?.primaryGlow || '0 8px 32px rgba(16, 185, 129, 0.4)'};
   font-size: 1.8rem;
 `;
 
@@ -186,15 +186,14 @@ const QuickActionsGrid = styled.div`
 const QuickActionCard = styled(GlassCard)`
   text-align: center;
   cursor: pointer;
-  border: 2px solid ${({ theme }) => theme.glass.light.border};
-  transition: all 0.4s ${({ theme }) => theme.easing.spring};
-  animation: ${({ theme }) => theme.animation.scaleIn} 0.5s ${({ theme }) => theme.easing.spring} ${({ delay }) => delay || 0}s backwards;
+  border: 2px solid ${({ theme }) => theme.glass?.light?.border || 'rgba(255, 255, 255, 0.1)'};
+  transition: all 0.4s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
+  animation: ${({ theme }) => theme.animation?.scaleIn || 'scaleIn'} 0.5s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} ${({ delay }) => delay || 0}s backwards;
 
   &:hover {
     border-color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
     transform: translateY(-8px) scale(1.02);
-    ${({ theme }) => theme.glass.heavy.boxShadow};
-    box-shadow: ${({ theme }) => theme.elevation.primaryGlow};
+    box-shadow: ${({ theme }) => theme.glass?.heavy?.boxShadow || theme.elevation?.primaryGlow || '0 30px 60px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(16, 185, 129, 0.4)'};
   }
 
   &:active {
@@ -209,14 +208,14 @@ const QuickActionIcon = styled.div`
 `;
 
 const QuickActionTitle = styled.div`
-  font-size: ${({ theme }) => theme.typography.body.lg};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   color: ${({ theme }) => theme.text_primary};
   margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const QuickActionDesc = styled.div`
-  font-size: ${({ theme }) => theme.typography.body.sm};
+  font-size: ${({ theme }) => theme.typography?.body?.sm || '0.875rem'};
   color: ${({ theme }) => theme.text_secondary};
 `;
 
@@ -235,7 +234,7 @@ const ChartsGrid = styled.div`
 
 const ChartCard = styled(GlassCard)`
   position: relative;
-  animation: ${({ theme }) => theme.animation.fadeIn} 0.8s ${({ theme }) => theme.easing.spring} ${({ delay }) => delay || 0}s backwards;
+  animation: ${({ theme }) => theme.animation?.fadeIn || 'fadeIn'} 0.8s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} ${({ delay }) => delay || 0}s backwards;
 `;
 
 const ChartHeader = styled.div`
@@ -244,12 +243,12 @@ const ChartHeader = styled.div`
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  border-bottom: 2px solid ${({ theme }) => theme.glass.light.border};
+  border-bottom: 2px solid ${({ theme }) => theme.glass?.light?.border || 'rgba(255, 255, 255, 0.1)'};
 `;
 
 const ChartTitle = styled.h3`
-  font-size: ${({ theme }) => theme.typography.heading.md};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-size: ${({ theme }) => theme.typography?.heading?.md || '1.5rem'};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
   display: flex;
@@ -265,7 +264,7 @@ const ActivitySection = styled(GlassCard)`
   margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   position: relative;
   z-index: 1;
-  animation: ${({ theme }) => theme.animation.fadeIn} 0.8s ${({ theme }) => theme.easing.spring} 0.6s backwards;
+  animation: ${({ theme }) => theme.animation?.fadeIn || 'fadeIn'} 0.8s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} 0.6s backwards;
 `;
 
 const ActivityHeader = styled.div`
@@ -274,12 +273,12 @@ const ActivityHeader = styled.div`
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  border-bottom: 2px solid ${({ theme }) => theme.glass.light.border};
+  border-bottom: 2px solid ${({ theme }) => theme.glass?.light?.border || 'rgba(255, 255, 255, 0.1)'};
 `;
 
 const ActivityTitle = styled.h3`
-  font-size: ${({ theme }) => theme.typography.heading.md};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-size: ${({ theme }) => theme.typography?.heading?.md || '1.5rem'};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
   display: flex;
@@ -297,18 +296,18 @@ const ActivityItem = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   padding: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  background: ${({ theme }) => theme.glass.light.background};
-  backdrop-filter: ${({ theme }) => theme.glass.light.backdropFilter};
-  border: ${({ theme }) => theme.glass.light.border};
-  border-radius: ${({ theme }) => theme.borderRadius.xl};
-  transition: all 0.3s ${({ theme }) => theme.easing.spring};
+  background: ${({ theme }) => theme.glass?.light?.background || 'rgba(255, 255, 255, 0.05)'};
+  backdrop-filter: ${({ theme }) => theme.glass?.light?.backdropFilter || 'blur(12px)'};
+  border: ${({ theme }) => theme.glass?.light?.border || '1px solid rgba(255, 255, 255, 0.1)'};
+  border-radius: ${({ theme }) => theme.borderRadius?.xl || '0.75rem'};
+  transition: all 0.3s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
   cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.glass.medium.background};
-    backdrop-filter: ${({ theme }) => theme.glass.medium.backdropFilter};
+    background: ${({ theme }) => theme.glass?.medium?.background || 'rgba(255, 255, 255, 0.1)'};
+    backdrop-filter: ${({ theme }) => theme.glass?.medium?.backdropFilter || 'blur(16px)'};
     transform: translateX(8px);
-    box-shadow: ${({ theme }) => theme.glass.medium.boxShadow};
+    box-shadow: ${({ theme }) => theme.glass?.medium?.boxShadow || '0 20px 40px rgba(0, 0, 0, 0.3)'};
   }
 `;
 
@@ -317,17 +316,17 @@ const ActivityIcon = styled.div`
   height: 48px;
   flex-shrink: 0;
   background: ${({ type, theme }) => {
-    if (type === 'run') return theme.primary.gradient;
-    if (type === 'dataset') return theme.secondary.gradient;
-    if (type === 'evaluation') return theme.accent.gradient;
+    if (type === 'run') return theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)';
+    if (type === 'dataset') return theme.secondary?.gradient || 'linear-gradient(135deg, #a855f7, #7c3aed)';
+    if (type === 'evaluation') return theme.accent?.gradient || 'linear-gradient(135deg, #06b6d4, #0891b2)';
     return theme.neutral?.[700] || '#4b5563';
   }};
-  border-radius: ${({ theme }) => theme.borderRadius.xl};
+  border-radius: ${({ theme }) => theme.borderRadius?.xl || '0.75rem'};
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  box-shadow: ${({ theme }) => theme.elevation.md};
+  box-shadow: ${({ theme }) => theme.elevation?.md || '0 4px 6px rgba(0, 0, 0, 0.1)'};
 `;
 
 const ActivityContent = styled.div`
@@ -336,23 +335,23 @@ const ActivityContent = styled.div`
 `;
 
 const ActivityText = styled.div`
-  font-size: ${({ theme }) => theme.typography.body.base};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  font-size: ${({ theme }) => theme.typography?.body?.base || '1rem'};
+  font-weight: ${({ theme }) => theme.fontWeight?.medium || 500};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[1] || '0.25rem'};
 `;
 
 const ActivityTime = styled.div`
-  font-size: ${({ theme }) => theme.typography.body.sm};
+  font-size: ${({ theme }) => theme.typography?.body?.sm || '0.875rem'};
   color: ${({ theme }) => theme.text_tertiary};
 `;
 
 const Badge = styled.span`
   display: inline-block;
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[3] || "0.75rem"}`};
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-  font-size: ${({ theme }) => theme.typography.body.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  padding: ${({ theme }) => `${theme.spacing?.[1] || "0.25rem"} ${theme.spacing?.[3] || "0.75rem"}`};
+  border-radius: ${({ theme }) => theme.borderRadius?.full || '9999px'};
+  font-size: ${({ theme }) => theme.typography?.body?.xs || '0.75rem'};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   text-transform: uppercase;
   letter-spacing: 0.05em;
   background: ${({ variant, theme }) => {
@@ -388,16 +387,16 @@ const LoadingContainer = styled.div`
 `;
 
 const LoadingMessage = styled.div`
-  font-size: ${({ theme }) => theme.typography.body.lg};
+  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
   color: ${({ theme }) => theme.text_secondary};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  font-weight: ${({ theme }) => theme.fontWeight?.medium || 500};
 `;
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: ${({ theme }) => theme.spacing[12]} ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  padding: ${({ theme }) => theme.spacing?.[12] || '3rem'} ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   color: ${({ theme }) => theme.text_secondary};
-  font-size: ${({ theme }) => theme.typography.body.lg};
+  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
 `;
 
 const CHART_COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899', '#14b8a6'];
@@ -568,7 +567,7 @@ const DashboardModern = ({ onNavigate }) => {
       <StatsGrid>
         <ModernStatCard variant="medium" delay={0}>
           <StatHeader>
-            <ModernStatIcon color={({ theme }) => theme.primary.gradient}>
+            <ModernStatIcon color="linear-gradient(135deg, #10b981, #059669)">
               🔬
             </ModernStatIcon>
             {stats.runsTrend > 0 && (
@@ -581,9 +580,9 @@ const DashboardModern = ({ onNavigate }) => {
           <StatLabel>Total Runs</StatLabel>
         </ModernStatCard>
 
-        <ModernStatCard variant="medium" delay={0.1} color={({ theme }) => theme.secondary.gradient}>
+        <ModernStatCard variant="medium" delay={0.1} color="linear-gradient(135deg, #a855f7, #7c3aed)">
           <StatHeader>
-            <ModernStatIcon color={({ theme }) => theme.secondary.gradient}>
+            <ModernStatIcon color="linear-gradient(135deg, #a855f7, #7c3aed)">
               📊
             </ModernStatIcon>
             {stats.datasetsTrend > 0 && (
@@ -596,9 +595,9 @@ const DashboardModern = ({ onNavigate }) => {
           <StatLabel>Datasets</StatLabel>
         </ModernStatCard>
 
-        <ModernStatCard variant="medium" delay={0.2} color={({ theme }) => theme.accent.gradient}>
+        <ModernStatCard variant="medium" delay={0.2} color="linear-gradient(135deg, #06b6d4, #0891b2)">
           <StatHeader>
-            <ModernStatIcon color={({ theme }) => theme.accent.gradient}>
+            <ModernStatIcon color="linear-gradient(135deg, #06b6d4, #0891b2)">
               ✅
             </ModernStatIcon>
             {stats.completedTrend > 0 && (
