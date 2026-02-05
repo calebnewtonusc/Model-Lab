@@ -23,16 +23,16 @@ const Header = styled.div`
 
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
   margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
-  line-height: ${({ theme }) => theme.lineHeight.tight};
+  line-height: ${({ theme }) => theme.lineHeight?.tight || "1.25"};
 `;
 
 const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-size: ${({ theme }) => theme.fontSize?.lg || "1.125rem"};
   color: ${({ theme }) => theme.text_secondary};
-  line-height: ${({ theme }) => theme.lineHeight.normal};
+  line-height: ${({ theme }) => theme.lineHeight?.normal || "1.5"};
   margin: 0 0 ${({ theme }) => theme.spacing?.[6] || "1.5rem"} 0;
 `;
 
@@ -46,9 +46,9 @@ const SelectionGrid = styled.div`
 const SelectBox = styled.div`
   background: ${({ theme }) => theme.cardLight};
   padding: ${({ theme }) => theme.spacing[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || "0.75rem"};
   border: 2px solid ${({ theme }) => theme.border};
-  transition: ${({ theme }) => theme.transition.fast};
+  transition: ${({ theme }) => theme.transition?.fast || '0.2s ease'};
 
   &:hover {
     border-color: ${({ theme }) => theme.borderMedium};
@@ -57,8 +57,8 @@ const SelectBox = styled.div`
 
 const Label = styled.label`
   display: block;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-size: ${({ theme }) => theme.fontSize?.sm || "0.875rem"};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   color: ${({ theme }) => theme.text_primary};
   margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
@@ -77,8 +77,8 @@ const ChartHeader = styled.div`
 `;
 
 const ChartTitle = styled.h3`
-  font-size: ${({ theme }) => theme.fontSize.xl};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-size: ${({ theme }) => theme.fontSize?.xl || "1.25rem"};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
 `;
