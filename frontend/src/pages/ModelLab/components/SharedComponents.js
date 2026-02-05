@@ -71,7 +71,7 @@ const ripple = keyframes`
 
 export const Spinner = styled.div`
   border: 3px solid ${({ theme }) => theme.borderLight};
-  border-top: 3px solid ${({ theme }) => theme.primary[500]};
+  border-top: 3px solid ${({ theme }) => theme.primary?.[500] || '#10b981'};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   width: ${({ size }) => size || '40px'};
   height: ${({ size }) => size || '40px'};
@@ -84,13 +84,13 @@ export const LoadingContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${({ theme }) => theme.spacing[12]};
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   animation: ${fadeIn} 0.3s ease;
 `;
 
 export const LoadingText = styled.div`
   color: ${({ theme }) => theme.text_secondary};
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
 
@@ -98,13 +98,13 @@ export const LoadingText = styled.div`
 export const Skeleton = styled.div`
   background: linear-gradient(
     90deg,
-    ${({ theme }) => theme.neutral[800]} 0%,
-    ${({ theme }) => theme.neutral[700]} 50%,
-    ${({ theme }) => theme.neutral[800]} 100%
+    ${({ theme }) => theme.neutral?.[800] || '#374151'} 0%,
+    ${({ theme }) => theme.neutral?.[700] || '#4b5563'} 50%,
+    ${({ theme }) => theme.neutral?.[800] || '#374151'} 100%
   );
   background-size: 1000px 100%;
   animation: ${shimmer} 2s infinite linear;
-  border-radius: ${({ theme, radius }) => theme.borderRadius[radius] || theme.borderRadius.base};
+  border-radius: ${({ theme, radius }) => theme.borderRadius?.[radius] || theme.borderRadius.base};
   height: ${({ height }) => height || '20px'};
   width: ${({ width }) => width || '100%'};
 `;
@@ -113,7 +113,7 @@ export const SkeletonCard = styled.div`
   background: ${({ theme }) => theme.card};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing[6]};
+  padding: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   animation: ${fadeIn} 0.3s ease;
 `;
 
@@ -123,14 +123,14 @@ export const SkeletonCard = styled.div`
 
 export const EmptyState = styled.div`
   text-align: center;
-  padding: ${({ theme }) => theme.spacing[12]} ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing[12]} ${({ theme }) => theme.spacing?.[8] || "2rem"};
   color: ${({ theme }) => theme.text_secondary};
   animation: ${fadeIn} 0.4s ease;
 `;
 
 export const EmptyStateIcon = styled.div`
   font-size: ${({ theme }) => theme.fontSize['5xl']};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   opacity: 0.4;
   color: ${({ theme }) => theme.text_tertiary};
 `;
@@ -139,13 +139,13 @@ export const EmptyStateTitle = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 export const EmptyStateText = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   color: ${({ theme }) => theme.text_secondary};
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   line-height: ${({ theme }) => theme.lineHeight.relaxed};
   max-width: 400px;
   margin-left: auto;
@@ -158,12 +158,12 @@ export const EmptyStateText = styled.p`
 
 const ToastContainer = styled.div`
   position: fixed;
-  top: ${({ theme }) => theme.spacing[8]};
-  right: ${({ theme }) => theme.spacing[8]};
+  top: ${({ theme }) => theme.spacing?.[8] || "2rem"};
+  right: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   max-width: 420px;
   pointer-events: none;
 `;
@@ -176,13 +176,13 @@ const ToastItem = styled.div`
     return theme.cardElevated;
   }};
   color: white;
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]};
+  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"} ${({ theme }) => theme.spacing[5]};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   box-shadow: ${({ theme }) => theme.elevation.xl};
   backdrop-filter: ${({ theme }) => theme.backdropBlur};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   animation: ${({ removing }) => removing ? slideOut : slideIn} 0.3s ease;
   pointer-events: auto;
   border: 1px solid ${({ theme }) => theme.borderLight};
@@ -259,9 +259,9 @@ const getRippleStyles = () => css`
 
 export const Button = styled.button`
   padding: ${({ size, theme }) => {
-    if (size === 'small') return `${theme.spacing[2]} ${theme.spacing[4]}`;
-    if (size === 'large') return `${theme.spacing[4]} ${theme.spacing[8]}`;
-    return `${theme.spacing[3]} ${theme.spacing[6]}`;
+    if (size === 'small') return `${theme.spacing?.[2] || "0.5rem"} ${theme.spacing?.[4] || "1rem"}`;
+    if (size === 'large') return `${theme.spacing?.[4] || "1rem"} ${theme.spacing?.[8] || "2rem"}`;
+    return `${theme.spacing?.[3] || "0.75rem"} ${theme.spacing?.[6] || "1.5rem"}`;
   }};
 
   background: ${({ variant, theme }) => {
@@ -269,18 +269,18 @@ export const Button = styled.button`
     if (variant === 'outline') return 'transparent';
     if (variant === 'ghost') return 'transparent';
     if (variant === 'danger') return theme.error;
-    return theme.primary[500];
+    return theme.primary?.[500] || '#10b981';
   }};
 
   color: ${({ variant, theme }) => {
     if (variant === 'secondary') return theme.text_primary;
-    if (variant === 'outline') return theme.primary[500];
+    if (variant === 'outline') return theme.primary?.[500] || '#10b981';
     if (variant === 'ghost') return theme.text_primary;
     return 'white';
   }};
 
   border: ${({ variant, theme }) => {
-    if (variant === 'outline') return `2px solid ${theme.primary[500]}`;
+    if (variant === 'outline') return `2px solid ${theme.primary?.[500] || '#10b981'}`;
     if (variant === 'secondary') return `1px solid ${theme.border}`;
     return 'none';
   }};
@@ -292,15 +292,15 @@ export const Button = styled.button`
   font-size: ${({ size, theme }) => {
     if (size === 'small') return theme.fontSize.sm;
     if (size === 'large') return theme.fontSize.lg;
-    return theme.fontSize.base;
+    return theme.fontSize?.base || '1rem';
   }};
 
   cursor: pointer;
-  transition: ${({ theme }) => theme.transition.base};
+  transition: ${({ theme }) => theme.transition?.base || '0.3s ease'};
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
   white-space: nowrap;
   user-select: none;
   box-shadow: ${({ variant, theme }) => {
@@ -313,14 +313,14 @@ export const Button = styled.button`
   &:hover:not(:disabled) {
     background: ${({ variant, theme }) => {
       if (variant === 'secondary') return theme.cardHover;
-      if (variant === 'outline') return theme.primary[500] + '10';
+      if (variant === 'outline') return theme.primary?.[500] || '#10b981' + '10';
       if (variant === 'ghost') return theme.hover;
       if (variant === 'danger') return theme.error + 'dd';
-      return theme.primary[600];
+      return theme.primary?.[600] || '#059669';
     }};
 
     border-color: ${({ variant, theme }) => {
-      if (variant === 'outline') return theme.primary[600];
+      if (variant === 'outline') return theme.primary?.[600] || '#059669';
       return undefined;
     }};
 
@@ -370,7 +370,7 @@ export const Button = styled.button`
 // ============================================================================
 
 export const Badge = styled.span`
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing[3]}`};
+  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[3] || "0.75rem"}`};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
@@ -386,7 +386,7 @@ export const Badge = styled.span`
     if (variant === 'error') return theme.error + '20';
     if (variant === 'warning') return theme.warning + '20';
     if (variant === 'info') return theme.info + '20';
-    return theme.neutral[700];
+    return theme.neutral?.[700] || '#4b5563';
   }};
 
   color: ${({ variant, theme }) => {
@@ -402,7 +402,7 @@ export const Badge = styled.span`
     if (variant === 'error') return theme.error + '40';
     if (variant === 'warning') return theme.warning + '40';
     if (variant === 'info') return theme.info + '40';
-    return theme.neutral[600];
+    return theme.neutral?.[600] || '#6b7280';
   }};
 `;
 
@@ -414,14 +414,14 @@ export const Card = styled.div`
   background: ${({ theme, elevated }) => elevated ? theme.cardElevated : theme.card};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ padding, theme }) => padding || theme.spacing[6]};
-  transition: ${({ theme }) => theme.transition.base};
+  padding: ${({ padding, theme }) => padding || theme.spacing?.[6] || "1.5rem"};
+  transition: ${({ theme }) => theme.transition?.base || '0.3s ease'};
   box-shadow: ${({ theme, elevated }) => elevated ? theme.elevation.md : theme.elevation.sm};
 
   ${({ gradient, theme }) => gradient && css`
     border: 1px solid transparent;
     background: linear-gradient(${theme.card}, ${theme.card}) padding-box,
-                linear-gradient(135deg, ${theme.primary[500]}40, ${theme.primary[700]}40) border-box;
+                linear-gradient(135deg, ${theme.primary?.[500] || '#10b981'}40, ${theme.primary[700]}40) border-box;
   `}
 
   ${({ clickable, theme }) => clickable && css`
@@ -448,20 +448,20 @@ export const Card = styled.div`
 
 const InputBase = css`
   width: 100%;
-  padding: ${({ theme }) => `${theme.spacing[3]} ${theme.spacing[4]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[3] || "0.75rem"} ${theme.spacing?.[4] || "1rem"}`};
   background: ${({ theme }) => theme.bgLight};
   border: 2px solid ${({ theme, error }) => error ? theme.error : theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   color: ${({ theme }) => theme.text_primary};
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   font-family: ${({ theme }) => theme.fontFamily.primary};
   transition: ${({ theme }) => theme.transition.fast};
 
   &:focus {
     outline: none;
-    border-color: ${({ theme, error }) => error ? theme.error : theme.primary[500]};
+    border-color: ${({ theme, error }) => error ? theme.error : theme.primary?.[500] || '#10b981'};
     background: ${({ theme }) => theme.bg};
-    box-shadow: 0 0 0 3px ${({ theme, error }) => error ? theme.error + '20' : theme.primary[500] + '20'};
+    box-shadow: 0 0 0 3px ${({ theme, error }) => error ? theme.error + '20' : theme.primary?.[500] || '#10b981' + '20'};
   }
 
   &::placeholder {
@@ -492,7 +492,7 @@ export const Select = styled.select`
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23737373' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right ${({ theme }) => theme.spacing[4]} center;
+  background-position: right ${({ theme }) => theme.spacing?.[4] || "1rem"} center;
   padding-right: ${({ theme }) => theme.spacing[10]};
 
   option {
@@ -504,8 +504,8 @@ export const Select = styled.select`
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[2]};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 export const Label = styled.label`
@@ -546,7 +546,7 @@ const TooltipText = styled.div`
   color: ${({ theme }) => theme.text_primary};
   text-align: center;
   border-radius: ${({ theme }) => theme.borderRadius.base};
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[3]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[2] || "0.5rem"} ${theme.spacing?.[3] || "0.75rem"}`};
   position: absolute;
   z-index: 1000;
   bottom: 125%;
@@ -592,7 +592,7 @@ export const Tooltip = ({ children, text }) => {
 
 export const ProgressBar = styled.div`
   width: 100%;
-  height: ${({ height, theme }) => height || theme.spacing[2]};
+  height: ${({ height, theme }) => height || theme.spacing?.[2] || "0.5rem"};
   background: ${({ theme }) => theme.bgLight};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   overflow: hidden;
@@ -605,7 +605,7 @@ export const ProgressFill = styled.div`
     if (variant === 'success') return theme.success;
     if (variant === 'error') return theme.error;
     if (variant === 'warning') return theme.warning;
-    return theme.primary[500];
+    return theme.primary?.[500] || '#10b981';
   }};
   width: ${({ progress }) => Math.min(100, Math.max(0, progress))}%;
   transition: width 0.4s ease;
@@ -647,7 +647,7 @@ export const Modal = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   animation: ${fadeIn} 0.2s ease;
 `;
 
@@ -655,7 +655,7 @@ export const ModalContent = styled.div`
   background: ${({ theme }) => theme.cardElevated};
   border: 1px solid ${({ theme }) => theme.borderMedium};
   border-radius: ${({ theme }) => theme.borderRadius.xl};
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: ${({ maxWidth }) => maxWidth || '600px'};
   width: 100%;
   max-height: 90vh;
@@ -668,11 +668,11 @@ export const ModalHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 export const ModalTitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
@@ -685,7 +685,7 @@ export const ModalClose = styled.button`
   color: ${({ theme }) => theme.text_secondary};
   font-size: ${({ theme }) => theme.fontSize.xl};
   cursor: pointer;
-  padding: ${({ theme }) => theme.spacing[2]};
+  padding: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
   width: 36px;
   height: 36px;
   display: flex;
@@ -712,7 +712,7 @@ export const Table = styled.table`
 
 export const Th = styled.th`
   text-align: left;
-  padding: ${({ theme }) => `${theme.spacing[3]} ${theme.spacing[4]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[3] || "0.75rem"} ${theme.spacing?.[4] || "1rem"}`};
   background: ${({ theme }) => theme.bgLight};
   border-bottom: 2px solid ${({ theme }) => theme.border};
   color: ${({ theme }) => theme.text_secondary};
@@ -737,7 +737,7 @@ export const Th = styled.th`
 `;
 
 export const Td = styled.td`
-  padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[4]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[4] || "1rem"} ${theme.spacing?.[4] || "1rem"}`};
   border-bottom: 1px solid ${({ theme }) => theme.borderLight};
   color: ${({ theme }) => theme.text_primary};
   font-size: ${({ theme }) => theme.fontSize.sm};
@@ -758,18 +758,18 @@ export const Td = styled.td`
 const TabsContainer = styled.div`
   display: flex;
   border-bottom: 2px solid ${({ theme }) => theme.border};
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-  gap: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const Tab = styled.button`
-  padding: ${({ theme }) => `${theme.spacing[3]} ${theme.spacing[6]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[3] || "0.75rem"} ${theme.spacing?.[6] || "1.5rem"}`};
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  color: ${({ active, theme }) => active ? theme.primary[500] : theme.text_secondary};
+  color: ${({ active, theme }) => active ? theme.primary?.[500] || '#10b981' : theme.text_secondary};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   cursor: pointer;
   transition: ${({ theme }) => theme.transition.fast};
   margin-bottom: -2px;
@@ -777,12 +777,12 @@ const Tab = styled.button`
   white-space: nowrap;
 
   &:hover {
-    color: ${({ theme }) => theme.primary[500]};
+    color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
     background: ${({ theme }) => theme.hover};
   }
 
   ${({ active, theme }) => active && css`
-    border-bottom-color: ${theme.primary[500]};
+    border-bottom-color: ${theme.primary?.[500] || '#10b981'};
   `}
 `;
 
@@ -809,8 +809,8 @@ export const Tabs = ({ tabs, activeTab, onChange }) => {
 export const BreadcrumbsContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   font-size: ${({ theme }) => theme.fontSize.sm};
 `;
 
@@ -821,7 +821,7 @@ export const BreadcrumbItem = styled.span`
   transition: ${({ theme }) => theme.transition.fast};
 
   &:hover {
-    color: ${({ theme, active }) => !active && theme.primary[500]};
+    color: ${({ theme, active }) => !active && theme.primary?.[500] || '#10b981'};
   }
 `;
 
@@ -837,12 +837,12 @@ export const BreadcrumbSeparator = styled.span`
 export const Divider = styled.div`
   height: 1px;
   background: ${({ theme }) => theme.border};
-  margin: ${({ theme, spacing }) => spacing || theme.spacing[6]} 0;
+  margin: ${({ theme, spacing }) => spacing || theme.spacing?.[6] || "1.5rem"} 0;
 
   ${({ vertical, theme, spacing }) => vertical && css`
     width: 1px;
     height: auto;
-    margin: 0 ${spacing || theme.spacing[4]};
+    margin: 0 ${spacing || theme.spacing?.[4] || "1rem"};
   `}
 `;
 
@@ -854,22 +854,22 @@ export const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 export const SectionDescription = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   color: ${({ theme }) => theme.text_secondary};
-  margin: ${({ theme }) => theme.spacing[2]} 0 0 0;
+  margin: ${({ theme }) => theme.spacing?.[2] || "0.5rem"} 0 0 0;
   line-height: ${({ theme }) => theme.lineHeight.normal};
 `;

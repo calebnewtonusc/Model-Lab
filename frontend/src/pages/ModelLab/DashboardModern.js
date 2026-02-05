@@ -18,7 +18,7 @@ import {
 } from '../../components/ModernComponents';
 
 const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 1600px;
   margin: 0 auto;
   min-height: 100vh;
@@ -34,12 +34,12 @@ const Container = styled.div`
     bottom: 0;
     background: radial-gradient(
       circle at 20% 20%,
-      ${({ theme }) => theme.primary[500]}10 0%,
+      ${({ theme }) => theme.primary?.[500] || '#10b981'}10 0%,
       transparent 50%
     ),
     radial-gradient(
       circle at 80% 80%,
-      ${({ theme }) => theme.secondary[500]}10 0%,
+      ${({ theme }) => theme.secondary?.[500] || '#a855f7'}10 0%,
       transparent 50%
     );
     pointer-events: none;
@@ -49,11 +49,11 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: ${({ theme }) => theme.spacing[6]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   position: relative;
   z-index: 1;
 
@@ -73,7 +73,7 @@ const Title = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin: 0 0 ${({ theme }) => theme.spacing[3]} 0;
+  margin: 0 0 ${({ theme }) => theme.spacing?.[3] || "0.75rem"} 0;
   line-height: 1.2;
   letter-spacing: -0.03em;
   animation: ${({ theme }) => theme.animation.slideDown} 0.6s ${({ theme }) => theme.easing.spring};
@@ -90,7 +90,7 @@ const Subtitle = styled.p`
 
 const HeaderActions = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   align-items: flex-start;
   animation: ${({ theme }) => theme.animation.slideDown} 0.6s ${({ theme }) => theme.easing.spring} 0.2s backwards;
 `;
@@ -101,12 +101,12 @@ const LastUpdate = styled.div`
   background: ${({ theme }) => theme.glass.light.background};
   backdrop-filter: ${({ theme }) => theme.glass.light.backdropFilter};
   border: ${({ theme }) => theme.glass.light.border};
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[2] || "0.5rem"} ${theme.spacing?.[4] || "1rem"}`};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 
   &::before {
     content: '🕐';
@@ -117,8 +117,8 @@ const LastUpdate = styled.div`
 const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   position: relative;
   z-index: 1;
 
@@ -159,7 +159,7 @@ const StatHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const ModernStatIcon = styled(StatIcon)`
@@ -173,8 +173,8 @@ const ModernStatIcon = styled(StatIcon)`
 const QuickActionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: ${({ theme }) => theme.spacing[4]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   position: relative;
   z-index: 1;
 
@@ -191,7 +191,7 @@ const QuickActionCard = styled(GlassCard)`
   animation: ${({ theme }) => theme.animation.scaleIn} 0.5s ${({ theme }) => theme.easing.spring} ${({ delay }) => delay || 0}s backwards;
 
   &:hover {
-    border-color: ${({ theme }) => theme.primary[500]};
+    border-color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
     transform: translateY(-8px) scale(1.02);
     ${({ theme }) => theme.glass.heavy.boxShadow};
     box-shadow: ${({ theme }) => theme.elevation.primaryGlow};
@@ -204,7 +204,7 @@ const QuickActionCard = styled(GlassCard)`
 
 const QuickActionIcon = styled.div`
   font-size: 2.5rem;
-  margin-bottom: ${({ theme }) => theme.spacing[3]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 `;
 
@@ -212,7 +212,7 @@ const QuickActionTitle = styled.div`
   font-size: ${({ theme }) => theme.typography.body.lg};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const QuickActionDesc = styled.div`
@@ -223,8 +223,8 @@ const QuickActionDesc = styled.div`
 const ChartsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   position: relative;
   z-index: 1;
 
@@ -242,8 +242,8 @@ const ChartHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   border-bottom: 2px solid ${({ theme }) => theme.glass.light.border};
 `;
 
@@ -254,7 +254,7 @@ const ChartTitle = styled.h3`
   margin: 0;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const ChartTitleIcon = styled.span`
@@ -262,7 +262,7 @@ const ChartTitleIcon = styled.span`
 `;
 
 const ActivitySection = styled(GlassCard)`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   position: relative;
   z-index: 1;
   animation: ${({ theme }) => theme.animation.fadeIn} 0.8s ${({ theme }) => theme.easing.spring} 0.6s backwards;
@@ -272,8 +272,8 @@ const ActivityHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   border-bottom: 2px solid ${({ theme }) => theme.glass.light.border};
 `;
 
@@ -284,19 +284,19 @@ const ActivityTitle = styled.h3`
   margin: 0;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const ActivityList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
 `;
 
 const ActivityItem = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[4]};
-  padding: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   background: ${({ theme }) => theme.glass.light.background};
   backdrop-filter: ${({ theme }) => theme.glass.light.backdropFilter};
   border: ${({ theme }) => theme.glass.light.border};
@@ -320,7 +320,7 @@ const ActivityIcon = styled.div`
     if (type === 'run') return theme.primary.gradient;
     if (type === 'dataset') return theme.secondary.gradient;
     if (type === 'evaluation') return theme.accent.gradient;
-    return theme.neutral[700];
+    return theme.neutral?.[700] || '#4b5563';
   }};
   border-radius: ${({ theme }) => theme.borderRadius.xl};
   display: flex;
@@ -349,7 +349,7 @@ const ActivityTime = styled.div`
 
 const Badge = styled.span`
   display: inline-block;
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing[3]}`};
+  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[3] || "0.75rem"}`};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   font-size: ${({ theme }) => theme.typography.body.xs};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
@@ -360,7 +360,7 @@ const Badge = styled.span`
     if (variant === 'error') return theme.error + '20';
     if (variant === 'info') return theme.info + '20';
     if (variant === 'warning') return theme.warning + '20';
-    return theme.neutral[700] + '20';
+    return theme.neutral?.[700] || '#4b5563' + '20';
   }};
   color: ${({ variant, theme }) => {
     if (variant === 'success') return theme.success;
@@ -374,7 +374,7 @@ const Badge = styled.span`
     if (variant === 'error') return theme.error + '40';
     if (variant === 'info') return theme.info + '40';
     if (variant === 'warning') return theme.warning + '40';
-    return theme.neutral[600] + '40';
+    return theme.neutral?.[600] || '#6b7280' + '40';
   }};
 `;
 
@@ -384,7 +384,7 @@ const LoadingContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const LoadingMessage = styled.div`
@@ -395,7 +395,7 @@ const LoadingMessage = styled.div`
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: ${({ theme }) => theme.spacing[12]} ${({ theme }) => theme.spacing[6]};
+  padding: ${({ theme }) => theme.spacing[12]} ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   color: ${({ theme }) => theme.text_secondary};
   font-size: ${({ theme }) => theme.typography.body.lg};
 `;

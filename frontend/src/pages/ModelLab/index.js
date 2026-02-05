@@ -25,7 +25,7 @@ const NavBar = styled.nav`
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"} ${({ theme }) => theme.spacing?.[8] || "2rem"};
   transition: all 0.3s ease;
 
   &::before {
@@ -48,7 +48,7 @@ const NavContent = styled.div`
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const Logo = styled.div`
@@ -81,7 +81,7 @@ const LogoImage = styled.img`
 
 const NavLinks = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const NavLink = styled.button`
