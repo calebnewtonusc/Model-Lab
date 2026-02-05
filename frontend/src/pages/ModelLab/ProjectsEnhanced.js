@@ -51,7 +51,7 @@ const ProjectCard = styled(Card)`
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: ${({ theme }) => theme.shadow.lg};
+    box-shadow: ${({ theme }) => theme.shadow?.lg || theme.elevation?.lg || "0 10px 15px rgba(0,0,0,0.1)"};
     border-color: ${({ theme }) => theme.primary};
   }
 `;
@@ -140,7 +140,7 @@ const Modal = styled.div`
   padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 600px;
   width: 100%;
-  box-shadow: ${({ theme }) => theme.shadow.xl};
+  box-shadow: ${({ theme }) => theme.shadow?.xl || theme.elevation?.xl || "0 20px 25px rgba(0,0,0,0.1)"};
 `;
 
 const ModalTitle = styled.h2`
@@ -167,7 +167,7 @@ const Input = styled.input`
   padding: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   border: 1px solid ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "0.375rem"};
   transition: all 0.2s ease;
 
   &:focus {
@@ -182,7 +182,7 @@ const TextArea = styled.textarea`
   padding: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   border: 1px solid ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "0.375rem"};
   transition: all 0.2s ease;
   resize: vertical;
   min-height: 100px;
@@ -216,7 +216,7 @@ const ErrorMessage = styled.div`
   background: ${({ theme }) => theme.error}10;
   color: ${({ theme }) => theme.error};
   padding: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "0.375rem"};
   margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   font-size: ${({ theme }) => theme.fontSize?.sm || "0.875rem"};
 `;
