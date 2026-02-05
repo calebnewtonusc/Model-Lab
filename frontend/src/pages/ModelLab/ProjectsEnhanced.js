@@ -97,7 +97,7 @@ const StatValue = styled.div`
   font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.primary};
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[1] || "0.25rem"};
 `;
 
 const StatLabel = styled.div`

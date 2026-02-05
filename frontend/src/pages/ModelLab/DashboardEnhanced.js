@@ -114,11 +114,11 @@ const StatIcon = styled.div`
 const StatTrend = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[1]};
+  gap: ${({ theme }) => theme.spacing?.[1] || "0.25rem"};
   font-size: ${({ theme }) => theme.fontSize?.sm || "0.875rem"};
   color: ${({ positive, theme }) => positive ? theme.success : theme.error};
   font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[2] || "0.5rem"}`};
+  padding: ${({ theme }) => `${theme.spacing?.[1] || "0.25rem"} ${theme.spacing?.[2] || "0.5rem"}`};
   background: ${({ positive, theme }) => positive ? theme.success + '15' : theme.error + '15'};
   border-radius: ${({ theme }) => theme.borderRadius?.base || "0.5rem"};
 `;
@@ -271,7 +271,7 @@ const ActivityText = styled.div`
   font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   font-weight: ${({ theme }) => theme.fontWeight?.medium || 500};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[1] || "0.25rem"};
   line-height: ${({ theme }) => theme.lineHeight?.normal || "1.5"};
 `;
 

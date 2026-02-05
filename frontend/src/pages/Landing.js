@@ -28,12 +28,12 @@ const Subtitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   color: ${({ theme }) => theme.text_secondary};
   max-width: 800px;
-  margin: 0 auto ${({ theme }) => theme.spacing[12]};
+  margin: 0 auto ${({ theme }) => theme.spacing?.[12] || "3rem"};
   line-height: 1.6;
 `;
 
 const CTAButton = styled.button`
-  padding: ${({ theme }) => `${theme.spacing?.[4] || "1rem"} ${theme.spacing[10]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[4] || "1rem"} ${theme.spacing?.[10] || "2.5rem"}`};
   background: ${({ theme }) => theme.primary?.[500] || '#10b981'};
   color: white;
   border: none;
@@ -62,7 +62,7 @@ const SectionTitle = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary};
   text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing[16]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[16] || "4rem"};
 `;
 
 const FeaturesGrid = styled.div`
@@ -146,12 +146,12 @@ const APIEndpoint = styled.div`
   background: ${({ theme }) => theme.bg};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius?.lg || "0.75rem"};
-  padding: ${({ theme }) => theme.spacing[5]};
+  padding: ${({ theme }) => theme.spacing?.[5] || "1.25rem"};
 `;
 
 const Method = styled.span`
   display: inline-block;
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[3] || "0.75rem"}`};
+  padding: ${({ theme }) => `${theme.spacing?.[1] || "0.25rem"} ${theme.spacing?.[3] || "0.75rem"}`};
   background: ${({ method, theme }) => {
     switch (method) {
       case 'GET': return theme.success || '#10b981' + '20';
