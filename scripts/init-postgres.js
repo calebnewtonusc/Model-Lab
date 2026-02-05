@@ -6,11 +6,16 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_FYdA8p7loXcu@ep-purple-water-afphrp30-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require';
+// DATABASE_URL must be set in environment variables
+if (!process.env.DATABASE_URL) {
+  console.error('❌ ERROR: DATABASE_URL environment variable is required');
+  console.error('   Please set DATABASE_URL in your .env file or environment');
+  process.exit(1);
+}
 
 const pool = new Pool({
-  connectionString: DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 async function initDatabase() {

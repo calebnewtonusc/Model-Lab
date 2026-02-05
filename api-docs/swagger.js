@@ -25,11 +25,15 @@ const swaggerDocument = {
   servers: [
     {
       url: 'http://localhost:3001',
-      description: 'Development server'
+      description: 'Development server (local)'
+    },
+    {
+      url: 'https://modellab-api-production.up.railway.app',
+      description: 'Production API server (Railway)'
     },
     {
       url: 'https://modellab.studio',
-      description: 'Production server'
+      description: 'Production frontend (Vercel)'
     }
   ],
   tags: [
