@@ -3,8 +3,13 @@
 ML experiment tracking platform with evaluation, reproducibility, and organization features.
 
 **🌐 Live Site:** [https://modellab.studio](https://modellab.studio)
+**📚 API Docs:** [Live API Documentation](https://modellab.studio/api-docs) *(Deploy backend to access)*
+**⚡ Status:** Ready for production deployment ([Deployment Guide](PRODUCTION_DEPLOYMENT.md))
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
+![Production Ready](https://img.shields.io/badge/production-ready-blue)
 
 ## Features
 
@@ -26,6 +31,40 @@ ML experiment tracking platform with evaluation, reproducibility, and organizati
 - Python SDK for experiment tracking
 - Python EvalHarness for evaluation
 - JavaScript EvalHarness for full-stack evaluation
+
+## 🚀 Quick Start
+
+### Local Development (5 minutes)
+
+```bash
+# 1. Clone and install
+git clone https://github.com/calebnewtonusc/ModelLab.git
+cd ModelLab
+npm install && cd frontend && npm install && cd ..
+
+# 2. Start the server
+npm start
+
+# 3. Open your browser
+# Frontend: http://localhost:3001
+# API Docs: http://localhost:3001/api-docs
+# Health: http://localhost:3001/api/health
+```
+
+### Production Deployment
+
+See [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md) for complete guide.
+
+**Quick Deploy:**
+```bash
+# Deploy backend to Railway (5 minutes)
+./scripts/deploy-railway.sh
+
+# Deploy frontend to Vercel (2 minutes)
+npm run vercel:deploy
+```
+
+---
 
 ## Usage
 
