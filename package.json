@@ -8,8 +8,18 @@
     "dev": "nodemon server.js",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --maxWorkers=2",
     "build": "cd frontend && npm run build",
-    "install-all": "npm install && cd frontend && npm install"
+    "build:frontend": "cd frontend && npm run build",
+    "install-all": "npm install && cd frontend && npm install",
+    "lint": "eslint . --ext .js --ignore-path .gitignore",
+    "lint:fix": "eslint . --ext .js --fix --ignore-path .gitignore",
+    "format": "prettier --write '**/*.{js,json,md,yml,yaml}'",
+    "format:check": "prettier --check '**/*.{js,json,md,yml,yaml}'",
+    "docker:build": "docker build -t modellab .",
+    "docker:run": "docker run -p 3001:3001 modellab",
+    "vercel:dev": "vercel dev",
+    "vercel:deploy": "vercel --prod"
   },
   "dependencies": {
     "archiver": "^7.0.1",
@@ -29,8 +39,10 @@
   "devDependencies": {
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-node": "^11.1.0",
     "jest": "^30.2.0",
     "nodemon": "^3.0.1",
+    "prettier": "^3.1.0",
     "supertest": "^7.2.2"
   },
   "engines": {
