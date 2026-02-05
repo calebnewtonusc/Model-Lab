@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { modernDarkTheme, modernLightTheme } from './utils/ModernThemes';
+import GlobalStyles from './GlobalStyles';
 import ModelLab from './pages/ModelLab';
 
 const Body = styled.div`
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <ThemeProvider theme={isDark ? modernDarkTheme : modernLightTheme}>
+      <GlobalStyles />
       <Body>
         <ModelLab />
       </Body>

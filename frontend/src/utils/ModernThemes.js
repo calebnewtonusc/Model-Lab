@@ -128,6 +128,7 @@ export const elevation = {
 // Modern typography scale
 export const typography = {
   fontFamily: {
+    primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif',
     sans: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif',
     mono: '"SF Mono", "Monaco", "Inconsolata", "Fira Code", "Dank Mono", "Consolas", monospace',
     display: '"Inter", -apple-system, system-ui, sans-serif',
@@ -285,6 +286,35 @@ export const animations = {
         }
       }
     `,
+
+    float: `
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+    `,
+
+    gradientShift: `
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    `,
+  },
+
+  // Animation references (use these in styled components)
+  animation: {
+    fadeIn: 'fadeIn',
+    slideUp: 'slideInUp',
+    slideDown: 'slideInDown',
+    scaleIn: 'scaleIn',
+    shimmer: 'shimmer',
+    pulse: 'pulse',
+    spin: 'spin',
+    bounce: 'bounce',
+    float: 'float',
+    gradientShift: 'gradientShift',
   },
 };
 
@@ -397,11 +427,11 @@ export const modernDarkTheme = {
   // Elevation
   elevation,
 
-  // Typography
-  typography,
+  // Typography (spread to root for easy access)
+  ...typography,
 
   // Animations
-  animations,
+  ...animations,
 
   // Spacing
   spacing,
@@ -467,11 +497,11 @@ export const modernLightTheme = {
   // Elevation
   elevation,
 
-  // Typography
-  typography,
+  // Typography (spread to root for easy access)
+  ...typography,
 
   // Animations
-  animations,
+  ...animations,
 
   // Spacing
   spacing,
