@@ -140,16 +140,16 @@ export const ModernButton = styled.button`
     return sizes[size];
   }};
 
-  font-family: ${({ theme }) => theme.typography?.fontFamily?.sans};
+  font-family: ${({ theme }) => theme.fontFamily?.sans || theme.typography?.fontFamily?.sans};
   font-size: ${({ size = 'md', theme }) => {
     const sizes = {
-      sm: theme.typography?.fontSize?.sm || '0.875rem',
-      md: theme.typography?.fontSize?.base || '1rem',
-      lg: theme.typography?.fontSize?.lg || '1.125rem',
+      sm: theme.fontSize?.sm || theme.typography?.fontSize?.sm || '0.875rem',
+      md: theme.fontSize?.base || theme.typography?.fontSize?.base || '1rem',
+      lg: theme.fontSize?.lg || theme.typography?.fontSize?.lg || '1.125rem',
     };
     return sizes[size];
   }};
-  font-weight: ${({ theme }) => theme.typography?.fontWeight?.semibold || 600};
+  font-weight: ${({ theme }) => theme.fontWeight?.semibold || theme.typography?.fontWeight?.semibold || 600};
 
   color: ${({ variant = 'primary', theme }) => {
     if (variant === 'primary' || variant === 'gradient') return theme.text_inverse || '#fff';
@@ -177,7 +177,7 @@ export const ModernButton = styled.button`
   outline: none;
   overflow: hidden;
 
-  transition: all ${({ theme }) => theme.animations?.duration?.base || '250ms'}
+  transition: all ${({ theme }) => theme.duration?.base || theme.animations?.duration?.base || '250ms'}
               ${({ theme }) => theme.animations?.easing?.easeInOut || 'ease-in-out'};
 
   &:hover:not(:disabled) {
@@ -249,7 +249,7 @@ export const StatIcon = styled.div`
 `;
 
 export const StatValue = styled.div`
-  font-size: ${({ theme }) => theme.typography?.fontSize?.['4xl'] || '2.25rem'};
+  font-size: ${({ theme }) => theme.fontSize?.['4xl'] || theme.typography?.fontSize?.['4xl'] || '2.25rem'};
   font-weight: ${({ theme }) => theme.typography?.fontWeight?.bold || 700};
   color: ${({ theme }) => theme.text_primary || '#fff'};
   line-height: 1;
@@ -264,7 +264,7 @@ export const StatValue = styled.div`
 `;
 
 export const StatLabel = styled.div`
-  font-size: ${({ theme }) => theme.typography?.fontSize?.sm || '0.875rem'};
+  font-size: ${({ theme }) => theme.fontSize?.sm || theme.typography?.fontSize?.sm || '0.875rem'};
   color: ${({ theme }) => theme.text_secondary || '#b4b4c8'};
   font-weight: ${({ theme }) => theme.typography?.fontWeight?.medium || 500};
 `;
@@ -273,7 +273,7 @@ export const StatTrend = styled.div`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing?.[1] || '0.25rem'};
-  font-size: ${({ theme }) => theme.typography?.fontSize?.sm || '0.875rem'};
+  font-size: ${({ theme }) => theme.fontSize?.sm || theme.typography?.fontSize?.sm || '0.875rem'};
   font-weight: ${({ theme }) => theme.typography?.fontWeight?.semibold || 600};
 
   color: ${({ trend, theme }) => {
@@ -321,7 +321,7 @@ export const SidebarLogo = styled.div`
   }
 
   span {
-    font-size: ${({ theme }) => theme.typography?.fontSize?.xl || '1.25rem'};
+    font-size: ${({ theme }) => theme.fontSize?.xl || theme.typography?.fontSize?.xl || '1.25rem'};
     font-weight: ${({ theme }) => theme.typography?.fontWeight?.bold || 700};
     background: ${({ theme }) => theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)'};
     -webkit-background-clip: text;
@@ -329,7 +329,7 @@ export const SidebarLogo = styled.div`
     background-clip: text;
     white-space: nowrap;
     opacity: ${({ collapsed }) => collapsed ? 0 : 1};
-    transition: opacity ${({ theme }) => theme.animations?.duration?.base || '250ms'};
+    transition: opacity ${({ theme }) => theme.duration?.base || theme.animations?.duration?.base || '250ms'};
   }
 `;
 
@@ -351,7 +351,7 @@ export const NavItem = styled.button`
   border-radius: ${({ theme }) => theme.borderRadius?.lg || '0.5rem'};
   cursor: pointer;
   font-family: ${({ theme }) => theme.typography?.fontFamily?.sans};
-  font-size: ${({ theme }) => theme.typography?.fontSize?.base || '1rem'};
+  font-size: ${({ theme }) => theme.fontSize?.base || theme.typography?.fontSize?.base || '1rem'};
   font-weight: ${({ active, theme }) => active ?
     theme.typography?.fontWeight?.semibold || 600 :
     theme.typography?.fontWeight?.medium || 500};
@@ -359,7 +359,7 @@ export const NavItem = styled.button`
   white-space: nowrap;
   overflow: hidden;
 
-  transition: all ${({ theme }) => theme.animations?.duration?.base || '250ms'}
+  transition: all ${({ theme }) => theme.duration?.base || theme.animations?.duration?.base || '250ms'}
               ${({ theme }) => theme.animations?.easing?.easeInOut || 'ease-in-out'};
 
   svg {
@@ -424,7 +424,7 @@ export const CommandInput = styled.input`
   outline: none;
   color: ${({ theme }) => theme.text_primary || '#fff'};
   font-family: ${({ theme }) => theme.typography?.fontFamily?.sans};
-  font-size: ${({ theme }) => theme.typography?.fontSize?.lg || '1.125rem'};
+  font-size: ${({ theme }) => theme.fontSize?.lg || theme.typography?.fontSize?.lg || '1.125rem'};
 
   &::placeholder {
     color: ${({ theme }) => theme.text_tertiary || '#808090'};
@@ -465,7 +465,7 @@ export const CommandItem = styled.button`
   border: none;
   color: ${({ theme }) => theme.text_primary || '#fff'};
   font-family: ${({ theme }) => theme.typography?.fontFamily?.sans};
-  font-size: ${({ theme }) => theme.typography?.fontSize?.base || '1rem'};
+  font-size: ${({ theme }) => theme.fontSize?.base || theme.typography?.fontSize?.base || '1rem'};
   text-align: left;
   cursor: pointer;
 
@@ -541,10 +541,10 @@ export const SearchInput = styled.input`
   border-radius: ${({ theme }) => theme.borderRadius?.xl || '0.75rem'};
   color: ${({ theme }) => theme.text_primary || '#fff'};
   font-family: ${({ theme }) => theme.typography?.fontFamily?.sans};
-  font-size: ${({ theme }) => theme.typography?.fontSize?.base || '1rem'};
+  font-size: ${({ theme }) => theme.fontSize?.base || theme.typography?.fontSize?.base || '1rem'};
   outline: none;
 
-  transition: all ${({ theme }) => theme.animations?.duration?.base || '250ms'}
+  transition: all ${({ theme }) => theme.duration?.base || theme.animations?.duration?.base || '250ms'}
               ${({ theme }) => theme.animations?.easing?.easeInOut || 'ease-in-out'};
 
   &::placeholder {
