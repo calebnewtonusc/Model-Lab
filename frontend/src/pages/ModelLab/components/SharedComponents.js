@@ -83,7 +83,7 @@ export const LoadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: ${({ theme }) => theme.spacing[12]};
+  padding: ${({ theme }) => theme.spacing?.[12] || "3rem"};
   gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   animation: ${fadeIn} 0.3s ease;
 `;
@@ -123,7 +123,7 @@ export const SkeletonCard = styled.div`
 
 export const EmptyState = styled.div`
   text-align: center;
-  padding: ${({ theme }) => theme.spacing[12]} ${({ theme }) => theme.spacing?.[8] || "2rem"};
+  padding: ${({ theme }) => theme.spacing?.[12] || "3rem"} ${({ theme }) => theme.spacing?.[8] || "2rem"};
   color: ${({ theme }) => theme.text_secondary};
   animation: ${fadeIn} 0.4s ease;
 `;
@@ -176,7 +176,7 @@ const ToastItem = styled.div`
     return theme.cardElevated;
   }};
   color: white;
-  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"} ${({ theme }) => theme.spacing[5]};
+  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"} ${({ theme }) => theme.spacing?.[5] || "1.25rem"};
   border-radius: ${({ theme }) => theme.borderRadius?.lg || "0.75rem"};
   box-shadow: ${({ theme }) => theme.elevation?.xl || "0 20px 25px rgba(0,0,0,0.1)"};
   backdrop-filter: ${({ theme }) => theme.backdropBlur};
@@ -370,7 +370,7 @@ export const Button = styled.button`
 // ============================================================================
 
 export const Badge = styled.span`
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[3] || "0.75rem"}`};
+  padding: ${({ theme }) => `${theme.spacing?.[1] || "0.25rem"} ${theme.spacing?.[3] || "0.75rem"}`};
   border-radius: ${({ theme }) => theme.borderRadius?.full || "9999px"};
   font-size: ${({ theme }) => theme.fontSize?.xs || "0.75rem"};
   font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
@@ -378,7 +378,7 @@ export const Badge = styled.span`
   letter-spacing: 0.05em;
   display: inline-flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[1]};
+  gap: ${({ theme }) => theme.spacing?.[1] || "0.25rem"};
   white-space: nowrap;
 
   background: ${({ variant, theme }) => {
@@ -493,7 +493,7 @@ export const Select = styled.select`
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23737373' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right ${({ theme }) => theme.spacing?.[4] || "1rem"} center;
-  padding-right: ${({ theme }) => theme.spacing[10]};
+  padding-right: ${({ theme }) => theme.spacing?.[10] || "2.5rem"};
 
   option {
     background: ${({ theme }) => theme.card};
@@ -514,7 +514,7 @@ export const Label = styled.label`
   color: ${({ theme }) => theme.text_primary};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[1]};
+  gap: ${({ theme }) => theme.spacing?.[1] || "0.25rem"};
 `;
 
 export const InputError = styled.span`
@@ -522,7 +522,7 @@ export const InputError = styled.span`
   color: ${({ theme }) => theme.error};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[1]};
+  gap: ${({ theme }) => theme.spacing?.[1] || "0.25rem"};
 `;
 
 export const InputHelper = styled.span`

@@ -45,7 +45,7 @@ const SelectionGrid = styled.div`
 
 const SelectBox = styled.div`
   background: ${({ theme }) => theme.cardLight};
-  padding: ${({ theme }) => theme.spacing[5]};
+  padding: ${({ theme }) => theme.spacing?.[5] || "1.25rem"};
   border-radius: ${({ theme }) => theme.borderRadius?.lg || "0.75rem"};
   border: 2px solid ${({ theme }) => theme.border};
   transition: ${({ theme }) => theme.transition?.fast || '0.2s ease'};

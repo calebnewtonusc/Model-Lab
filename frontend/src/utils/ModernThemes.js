@@ -424,8 +424,18 @@ export const modernDarkTheme = {
   // Glassmorphism
   glass: glass.dark,
 
+  // Backdrop effects
+  backdropBlur: 'blur(12px)',
+
   // Elevation
   elevation,
+
+  // Transitions
+  transition: {
+    fast: '0.15s ease',
+    base: '0.3s ease',
+    slow: '0.5s ease',
+  },
 
   // Typography (spread to root for easy access)
   ...typography,
@@ -494,8 +504,18 @@ export const modernLightTheme = {
   // Glassmorphism
   glass,
 
+  // Backdrop effects
+  backdropBlur: 'blur(12px)',
+
   // Elevation
   elevation,
+
+  // Transitions
+  transition: {
+    fast: '0.15s ease',
+    base: '0.3s ease',
+    slow: '0.5s ease',
+  },
 
   // Typography (spread to root for easy access)
   ...typography,

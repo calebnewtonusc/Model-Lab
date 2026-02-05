@@ -232,7 +232,7 @@ const CreatorInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: ${({ theme }) => theme.spacing[1]};
+  gap: ${({ theme }) => theme.spacing?.[1] || "0.25rem"};
 `;
 
 const BuiltByLabel = styled.span`
