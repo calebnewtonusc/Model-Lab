@@ -170,7 +170,7 @@ const Method = styled.span`
       default: return theme.text_secondary;
     }
   }};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "0.375rem"};
   font-size: ${({ theme }) => theme.fontSize?.xs || "0.75rem"};
   font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
   margin-right: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
@@ -467,13 +467,13 @@ curl -X POST https://modellab-api-production.up.railway.app/api/modellab/runs \\
 
       <Footer>
         <FooterLinks>
-          <FooterLink href="https://github.com/yourusername/modellab" target="_blank" rel="noopener noreferrer">
+          <FooterLink href="https://github.com/calebnewtonusc/ModelLab" target="_blank" rel="noopener noreferrer">
             GitHub
           </FooterLink>
-          <FooterLink href="/api-docs" target="_blank" rel="noopener noreferrer">
+          <FooterLink href="https://modellab.studio" rel="noopener noreferrer">
             API Docs
           </FooterLink>
-          <FooterLink href="/api/health" target="_blank" rel="noopener noreferrer">
+          <FooterLink href="https://modellab.studio" rel="noopener noreferrer">
             API Status
           </FooterLink>
         </FooterLinks>
