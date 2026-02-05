@@ -56,9 +56,35 @@ router.post('/', (req, res) => {
     }
 
     try {
+      // Validate file presence
       const file = files.file;
       if (!file) {
         return res.status(400).json({ error: 'No file uploaded' });
+      }
+
+      // Validate fields using Joi schema
+      const fieldsToValidate = {
+        name: Array.isArray(fields.name) ? fields.name[0] : fields.name,
+        description: Array.isArray(fields.description) ? fields.description[0] : fields.description,
+        tags: Array.isArray(fields.tags) ? fields.tags[0] : fields.tags,
+        metadata: Array.isArray(fields.metadata) ? fields.metadata[0] : fields.metadata
+      };
+
+      const { error: validationError } = schemas.dataset.create.validate(fieldsToValidate, {
+        abortEarly: false,
+        stripUnknown: true
+      });
+
+      if (validationError) {
+        const errors = validationError.details.map(detail => ({
+          field: detail.path.join('.'),
+          message: detail.message
+        }));
+        return res.status(400).json({
+          error: 'Validation Error',
+          message: 'Invalid field data',
+          details: errors
+        });
       }
 
       // Get the uploaded file path
