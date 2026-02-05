@@ -83,7 +83,6 @@ SECURITY.md
 SESSION*.md
 UPGRADE*.sh
 docker-compose*.yml
-jest.config.js
 test-install.sh
 
 # Database files
@@ -91,8 +90,8 @@ test-install.sh
 *.db-journal
 
 # Redundant folders
+# Note: api-docs/ is needed for Swagger documentation
 api/
-api-docs/
 backend/
 
 # Large assets
