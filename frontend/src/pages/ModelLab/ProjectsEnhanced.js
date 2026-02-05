@@ -4,17 +4,17 @@ import { LoadingContainer, Spinner, LoadingText, Card, Badge, EmptyState, Button
 import { API_ENDPOINTS } from '../../config/api';
 
 const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 1600px;
   margin: 0 auto;
 `;
 
 const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -23,7 +23,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
   margin: 0;
@@ -34,14 +34,14 @@ const Subtitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize.lg};
   color: ${({ theme }) => theme.text_secondary};
   line-height: ${({ theme }) => theme.lineHeight.normal};
-  margin-top: ${({ theme }) => theme.spacing[2]};
+  margin-top: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const ProjectsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const ProjectCard = styled(Card)`
@@ -60,21 +60,21 @@ const ProjectHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const ProjectName = styled.h3`
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
-  margin: 0 0 ${({ theme }) => theme.spacing[2]} 0;
+  margin: 0 0 ${({ theme }) => theme.spacing?.[2] || "0.5rem"} 0;
 `;
 
 const ProjectDescription = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   color: ${({ theme }) => theme.text_secondary};
   line-height: ${({ theme }) => theme.lineHeight.relaxed};
-  margin: 0 0 ${({ theme }) => theme.spacing[4]} 0;
+  margin: 0 0 ${({ theme }) => theme.spacing?.[4] || "1rem"} 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -84,8 +84,8 @@ const ProjectDescription = styled.p`
 const ProjectStats = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing[4]};
-  padding-top: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  padding-top: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   border-top: 1px solid ${({ theme }) => theme.border};
 `;
 
@@ -94,7 +94,7 @@ const StatItem = styled.div`
 `;
 
 const StatValue = styled.div`
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.primary};
   margin-bottom: ${({ theme }) => theme.spacing[1]};
@@ -110,10 +110,10 @@ const StatLabel = styled.div`
 const LastActivity = styled.div`
   font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.text_tertiary};
-  margin-top: ${({ theme }) => theme.spacing[3]};
+  margin-top: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 
   &::before {
     content: '🕒';
@@ -131,27 +131,27 @@ const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const Modal = styled.div`
   background: white;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 600px;
   width: 100%;
   box-shadow: ${({ theme }) => theme.shadow.xl};
 `;
 
 const ModalTitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin: 0 0 ${({ theme }) => theme.spacing[6]} 0;
+  margin: 0 0 ${({ theme }) => theme.spacing?.[6] || "1.5rem"} 0;
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 const Label = styled.label`
@@ -159,13 +159,13 @@ const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: ${({ theme }) => theme.spacing[3]};
-  font-size: ${({ theme }) => theme.fontSize.base};
+  padding: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   transition: all 0.2s ease;
@@ -179,8 +179,8 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   width: 100%;
-  padding: ${({ theme }) => theme.spacing[3]};
-  font-size: ${({ theme }) => theme.fontSize.base};
+  padding: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   transition: all 0.2s ease;
@@ -197,9 +197,9 @@ const TextArea = styled.textarea`
 
 const ModalActions = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   justify-content: flex-end;
-  margin-top: ${({ theme }) => theme.spacing[6]};
+  margin-top: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 const SecondaryButton = styled(Button)`
@@ -215,9 +215,9 @@ const SecondaryButton = styled(Button)`
 const ErrorMessage = styled.div`
   background: ${({ theme }) => theme.error}10;
   color: ${({ theme }) => theme.error};
-  padding: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   font-size: ${({ theme }) => theme.fontSize.sm};
 `;
 

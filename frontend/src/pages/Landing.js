@@ -7,25 +7,25 @@ const Container = styled.div`
 `;
 
 const Hero = styled.section`
-  padding: ${({ theme }) => theme.spacing[24]} ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing[24]} ${({ theme }) => theme.spacing?.[8] || "2rem"};
   text-align: center;
-  background: linear-gradient(135deg, ${({ theme }) => theme.primary[900]}15, ${({ theme }) => theme.primary[800]}10);
+  background: linear-gradient(135deg, ${({ theme }) => theme.primary?.[900] || '#064e3b'}15, ${({ theme }) => theme.primary?.[800] || '#065f46'}10);
   border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize['6xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['6xl'] || '3.75rem'};
   font-weight: ${({ theme }) => theme.fontWeight.extrabold};
-  background: linear-gradient(135deg, ${({ theme }) => theme.primary[400]}, ${({ theme }) => theme.primary[600]});
+  background: linear-gradient(135deg, ${({ theme }) => theme.primary?.[400] || '#34d399'}, ${({ theme }) => theme.primary?.[600] || '#059669'});
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   letter-spacing: -0.02em;
 `;
 
 const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   color: ${({ theme }) => theme.text_secondary};
   max-width: 800px;
   margin: 0 auto ${({ theme }) => theme.spacing[12]};
@@ -33,32 +33,32 @@ const Subtitle = styled.p`
 `;
 
 const CTAButton = styled.button`
-  padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[10]}`};
-  background: ${({ theme }) => theme.primary[500]};
+  padding: ${({ theme }) => `${theme.spacing?.[4] || "1rem"} ${theme.spacing[10]}`};
+  background: ${({ theme }) => theme.primary?.[500] || '#10b981'};
   color: white;
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.xl};
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   cursor: pointer;
-  transition: ${({ theme }) => theme.transition.base};
+  transition: ${({ theme }) => theme.transition?.base || '0.3s ease'};
   box-shadow: ${({ theme }) => theme.elevation.md};
 
   &:hover {
-    background: ${({ theme }) => theme.primary[600]};
+    background: ${({ theme }) => theme.primary?.[600] || '#059669'};
     transform: translateY(-2px);
     box-shadow: ${({ theme }) => theme.elevation.lg};
   }
 `;
 
 const FeaturesSection = styled.section`
-  padding: ${({ theme }) => theme.spacing[20]} ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing[20]} ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 1400px;
   margin: 0 auto;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
   text-align: center;
@@ -68,50 +68,50 @@ const SectionTitle = styled.h2`
 const FeaturesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const FeatureCard = styled.div`
   background: ${({ theme }) => theme.cardElevated};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.xl};
-  padding: ${({ theme }) => theme.spacing[8]};
-  transition: ${({ theme }) => theme.transition.base};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
+  transition: ${({ theme }) => theme.transition?.base || '0.3s ease'};
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${({ theme }) => theme.elevation.lg};
-    border-color: ${({ theme }) => theme.primary[500]}40;
+    border-color: ${({ theme }) => theme.primary?.[500] || '#10b981'}40;
   }
 `;
 
 const FeatureIcon = styled.div`
   width: 60px;
   height: 60px;
-  background: ${({ theme }) => theme.primary[500]}15;
+  background: ${({ theme }) => theme.primary?.[500] || '#10b981'}15;
   border-radius: ${({ theme }) => theme.borderRadius.xl};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ theme }) => theme.fontSize['3xl']};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  font-size: ${({ theme }) => theme.fontSize?.['3xl'] || '1.875rem'};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[3]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
 `;
 
 const FeatureDescription = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   color: ${({ theme }) => theme.text_secondary};
   line-height: 1.8;
 `;
 
 const APISection = styled.section`
-  padding: ${({ theme }) => theme.spacing[20]} ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing[20]} ${({ theme }) => theme.spacing?.[8] || "2rem"};
   background: ${({ theme }) => theme.cardElevated};
   border-top: 1px solid ${({ theme }) => theme.border};
   border-bottom: 1px solid ${({ theme }) => theme.border};
@@ -126,9 +126,9 @@ const CodeBlock = styled.pre`
   background: ${({ theme }) => theme.bg};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.xl};
-  padding: ${({ theme }) => theme.spacing[6]};
+  padding: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   overflow-x: auto;
-  margin: ${({ theme }) => theme.spacing[6]} 0;
+  margin: ${({ theme }) => theme.spacing?.[6] || "1.5rem"} 0;
   font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
   font-size: ${({ theme }) => theme.fontSize.sm};
   line-height: 1.6;
@@ -138,8 +138,8 @@ const CodeBlock = styled.pre`
 const APIGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-top: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-top: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const APIEndpoint = styled.div`
@@ -151,29 +151,29 @@ const APIEndpoint = styled.div`
 
 const Method = styled.span`
   display: inline-block;
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing[3]}`};
+  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[3] || "0.75rem"}`};
   background: ${({ method, theme }) => {
     switch (method) {
-      case 'GET': return theme.success[500] + '20';
-      case 'POST': return theme.primary[500] + '20';
-      case 'PUT': return theme.warning[500] + '20';
-      case 'DELETE': return theme.error[500] + '20';
+      case 'GET': return theme.success || '#10b981' + '20';
+      case 'POST': return theme.primary?.[500] || '#10b981' + '20';
+      case 'PUT': return theme.warning || '#f59e0b' + '20';
+      case 'DELETE': return theme.error || '#ef4444' + '20';
       default: return theme.text_secondary + '20';
     }
   }};
   color: ${({ method, theme }) => {
     switch (method) {
-      case 'GET': return theme.success[500];
-      case 'POST': return theme.primary[500];
-      case 'PUT': return theme.warning[500];
-      case 'DELETE': return theme.error[500];
+      case 'GET': return theme.success || '#10b981';
+      case 'POST': return theme.primary?.[500] || '#10b981';
+      case 'PUT': return theme.warning || '#f59e0b';
+      case 'DELETE': return theme.error || '#ef4444';
       default: return theme.text_secondary;
     }
   }};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  margin-right: ${({ theme }) => theme.spacing[2]};
+  margin-right: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const EndpointPath = styled.code`
@@ -185,41 +185,41 @@ const EndpointPath = styled.code`
 const EndpointDescription = styled.p`
   color: ${({ theme }) => theme.text_secondary};
   font-size: ${({ theme }) => theme.fontSize.sm};
-  margin-top: ${({ theme }) => theme.spacing[2]};
+  margin-top: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const QuickStartSection = styled.section`
-  padding: ${({ theme }) => theme.spacing[20]} ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing[20]} ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 1200px;
   margin: 0 auto;
 `;
 
 const StepGrid = styled.div`
   display: grid;
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-top: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-top: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const Step = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[6]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   background: ${({ theme }) => theme.cardElevated};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.xl};
-  padding: ${({ theme }) => theme.spacing[6]};
+  padding: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 const StepNumber = styled.div`
   width: 48px;
   height: 48px;
   min-width: 48px;
-  background: ${({ theme }) => theme.primary[500]};
+  background: ${({ theme }) => theme.primary?.[500] || '#10b981'};
   color: white;
   border-radius: ${({ theme }) => theme.borderRadius.full};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
@@ -231,7 +231,7 @@ const StepTitle = styled.h4`
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const StepDescription = styled.p`
@@ -240,7 +240,7 @@ const StepDescription = styled.p`
 `;
 
 const Footer = styled.footer`
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   text-align: center;
   border-top: 1px solid ${({ theme }) => theme.border};
   color: ${({ theme }) => theme.text_secondary};
@@ -249,19 +249,19 @@ const Footer = styled.footer`
 
 const FooterLinks = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[6]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   justify-content: center;
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const FooterLink = styled.a`
-  color: ${({ theme }) => theme.primary[500]};
+  color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
   text-decoration: none;
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  transition: ${({ theme }) => theme.transition.base};
+  transition: ${({ theme }) => theme.transition?.base || '0.3s ease'};
 
   &:hover {
-    color: ${({ theme }) => theme.primary[600]};
+    color: ${({ theme }) => theme.primary?.[600] || '#059669'};
     text-decoration: underline;
   }
 `;

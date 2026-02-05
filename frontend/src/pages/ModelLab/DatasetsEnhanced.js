@@ -13,7 +13,7 @@ import {
 import { API_ENDPOINTS } from '../../config/api';
 
 const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 1600px;
   margin: 0 auto;
 `;
@@ -22,8 +22,8 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
-  gap: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -32,11 +32,11 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
   line-height: ${({ theme }) => theme.lineHeight.tight};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const Subtitle = styled.p`
@@ -52,13 +52,13 @@ const HeaderContent = styled.div`
 
 const SearchBar = styled(Input)`
   max-width: 400px;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 const DatasetsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 const DatasetCard = styled(Card)`
@@ -66,7 +66,7 @@ const DatasetCard = styled(Card)`
   border: 2px solid ${({ theme }) => theme.border};
 
   &:hover {
-    border-color: ${({ theme }) => theme.primary[500]};
+    border-color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
   }
 `;
 
@@ -74,22 +74,22 @@ const DatasetName = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
   line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
 const DatasetDescription = styled.p`
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.text_secondary};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   line-height: ${({ theme }) => theme.lineHeight.normal};
 `;
 
 const DatasetMeta = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing[4]};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const MetaItem = styled.div`

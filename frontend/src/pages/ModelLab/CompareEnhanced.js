@@ -12,20 +12,20 @@ import {
 } from './components/SharedComponents';
 
 const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 1600px;
   margin: 0 auto;
 `;
 
 const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
   line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
@@ -33,14 +33,14 @@ const Subtitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize.lg};
   color: ${({ theme }) => theme.text_secondary};
   line-height: ${({ theme }) => theme.lineHeight.normal};
-  margin: 0 0 ${({ theme }) => theme.spacing[6]} 0;
+  margin: 0 0 ${({ theme }) => theme.spacing?.[6] || "1.5rem"} 0;
 `;
 
 const SelectionGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${({ theme }) => theme.spacing[4]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const SelectBox = styled.div`
@@ -60,19 +60,19 @@ const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const ChartSection = styled(Card)`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const ChartHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
@@ -86,8 +86,8 @@ const ChartTitle = styled.h3`
 const ChartsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;

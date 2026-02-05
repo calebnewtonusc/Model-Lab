@@ -9,17 +9,17 @@ import {
 import { LoadingContainer, Spinner, LoadingText, Card, Badge, EmptyState, Button } from './components/SharedComponents';
 
 const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   max-width: 1600px;
   margin: 0 auto;
 `;
 
 const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -32,10 +32,10 @@ const HeaderLeft = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize['4xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['4xl'] || '2.25rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
   line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
@@ -48,7 +48,7 @@ const Subtitle = styled.p`
 
 const HeaderRight = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   align-items: center;
 `;
 
@@ -61,14 +61,14 @@ const LastUpdate = styled.div`
   color: ${({ theme }) => theme.text_tertiary};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const StatCard = styled(Card)`
@@ -82,9 +82,9 @@ const StatCard = styled(Card)`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, ${({ theme }) => theme.primary[400]}, ${({ theme }) => theme.primary[600]});
+    background: linear-gradient(90deg, ${({ theme }) => theme.primary?.[400] || '#34d399'}, ${({ theme }) => theme.primary?.[600] || '#059669'});
     opacity: 0;
-    transition: ${({ theme }) => theme.transition.base};
+    transition: ${({ theme }) => theme.transition?.base || '0.3s ease'};
   }
 
   &:hover::before {
@@ -96,19 +96,19 @@ const StatHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
 `;
 
 const StatIcon = styled.div`
   width: 56px;
   height: 56px;
-  background: ${({ theme }) => theme.primary[500] + '15'};
+  background: ${({ theme }) => theme.primary?.[500] || '#10b981' + '15'};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ theme }) => theme.fontSize['2xl']};
-  border: 1px solid ${({ theme }) => theme.primary[500] + '30'};
+  font-size: ${({ theme }) => theme.fontSize?.['2xl'] || '1.5rem'};
+  border: 1px solid ${({ theme }) => theme.primary?.[500] || '#10b981' + '30'};
 `;
 
 const StatTrend = styled.div`
@@ -118,16 +118,16 @@ const StatTrend = styled.div`
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ positive, theme }) => positive ? theme.success : theme.error};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing[2]}`};
+  padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing?.[2] || "0.5rem"}`};
   background: ${({ positive, theme }) => positive ? theme.success + '15' : theme.error + '15'};
   border-radius: ${({ theme }) => theme.borderRadius.base};
 `;
 
 const StatValue = styled.div`
-  font-size: ${({ theme }) => theme.fontSize['3xl']};
+  font-size: ${({ theme }) => theme.fontSize?.['3xl'] || '1.875rem'};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme }) => theme.primary[500]};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
+  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
   line-height: ${({ theme }) => theme.lineHeight.tight};
 `;
 
@@ -142,8 +142,8 @@ const StatLabel = styled.div`
 const ChartsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: ${({ theme }) => theme.spacing[6]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
@@ -151,15 +151,15 @@ const ChartsGrid = styled.div`
 `;
 
 const ChartCard = styled(Card)`
-  padding: ${({ theme }) => theme.spacing[6]};
+  padding: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
 `;
 
 const ChartHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
@@ -170,19 +170,19 @@ const ChartTitle = styled.h3`
   margin: 0;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const ChartActions = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 `;
 
 const ChartButton = styled.button`
   background: ${({ theme }) => theme.bgLight};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.borderRadius.base};
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
+  padding: ${({ theme }) => `${theme.spacing?.[2] || "0.5rem"} ${theme.spacing?.[4] || "1rem"}`};
   color: ${({ theme }) => theme.text_secondary};
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
@@ -197,15 +197,15 @@ const ChartButton = styled.button`
 `;
 
 const ActivitySection = styled(Card)`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const ActivityHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-  padding-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
+  padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
@@ -219,13 +219,13 @@ const ActivityTitle = styled.h3`
 const ActivityList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
 `;
 
 const ActivityItem = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[4]};
-  padding: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"};
   background: ${({ theme }) => theme.bgLight};
   border: 1px solid ${({ theme }) => theme.borderLight};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
@@ -244,16 +244,16 @@ const ActivityIcon = styled.div`
   height: 48px;
   flex-shrink: 0;
   background: ${({ type, theme }) => {
-    if (type === 'run') return theme.primary[500] + '15';
+    if (type === 'run') return theme.primary?.[500] || '#10b981' + '15';
     if (type === 'dataset') return theme.info + '15';
     if (type === 'evaluation') return theme.success + '15';
-    return theme.neutral[700];
+    return theme.neutral?.[700] || '#4b5563';
   }};
   border: 1px solid ${({ type, theme }) => {
-    if (type === 'run') return theme.primary[500] + '30';
+    if (type === 'run') return theme.primary?.[500] || '#10b981' + '30';
     if (type === 'dataset') return theme.info + '30';
     if (type === 'evaluation') return theme.success + '30';
-    return theme.neutral[600];
+    return theme.neutral?.[600] || '#6b7280';
   }};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   display: flex;
@@ -268,7 +268,7 @@ const ActivityContent = styled.div`
 `;
 
 const ActivityText = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.text_primary};
   margin-bottom: ${({ theme }) => theme.spacing[1]};
@@ -283,21 +283,21 @@ const ActivityTime = styled.div`
 const QuickActionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: ${({ theme }) => theme.spacing[4]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
 `;
 
 const QuickActionCard = styled(Card)`
   cursor: pointer;
   text-align: center;
-  padding: ${({ theme }) => theme.spacing[6]};
+  padding: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
   border: 2px solid ${({ theme }) => theme.border};
   background: ${({ theme }) => theme.card};
   user-select: none;
-  transition: ${({ theme }) => theme.transition.base};
+  transition: ${({ theme }) => theme.transition?.base || '0.3s ease'};
 
   &:hover {
-    border-color: ${({ theme }) => theme.primary[500]};
+    border-color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
     background: ${({ theme }) => theme.cardLight};
     transform: translateY(-4px);
     box-shadow: ${({ theme }) => theme.elevation.lg};
@@ -309,8 +309,8 @@ const QuickActionCard = styled(Card)`
 `;
 
 const QuickActionIcon = styled.div`
-  font-size: ${({ theme }) => theme.fontSize['3xl']};
-  margin-bottom: ${({ theme }) => theme.spacing[3]};
+  font-size: ${({ theme }) => theme.fontSize?.['3xl'] || '1.875rem'};
+  margin-bottom: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
 `;
 
 const QuickActionTitle = styled.div`
