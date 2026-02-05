@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { API_ENDPOINTS } from '../../config/api';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Container = styled.div`
@@ -294,7 +295,7 @@ const Runs = () => {
 
   const fetchRuns = async () => {
     try {
-      const response = await fetch('/api/modellab/runs');
+      const response = await fetch(API_ENDPOINTS.runs);
       const data = await response.json();
       setRuns(data.runs || []);
     } catch (error) {
@@ -304,7 +305,7 @@ const Runs = () => {
 
   const fetchDatasets = async () => {
     try {
-      const response = await fetch('/api/modellab/datasets');
+      const response = await fetch(API_ENDPOINTS.datasets);
       const data = await response.json();
       setDatasets(data.datasets || []);
     } catch (error) {

@@ -29,9 +29,26 @@ const getGitCommitHash = async () => {
 // GET all runs
 router.get('/', async (req, res) => {
   try {
-    const runs = await db.getRuns();
+    let runs = await db.getRuns();
     // Ensure runs is always an array
-    const runsArray = Array.isArray(runs) ? runs : [];
+    let runsArray = Array.isArray(runs) ? runs : [];
+
+    // Apply query parameter filters
+    const { project_id, model_type, status, dataset_id } = req.query;
+
+    if (project_id) {
+      runsArray = runsArray.filter(run => run.project_id === project_id);
+    }
+    if (model_type) {
+      runsArray = runsArray.filter(run => run.model_type === model_type);
+    }
+    if (status) {
+      runsArray = runsArray.filter(run => run.status === status);
+    }
+    if (dataset_id) {
+      runsArray = runsArray.filter(run => run.dataset_id === dataset_id);
+    }
+
     res.json({ runs: runsArray });
   } catch (error) {
     console.error('Error fetching runs:', error);
@@ -82,11 +99,16 @@ router.post('/', validate(schemas.run.create), async (req, res) => {
       id: runId,
       name: data.name || `Run ${new Date().toLocaleString()}`,
       description: data.description || '',
-      status: data.status || 'pending',
+      status: data.status || 'created',
       seed: data.seed || Math.floor(Math.random() * 1000000),
       commitHash,
-      datasetId: data.datasetId || null,
+      project_id: data.project_id || data.projectId || null,
+      projectId: data.project_id || data.projectId || null,
+      dataset_id: data.dataset_id || data.datasetId || null,
+      datasetId: data.dataset_id || data.datasetId || null,
       datasetVersion: data.datasetVersion || null,
+      model_type: data.model_type || data.modelType || null,
+      modelType: data.model_type || data.modelType || null,
       hyperparameters: data.hyperparameters || {},
       config: data.config || {},
       tags: data.tags || [],
@@ -138,10 +160,7 @@ router.delete('/:id', validateId('id'), async (req, res) => {
 
     await db.deleteRun(req.params.id);
 
-    res.json({
-      message: 'Run deleted successfully',
-      run
-    });
+    res.status(204).send();
   } catch (error) {
     console.error('Delete run error:', error);
     res.status(500).json({ error: error.message });

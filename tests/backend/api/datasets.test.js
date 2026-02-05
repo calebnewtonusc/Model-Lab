@@ -115,7 +115,7 @@ describe('Datasets API', () => {
 
     it('should return 404 for non-existent dataset', async () => {
       await request(app)
-        .get('/api/modellab/datasets/nonexistent')
+        .get('/api/modellab/datasets/9999999999999-xxxxxxxxx')
         .expect(404);
     });
   });
@@ -157,7 +157,7 @@ describe('Datasets API', () => {
 
     it('should return 404 for non-existent dataset', async () => {
       await request(app)
-        .put('/api/modellab/datasets/nonexistent')
+        .put('/api/modellab/datasets/9999999999999-xxxxxxxxx')
         .send({ name: 'Should Fail' })
         .expect(404);
     });
@@ -177,7 +177,7 @@ describe('Datasets API', () => {
 
     it('should return 404 for non-existent dataset', async () => {
       await request(app)
-        .delete('/api/modellab/datasets/nonexistent')
+        .delete('/api/modellab/datasets/9999999999999-xxxxxxxxx')
         .expect(404);
     });
   });

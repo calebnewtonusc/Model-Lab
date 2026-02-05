@@ -10,6 +10,7 @@ import {
   LoadingContainer, Spinner, LoadingText, EmptyState, EmptyStateTitle,
   EmptyStateText, ProgressBar, ProgressFill
 } from './components/SharedComponents';
+import { API_ENDPOINTS } from '../../config/api';
 
 const Container = styled.div`
   padding: ${({ theme }) => theme.spacing[8]};
@@ -409,7 +410,7 @@ const Runs = () => {
 
   const fetchRuns = async () => {
     try {
-      const response = await fetch('/api/modellab/runs');
+      const response = await fetch(API_ENDPOINTS.runs);
       const data = await response.json();
       setRuns(data.runs || []);
       setLoading(false);
@@ -421,7 +422,7 @@ const Runs = () => {
 
   const fetchDatasets = async () => {
     try {
-      const response = await fetch('/api/modellab/datasets');
+      const response = await fetch(API_ENDPOINTS.datasets);
       const data = await response.json();
       setDatasets(data.datasets || []);
     } catch (error) {
@@ -467,7 +468,7 @@ const Runs = () => {
 
   const handleCreateRun = async () => {
     try {
-      const response = await fetch('/api/modellab/runs', {
+      const response = await fetch(API_ENDPOINTS.runs, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

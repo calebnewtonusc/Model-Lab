@@ -138,7 +138,7 @@ describe('Runs API', () => {
 
     it('should return 404 for non-existent run', async () => {
       await request(app)
-        .get('/api/modellab/runs/nonexistent')
+        .get('/api/modellab/runs/9999999999999-xxxxxxxxx')
         .expect(404);
     });
   });
@@ -180,7 +180,7 @@ describe('Runs API', () => {
 
     it('should return 404 for non-existent run', async () => {
       await request(app)
-        .put('/api/modellab/runs/nonexistent')
+        .put('/api/modellab/runs/9999999999999-xxxxxxxxx')
         .send({ name: 'Should Fail' })
         .expect(404);
     });
@@ -219,7 +219,7 @@ describe('Runs API', () => {
 
     it('should return 404 for non-existent run', async () => {
       await request(app)
-        .delete('/api/modellab/runs/nonexistent')
+        .delete('/api/modellab/runs/9999999999999-xxxxxxxxx')
         .expect(404);
     });
   });

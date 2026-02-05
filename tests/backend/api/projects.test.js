@@ -89,7 +89,7 @@ describe('Projects API', () => {
 
     it('should return 404 for non-existent project', async () => {
       await request(app)
-        .get('/api/modellab/projects/nonexistent')
+        .get('/api/modellab/projects/9999999999999-xxxxxxxxx')
         .expect(404);
     });
   });
@@ -110,7 +110,7 @@ describe('Projects API', () => {
 
     it('should return 404 for non-existent project', async () => {
       await request(app)
-        .put('/api/modellab/projects/nonexistent')
+        .put('/api/modellab/projects/9999999999999-xxxxxxxxx')
         .send({
           name: 'Should Fail'
         })
@@ -154,7 +154,7 @@ describe('Projects API', () => {
 
     it('should return 404 for non-existent project', async () => {
       await request(app)
-        .delete('/api/modellab/projects/nonexistent')
+        .delete('/api/modellab/projects/9999999999999-xxxxxxxxx')
         .expect(404);
     });
   });
