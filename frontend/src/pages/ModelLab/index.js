@@ -59,7 +59,7 @@ const Logo = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing?.[3] || '0.75rem'};
   letter-spacing: -0.03em;
-  background: ${({ theme }) => theme.primary?.gradient || `linear-gradient(135deg, ${theme.primary[400]}, ${theme.primary[600]})`};
+  background: ${({ theme }) => theme.primary?.gradient || 'linear-gradient(135deg, #34d399, #059669)'};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -87,10 +87,10 @@ const NavLinks = styled.div`
 const NavLink = styled.button`
   padding: ${({ theme }) => `${theme.spacing?.[3] || '0.75rem'} ${theme.spacing?.[6] || '1.5rem'}`};
   background: ${({ active, theme }) =>
-    active ? (theme.primary?.gradient || theme.primary?.[500]) : (theme.glass?.light?.background || 'transparent')};
-  color: ${({ active }) => active ? 'white' : ({ theme }) => theme.text_primary};
+    active ? (theme.primary?.gradient || theme.primary?.[500] || '#10b981') : (theme.glass?.light?.background || 'transparent')};
+  color: ${({ active }) => active ? 'white' : ({ theme }) => theme.text_primary || '#ffffff'};
   border: ${({ active, theme }) =>
-    active ? 'none' : (theme.glass?.light?.border || `1px solid ${theme.borderLight}`)};
+    active ? 'none' : (theme.glass?.light?.border || '1px solid rgba(255, 255, 255, 0.1)')};
   border-radius: ${({ theme }) => theme.borderRadius?.xl || theme.borderRadius?.lg || '0.75rem'};
   font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
   font-size: ${({ theme }) => theme.fontSize?.base || '1rem'};
