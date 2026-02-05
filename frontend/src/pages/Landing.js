@@ -347,18 +347,18 @@ function Landing({ onGetStarted }) {
           </p>
 
           <CodeBlock>{`# Create a project
-curl -X POST https://modellab.studio/api/modellab/projects \\
+curl -X POST https://modellab-api-production.up.railway.app/api/modellab/projects \\
   -H "Content-Type: application/json" \\
   -d '{"name": "Image Classification", "description": "CNN experiments"}'
 
 # Upload a dataset
-curl -X POST https://modellab.studio/api/modellab/datasets \\
+curl -X POST https://modellab-api-production.up.railway.app/api/modellab/datasets \\
   -F "name=iris" \\
   -F "file=@data/iris.csv" \\
   -F "project_id=proj_abc123"
 
 # Track a run
-curl -X POST https://modellab.studio/api/modellab/runs \\
+curl -X POST https://modellab-api-production.up.railway.app/api/modellab/runs \\
   -H "Content-Type: application/json" \\
   -d '{
     "name": "Baseline Model",

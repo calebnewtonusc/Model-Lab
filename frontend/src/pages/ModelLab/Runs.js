@@ -326,7 +326,7 @@ const Runs = () => {
         return;
       }
 
-      const response = await fetch('/api/modellab/runs', {
+      const response = await fetch(API_ENDPOINTS.runs, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
