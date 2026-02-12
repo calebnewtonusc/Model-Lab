@@ -4,12 +4,12 @@ ML experiment tracking platform with evaluation, reproducibility, and organizati
 
 **🌐 Live Site:** [https://modellab.studio](https://modellab.studio)
 **📚 API Docs:** [Live API Documentation](https://modellab.studio/api-docs) *(Deploy backend to access)*
-**⚡ Status:** Ready for production deployment ([Deployment Guide](PRODUCTION_DEPLOYMENT.md))
+
+⚠️ **SECURITY WARNING:** This project currently has **NO AUTHENTICATION**. It is **NOT production-ready** without implementing an authentication system. See [SECURITY.md](SECURITY.md) for details.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-60%20passing%2C%2014%20failing-yellow)
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
-![Production Ready](https://img.shields.io/badge/production-ready-blue)
 
 ## Features
 
@@ -38,8 +38,8 @@ ML experiment tracking platform with evaluation, reproducibility, and organizati
 
 ```bash
 # 1. Clone and install
-git clone https://github.com/calebnewtonusc/ModelLab.git
-cd ModelLab
+git clone https://github.com/calebnewtonusc/Model-Lab.git
+cd Model-Lab
 npm install && cd frontend && npm install && cd ..
 
 # 2. Start the server
@@ -53,14 +53,14 @@ npm start
 
 ### Production Deployment
 
-See [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md) for complete guide.
+⚠️ **Important:** Before deploying to production, you must implement authentication. See [SECURITY.md](SECURITY.md) for recommendations.
 
-**Quick Deploy:**
+**Quick Deploy (Local Development Only):**
 ```bash
-# Deploy backend to Railway (5 minutes)
+# Deploy backend to Railway (requires authentication implementation first)
 ./scripts/deploy-railway.sh
 
-# Deploy frontend to Vercel (2 minutes)
+# Deploy frontend to Vercel
 npm run vercel:deploy
 ```
 
@@ -74,6 +74,8 @@ npm run vercel:deploy
 cd python-sdk
 pip install -e .
 ```
+
+**Note:** The package name is `modellab-client` but it is **not published to PyPI**. Installation is local only via `pip install -e .`
 
 ### Python EvalHarness
 
@@ -115,7 +117,7 @@ ModelLab/
 │   ├── evalHarness/            # JS evaluation modules
 │   └── reproPack.js            # Reproducibility packs
 ├── ml/
-│   ├── evalharness/            # Python evaluation framework (14 modules)
+│   ├── evalharness/            # Python evaluation framework (8 modules: metrics, failures, core, ci, evaluators, slicing, plots, stress)
 │   └── templates/              # Training workflows
 ├── python-sdk/                 # Python client library
 ├── frontend/                   # React UI
@@ -163,10 +165,14 @@ POST   /api/modellab/runs/:id/profile      # Submit latency profiling
 
 ### Artifacts
 ```
-GET    /api/modellab/artifacts/:runId      # List artifacts
-POST   /api/modellab/artifacts             # Upload artifact
-GET    /api/modellab/artifacts/:runId/:path  # Download artifact
+GET    /api/modellab/artifacts/:runId                    # List artifacts
+POST   /api/modellab/artifacts                           # Log artifact metadata only (no file upload)
+POST   /api/modellab/artifacts/:runId                    # Upload artifact file
+GET    /api/modellab/artifacts/:runId/download/:path     # Download artifact
+DELETE /api/modellab/artifacts/:runId/download/:path     # Delete artifact
 ```
+
+**Note:** POST to `/api/modellab/artifacts` only logs metadata - actual file upload requires POST to `/api/modellab/artifacts/:runId` with multipart form data.
 
 ### System
 ```
@@ -341,6 +347,26 @@ Interactive API documentation available at:
 - Failure analysis with error categorization
 - Model comparison with statistical significance
 - Performance profiling with latency tracking
+
+## Known Limitations
+
+### Security
+- **No Authentication System**: The application has no user authentication or authorization. All endpoints are publicly accessible.
+- **No API Keys**: No authentication tokens or API key management.
+- **No Access Control**: Any user can read, modify, or delete any project, dataset, run, or artifact.
+- See [SECURITY.md](SECURITY.md) for detailed security limitations and recommendations.
+
+### Feature Completeness
+- **Artifact Upload via SDK**: The Python SDK can only log artifact metadata (via POST `/api/modellab/artifacts`). Actual file uploads require using the web UI or direct API calls with multipart form data to POST `/api/modellab/artifacts/:runId`.
+- **Test Coverage**: Only 60 tests passing with 14 failures. Coverage is below 50% threshold (23.92% statements, 19.08% branches).
+- **Production Readiness**: While functional for local development and portfolio projects, additional work is needed for production deployment:
+  - Authentication implementation required
+  - Test coverage improvements needed
+  - Enhanced error handling recommended
+
+### Database
+- **SQLite Default**: Uses SQLite by default, which is suitable for single-user local development but may not scale for multi-user production environments.
+- **PostgreSQL Support**: PostgreSQL adapter is available but requires manual configuration via `DATABASE_URL` environment variable.
 
 ## License
 
