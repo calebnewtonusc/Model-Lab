@@ -8,7 +8,7 @@ const { Pool } = require('pg');
 
 // DATABASE_URL must be set in environment variables
 if (!process.env.DATABASE_URL) {
-  console.error('SF Symbol: xmark.circle - ERROR: DATABASE_URL environment variable is required');
+  console.error('✗ ERROR: DATABASE_URL environment variable is required');
   console.error('   Please set DATABASE_URL in your .env file or environment');
   process.exit(1);
 }
@@ -22,7 +22,7 @@ async function initDatabase() {
   const client = await pool.connect();
 
   try {
-    console.log('SF Symbol: rocket.fill - Initializing PostgreSQL database...\n');
+    console.log('🚀 Initializing PostgreSQL database...\n');
 
     await client.query('BEGIN');
 
@@ -107,17 +107,17 @@ async function initDatabase() {
 
     await client.query('COMMIT');
 
-    console.log('\nSF Symbol: checkmark.circle - Database initialized successfully!');
+    console.log('\n✓ Database initialized successfully!');
     console.log('\nTables created:');
     console.log('  - projects');
     console.log('  - datasets');
     console.log('  - runs');
     console.log('  - artifacts');
-    console.log('\nYour ModelLab database is ready to use! SF Symbol: party.popper');
+    console.log('\nYour ModelLab database is ready to use! 🎉');
 
   } catch (error) {
     await client.query('ROLLBACK');
-    console.error('SF Symbol: xmark.circle - Error initializing database:', error);
+    console.error('✗ Error initializing database:', error);
     throw error;
   } finally {
     client.release();
