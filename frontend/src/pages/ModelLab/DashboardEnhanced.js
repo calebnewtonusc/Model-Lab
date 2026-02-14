@@ -7,7 +7,7 @@ import {
   PieChart, Pie, Cell
 } from 'recharts';
 import { LoadingContainer, Spinner, LoadingText, Card, Badge, EmptyState, Button } from './components/SharedComponents';
-import { Flask, ArrowUpCircle, PlayCircle, BarChart3, FileText } from 'lucide-react';
+import { Beaker, ArrowUpCircle, PlayCircle, BarChart3, FileText } from 'lucide-react';
 
 const Container = styled.div`
   padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
@@ -522,7 +522,7 @@ const Dashboard = ({ onNavigate }) => {
       <StatsGrid>
         <StatCard>
           <StatHeader>
-            <StatIcon><Flask size={28} color="#10b981" /></StatIcon>
+            <StatIcon><Beaker size={28} color="#10b981" /></StatIcon>
             <StatTrend positive={stats.runsTrend > 0}>
               {stats.runsTrend > 0 ? '↑' : '↓'} {Math.abs(stats.runsTrend)}%
             </StatTrend>
