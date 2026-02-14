@@ -7,6 +7,7 @@ import {
   PieChart, Pie, Cell
 } from 'recharts';
 import { LoadingContainer, Spinner, LoadingText, Card, Badge, EmptyState, Button } from './components/SharedComponents';
+import { Flask, ArrowUpCircle, PlayCircle, BarChart3, FileText } from 'lucide-react';
 
 const Container = styled.div`
   padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
@@ -521,7 +522,7 @@ const Dashboard = ({ onNavigate }) => {
       <StatsGrid>
         <StatCard>
           <StatHeader>
-            <StatIcon>SF Symbol: flask.fill</StatIcon>
+            <StatIcon><Flask size={28} color="#10b981" /></StatIcon>
             <StatTrend positive={stats.runsTrend > 0}>
               {stats.runsTrend > 0 ? '↑' : '↓'} {Math.abs(stats.runsTrend)}%
             </StatTrend>
@@ -532,6 +533,7 @@ const Dashboard = ({ onNavigate }) => {
 
         <StatCard>
           <StatHeader>
+            <StatIcon><BarChart3 size={28} color="#10b981" /></StatIcon>
             <StatTrend positive={stats.datasetsTrend > 0}>
               {stats.datasetsTrend > 0 ? '↑' : '↓'} {Math.abs(stats.datasetsTrend)}%
             </StatTrend>
@@ -542,6 +544,7 @@ const Dashboard = ({ onNavigate }) => {
 
         <StatCard>
           <StatHeader>
+            <StatIcon><PlayCircle size={28} color="#10b981" /></StatIcon>
           </StatHeader>
           <StatValue>{stats.completedRuns}</StatValue>
           <StatLabel>Completed Runs</StatLabel>
@@ -549,6 +552,7 @@ const Dashboard = ({ onNavigate }) => {
 
         <StatCard>
           <StatHeader>
+            <StatIcon><BarChart3 size={28} color="#10b981" /></StatIcon>
             <StatTrend positive={stats.accuracyTrend > 0}>
               {stats.accuracyTrend > 0 ? '↑' : '↓'} {Math.abs(stats.accuracyTrend)}%
             </StatTrend>
@@ -563,25 +567,29 @@ const Dashboard = ({ onNavigate }) => {
           console.log('Upload Dataset clicked', onNavigate);
           if (onNavigate) onNavigate('datasets');
         }}>
-          <QuickActionTitle>SF Symbol: arrow.up.doc.fill - Upload Dataset</QuickActionTitle>
+          <QuickActionIcon><ArrowUpCircle size={32} color="#10b981" /></QuickActionIcon>
+          <QuickActionTitle>Upload Dataset</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => {
           console.log('Create Run clicked', onNavigate);
           if (onNavigate) onNavigate('runs');
         }}>
-          <QuickActionTitle>SF Symbol: play.circle.fill - Create Run</QuickActionTitle>
+          <QuickActionIcon><PlayCircle size={32} color="#10b981" /></QuickActionIcon>
+          <QuickActionTitle>Create Run</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => {
           console.log('Compare Runs clicked', onNavigate);
           if (onNavigate) onNavigate('compare');
         }}>
-          <QuickActionTitle>SF Symbol: chart.bar.xaxis - Compare Runs</QuickActionTitle>
+          <QuickActionIcon><BarChart3 size={32} color="#10b981" /></QuickActionIcon>
+          <QuickActionTitle>Compare Runs</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => {
           console.log('View Artifacts clicked', onNavigate);
           if (onNavigate) onNavigate('runs');
         }}>
-          <QuickActionTitle>SF Symbol: doc.text.fill - View Artifacts</QuickActionTitle>
+          <QuickActionIcon><FileText size={32} color="#10b981" /></QuickActionIcon>
+          <QuickActionTitle>View Artifacts</QuickActionTitle>
         </QuickActionCard>
       </QuickActionsGrid>
 
