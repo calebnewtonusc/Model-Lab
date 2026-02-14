@@ -109,7 +109,7 @@ const LastUpdate = styled.div`
   gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 
   &::before {
-    content: '🕐';
+    content: 'SF Symbol: clock';
     font-size: 1.1em;
   }
 `;
@@ -494,7 +494,7 @@ const DashboardModern = ({ onNavigate }) => {
       runs.slice(0, 5).forEach(run => {
         activities.push({
           type: 'run',
-          icon: '🔬',
+          icon: 'SF Symbol: flask.fill',
           text: `Run "${run.name}" ${run.status}`,
           time: new Date(run.createdAt),
           badge: run.status
@@ -504,7 +504,7 @@ const DashboardModern = ({ onNavigate }) => {
       datasets.slice(0, 3).forEach(dataset => {
         activities.push({
           type: 'dataset',
-          icon: '📊',
+          icon: 'SF Symbol: chart.bar.fill',
           text: `Dataset "${dataset.name}" uploaded`,
           time: new Date(dataset.createdAt),
           badge: 'new'
@@ -568,7 +568,7 @@ const DashboardModern = ({ onNavigate }) => {
         <ModernStatCard variant="medium" delay={0}>
           <StatHeader>
             <ModernStatIcon color="linear-gradient(135deg, #10b981, #059669)">
-              🔬
+              SF Symbol: flask.fill
             </ModernStatIcon>
             {stats.runsTrend > 0 && (
               <StatTrend positive={true}>
@@ -583,7 +583,7 @@ const DashboardModern = ({ onNavigate }) => {
         <ModernStatCard variant="medium" delay={0.1} color="linear-gradient(135deg, #a855f7, #7c3aed)">
           <StatHeader>
             <ModernStatIcon color="linear-gradient(135deg, #a855f7, #7c3aed)">
-              📊
+              SF Symbol: chart.bar.fill
             </ModernStatIcon>
             {stats.datasetsTrend > 0 && (
               <StatTrend positive={true}>
@@ -598,7 +598,7 @@ const DashboardModern = ({ onNavigate }) => {
         <ModernStatCard variant="medium" delay={0.2} color="linear-gradient(135deg, #06b6d4, #0891b2)">
           <StatHeader>
             <ModernStatIcon color="linear-gradient(135deg, #06b6d4, #0891b2)">
-              ✅
+              SF Symbol: checkmark.circle.fill
             </ModernStatIcon>
             {stats.completedTrend > 0 && (
               <StatTrend positive={true}>
@@ -613,7 +613,7 @@ const DashboardModern = ({ onNavigate }) => {
         <ModernStatCard variant="medium" delay={0.3} color="linear-gradient(135deg, #10b981, #059669)">
           <StatHeader>
             <ModernStatIcon color="linear-gradient(135deg, #10b981, #059669)">
-              🎯
+              SF Symbol: target
             </ModernStatIcon>
             {stats.accuracyTrend > 0 && (
               <StatTrend positive={true}>
@@ -632,7 +632,7 @@ const DashboardModern = ({ onNavigate }) => {
           delay={0.3}
           onClick={() => onNavigate && onNavigate('datasets')}
         >
-          <QuickActionIcon>📤</QuickActionIcon>
+          <QuickActionIcon>SF Symbol: tray.and.arrow.up.fill</QuickActionIcon>
           <QuickActionTitle>Upload Dataset</QuickActionTitle>
           <QuickActionDesc>Add new training data</QuickActionDesc>
         </QuickActionCard>
@@ -642,7 +642,7 @@ const DashboardModern = ({ onNavigate }) => {
           delay={0.4}
           onClick={() => onNavigate && onNavigate('runs')}
         >
-          <QuickActionIcon>🚀</QuickActionIcon>
+          <QuickActionIcon>SF Symbol: rocket.fill</QuickActionIcon>
           <QuickActionTitle>Create Run</QuickActionTitle>
           <QuickActionDesc>Start new experiment</QuickActionDesc>
         </QuickActionCard>
@@ -652,7 +652,7 @@ const DashboardModern = ({ onNavigate }) => {
           delay={0.5}
           onClick={() => onNavigate && onNavigate('compare')}
         >
-          <QuickActionIcon>⚖️</QuickActionIcon>
+          <QuickActionIcon>SF Symbol: scale.3d</QuickActionIcon>
           <QuickActionTitle>Compare Runs</QuickActionTitle>
           <QuickActionDesc>Analyze performance</QuickActionDesc>
         </QuickActionCard>
@@ -662,7 +662,7 @@ const DashboardModern = ({ onNavigate }) => {
           delay={0.6}
           onClick={() => onNavigate && onNavigate('projects')}
         >
-          <QuickActionIcon>📁</QuickActionIcon>
+          <QuickActionIcon>SF Symbol: folder.fill</QuickActionIcon>
           <QuickActionTitle>View Projects</QuickActionTitle>
           <QuickActionDesc>Organize experiments</QuickActionDesc>
         </QuickActionCard>
@@ -672,7 +672,7 @@ const DashboardModern = ({ onNavigate }) => {
         <ChartCard variant="medium" delay={0.4}>
           <ChartHeader>
             <ChartTitle>
-              <ChartTitleIcon>📈</ChartTitleIcon>
+              <ChartTitleIcon>SF Symbol: chart.line.uptrend.xyaxis</ChartTitleIcon>
               Runs Over Time
             </ChartTitle>
           </ChartHeader>
@@ -726,7 +726,7 @@ const DashboardModern = ({ onNavigate }) => {
         <ChartCard variant="medium" delay={0.5}>
           <ChartHeader>
             <ChartTitle>
-              <ChartTitleIcon>🎨</ChartTitleIcon>
+              <ChartTitleIcon>SF Symbol: paintpalette.fill</ChartTitleIcon>
               Status Distribution
             </ChartTitle>
           </ChartHeader>
@@ -763,7 +763,7 @@ const DashboardModern = ({ onNavigate }) => {
       <ActivitySection variant="medium">
         <ActivityHeader>
           <ActivityTitle>
-            <span style={{ fontSize: '1.2em' }}>⚡</span>
+            <span style={{ fontSize: '1.2em' }}>SF Symbol: bolt.fill</span>
             Recent Activity
           </ActivityTitle>
         </ActivityHeader>

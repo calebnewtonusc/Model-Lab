@@ -284,7 +284,7 @@ function Landing({ onGetStarted }) {
         <SectionTitle>Why ModelLab?</SectionTitle>
         <FeaturesGrid>
           <FeatureCard>
-            <FeatureIcon>📊</FeatureIcon>
+            <FeatureIcon>SF Symbol: chart.bar.fill</FeatureIcon>
             <FeatureTitle>Track Everything</FeatureTitle>
             <FeatureDescription>
               Automatically log datasets, hyperparameters, metrics, and artifacts.
@@ -293,7 +293,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>🔬</FeatureIcon>
+            <FeatureIcon>SF Symbol: flask.fill</FeatureIcon>
             <FeatureTitle>Compare Experiments</FeatureTitle>
             <FeatureDescription>
               Side-by-side comparison of runs with metric deltas, parameter diffs,
@@ -302,7 +302,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>📦</FeatureIcon>
+            <FeatureIcon>SF Symbol: shippingbox.fill</FeatureIcon>
             <FeatureTitle>Reproduction Packs</FeatureTitle>
             <FeatureDescription>
               Export complete reproduction packages with code, data checksums,
@@ -311,7 +311,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>🎯</FeatureIcon>
+            <FeatureIcon>SF Symbol: target</FeatureIcon>
             <FeatureTitle>EvalHarness</FeatureTitle>
             <FeatureDescription>
               Comprehensive evaluation framework with metrics, confidence intervals,
@@ -320,7 +320,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>🚀</FeatureIcon>
+            <FeatureIcon>SF Symbol: rocket.fill</FeatureIcon>
             <FeatureTitle>Python SDK</FeatureTitle>
             <FeatureDescription>
               Intuitive Python API with context managers for clean experiment tracking.
@@ -329,7 +329,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>🔌</FeatureIcon>
+            <FeatureIcon>SF Symbol: bolt.fill</FeatureIcon>
             <FeatureTitle>REST API</FeatureTitle>
             <FeatureDescription>
               Full-featured REST API for integration with any ML stack.

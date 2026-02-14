@@ -2,10 +2,10 @@
 
 ML experiment tracking platform with evaluation, reproducibility, and organization features.
 
-**🌐 Live Site:** [https://modellab.studio](https://modellab.studio)
-**📚 API Docs:** [Live API Documentation](https://modellab.studio/api-docs) *(Deploy backend to access)*
+**SF Symbol: globe - Live Site:** [https://modellab.studio](https://modellab.studio)
+**SF Symbol: book.fill - API Docs:** [Live API Documentation](https://modellab.studio/api-docs) *(Deploy backend to access)*
 
-⚠️ **SECURITY WARNING:** This project currently has **NO AUTHENTICATION**. It is **NOT production-ready** without implementing an authentication system. See [SECURITY.md](SECURITY.md) for details.
+SF Symbol: exclamationmark.triangle - **SECURITY WARNING:** This project currently has **NO AUTHENTICATION**. It is **NOT production-ready** without implementing an authentication system. See [SECURITY.md](SECURITY.md) for details.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Tests](https://img.shields.io/badge/tests-60%20passing%2C%2014%20failing-yellow)
@@ -32,7 +32,7 @@ ML experiment tracking platform with evaluation, reproducibility, and organizati
 - Python EvalHarness for evaluation
 - JavaScript EvalHarness for full-stack evaluation
 
-## 🚀 Quick Start
+## SF Symbol: rocket.fill - Quick Start
 
 ### Local Development (5 minutes)
 
@@ -53,7 +53,7 @@ npm start
 
 ### Production Deployment
 
-⚠️ **Important:** Before deploying to production, you must implement authentication. See [SECURITY.md](SECURITY.md) for recommendations.
+SF Symbol: exclamationmark.triangle - **Important:** Before deploying to production, you must implement authentication. See [SECURITY.md](SECURITY.md) for recommendations.
 
 **Quick Deploy (Local Development Only):**
 ```bash
