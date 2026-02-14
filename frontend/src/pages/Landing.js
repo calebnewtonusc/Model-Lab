@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BarChart3, Flask, Package, Target, Rocket, Zap } from 'lucide-react';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -284,7 +285,7 @@ function Landing({ onGetStarted }) {
         <SectionTitle>Why ModelLab?</SectionTitle>
         <FeaturesGrid>
           <FeatureCard>
-            <FeatureIcon>SF Symbol: chart.bar.fill</FeatureIcon>
+            <FeatureIcon><BarChart3 size={32} color="#10b981" /></FeatureIcon>
             <FeatureTitle>Track Everything</FeatureTitle>
             <FeatureDescription>
               Automatically log datasets, hyperparameters, metrics, and artifacts.
@@ -293,7 +294,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>SF Symbol: flask.fill</FeatureIcon>
+            <FeatureIcon><Flask size={32} color="#10b981" /></FeatureIcon>
             <FeatureTitle>Compare Experiments</FeatureTitle>
             <FeatureDescription>
               Side-by-side comparison of runs with metric deltas, parameter diffs,
@@ -302,7 +303,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>SF Symbol: shippingbox.fill</FeatureIcon>
+            <FeatureIcon><Package size={32} color="#10b981" /></FeatureIcon>
             <FeatureTitle>Reproduction Packs</FeatureTitle>
             <FeatureDescription>
               Export complete reproduction packages with code, data checksums,
@@ -311,7 +312,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>SF Symbol: target</FeatureIcon>
+            <FeatureIcon><Target size={32} color="#10b981" /></FeatureIcon>
             <FeatureTitle>EvalHarness</FeatureTitle>
             <FeatureDescription>
               Comprehensive evaluation framework with metrics, confidence intervals,
@@ -320,7 +321,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>SF Symbol: rocket.fill</FeatureIcon>
+            <FeatureIcon><Rocket size={32} color="#10b981" /></FeatureIcon>
             <FeatureTitle>Python SDK</FeatureTitle>
             <FeatureDescription>
               Intuitive Python API with context managers for clean experiment tracking.
@@ -329,7 +330,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>SF Symbol: bolt.fill</FeatureIcon>
+            <FeatureIcon><Zap size={32} color="#10b981" /></FeatureIcon>
             <FeatureTitle>REST API</FeatureTitle>
             <FeatureDescription>
               Full-featured REST API for integration with any ML stack.

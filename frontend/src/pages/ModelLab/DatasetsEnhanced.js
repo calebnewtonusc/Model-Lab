@@ -11,6 +11,7 @@ import {
   EmptyStateText, Skeleton
 } from './components/SharedComponents';
 import { API_ENDPOINTS } from '../../config/api';
+import { Folder } from 'lucide-react';
 
 const Container = styled.div`
   padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
@@ -614,7 +615,7 @@ const Datasets = () => {
             onDrop={handleDrop}
             onClick={() => document.getElementById('file-input').click()}
           >
-            <DropZoneIcon>SF Symbol: folder.fill</DropZoneIcon>
+            <DropZoneIcon><Folder size={48} color="#10b981" /></DropZoneIcon>
             <DropZoneText>Drag and drop files here, or click to select</DropZoneText>
             <DropZoneHint>Supports CSV and JSON files (max 100MB each)</DropZoneHint>
           </DropZone>

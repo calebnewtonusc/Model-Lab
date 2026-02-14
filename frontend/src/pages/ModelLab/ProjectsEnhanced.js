@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LoadingContainer, Spinner, LoadingText, Card, Badge, EmptyState, Button } from './components/SharedComponents';
 import { API_ENDPOINTS } from '../../config/api';
+import { Clock, Folder } from 'lucide-react';
 
 const Container = styled.div`
   padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
@@ -114,10 +115,6 @@ const LastActivity = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
-
-  &::before {
-    content: 'SF Symbol: clock.fill';
-  }
 `;
 
 const ModalOverlay = styled.div`
@@ -326,7 +323,7 @@ const ProjectsEnhanced = () => {
 
       {projects.length === 0 ? (
         <EmptyState>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>SF Symbol: folder.fill</div>
+          <div style={{ marginBottom: '1rem' }}><Folder size={48} color="#10b981" /></div>
           <div style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             No projects yet
           </div>
@@ -369,6 +366,7 @@ const ProjectsEnhanced = () => {
 
               {project.lastActivity && (
                 <LastActivity>
+                  <Clock size={14} />
                   Last activity: {formatDate(project.lastActivity)}
                 </LastActivity>
               )}
