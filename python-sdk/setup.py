@@ -17,7 +17,7 @@ setup(
     description="Track ML experiments with one line of code",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/calebnewtonusc/ModelLab",
+    url="https://github.com/calebnewtonusc/Model-Lab",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",

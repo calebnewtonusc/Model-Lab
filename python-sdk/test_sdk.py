@@ -16,14 +16,14 @@ import time
 
 def simulate_training():
     """Simulate a machine learning training run"""
-    print("🚀 Starting ModelLab SDK test...\n")
+    print("[rocket.fill] Starting ModelLab SDK test...\n")
 
     # Configure ModelLab (point to local server)
     modellab.configure(api_url="http://localhost:3001")
     print("✓ Configured ModelLab API\n")
 
     # Example 1: Using context manager (recommended)
-    print("📊 Example 1: Training with context manager")
+    print("[chart.bar.fill] Example 1: Training with context manager")
     with modellab.run("test-experiment-context-manager"):
         # Log hyperparameters
         modellab.log_param("learning_rate", 0.001)
@@ -54,7 +54,7 @@ def simulate_training():
     print("✓ Experiment completed!\n")
 
     # Example 2: Manual start/stop (for complex workflows)
-    print("📊 Example 2: Training with manual control")
+    print("[chart.bar.fill] Example 2: Training with manual control")
     run_id = modellab.start_run("test-experiment-manual")
     print(f"  ✓ Started run: {run_id}")
 
@@ -75,7 +75,7 @@ def simulate_training():
         print(f"  ✗ Run failed: {e}")
         raise
 
-    print("\n✅ All tests passed!")
+    print("\n[checkmark.circle] All tests passed!")
     print("\n📈 View your experiments at: http://localhost:3000")
     print("   Or at: https://modellab.studio (once deployed)\n")
 
@@ -83,10 +83,10 @@ if __name__ == "__main__":
     try:
         simulate_training()
     except KeyboardInterrupt:
-        print("\n\n⚠️  Test interrupted by user")
+        print("\n\n[exclamationmark.triangle]  Test interrupted by user")
         sys.exit(1)
     except Exception as e:
-        print(f"\n\n❌ Error: {e}")
+        print(f"\n\n[xmark.circle] Error: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
