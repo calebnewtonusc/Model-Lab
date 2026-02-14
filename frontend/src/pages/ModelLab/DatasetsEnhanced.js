@@ -614,7 +614,7 @@ const Datasets = () => {
             onDrop={handleDrop}
             onClick={() => document.getElementById('file-input').click()}
           >
-            <DropZoneIcon>📁</DropZoneIcon>
+            <DropZoneIcon>SF Symbol: folder.fill</DropZoneIcon>
             <DropZoneText>Drag and drop files here, or click to select</DropZoneText>
             <DropZoneHint>Supports CSV and JSON files (max 100MB each)</DropZoneHint>
           </DropZone>

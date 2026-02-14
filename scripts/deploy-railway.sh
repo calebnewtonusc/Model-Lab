@@ -7,13 +7,13 @@
 
 set -e  # Exit on error
 
-echo "🚀 ModelLab Railway Deployment"
+echo "SF Symbol: rocket.fill - ModelLab Railway Deployment"
 echo "================================"
 echo ""
 
 # Check if Railway CLI is installed
 if ! command -v railway &> /dev/null; then
-    echo "❌ Railway CLI not found"
+    echo "SF Symbol: xmark.circle - Railway CLI not found"
     echo ""
     echo "Install it with:"
     echo "  npm install -g @railway/cli"
@@ -23,41 +23,41 @@ if ! command -v railway &> /dev/null; then
     exit 1
 fi
 
-echo "✅ Railway CLI found"
+echo "SF Symbol: checkmark.circle - Railway CLI found"
 echo ""
 
 # Check if logged in
 if ! railway whoami &> /dev/null; then
-    echo "🔐 Not logged in to Railway"
+    echo "SF Symbol: lock.fill - Not logged in to Railway"
     echo "Logging in..."
     railway login
     echo ""
 fi
 
-echo "✅ Logged in to Railway"
+echo "SF Symbol: checkmark.circle - Logged in to Railway"
 echo ""
 
 # Check if project exists
 if ! railway status &> /dev/null; then
-    echo "📦 No Railway project found"
+    echo "SF Symbol: shippingbox - No Railway project found"
     echo "Creating new project..."
     railway init
     echo ""
 else
-    echo "✅ Railway project exists"
+    echo "SF Symbol: checkmark.circle - Railway project exists"
     echo ""
 fi
 
 # Set environment variables
-echo "🔧 Setting environment variables..."
+echo "SF Symbol: wrench.and.screwdriver.fill - Setting environment variables..."
 railway variables set NODE_ENV=production
 railway variables set PORT=3001
 
 # Check if DATABASE_URL is set
 if railway variables get DATABASE_URL &> /dev/null; then
-    echo "✅ DATABASE_URL already set"
+    echo "SF Symbol: checkmark.circle - DATABASE_URL already set"
 else
-    echo "⚠️  DATABASE_URL not set"
+    echo "SF Symbol: exclamationmark.triangle - DATABASE_URL not set"
     echo ""
     echo "Options:"
     echo "  1. Add PostgreSQL plugin: railway add postgresql"
@@ -68,22 +68,22 @@ else
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         railway add postgresql
-        echo "✅ PostgreSQL added"
+        echo "SF Symbol: checkmark.circle - PostgreSQL added"
     fi
 fi
 
 echo ""
 
 # Deploy
-echo "🚀 Deploying to Railway..."
+echo "SF Symbol: rocket.fill - Deploying to Railway..."
 railway up
 
 echo ""
-echo "✅ Deployment initiated!"
+echo "SF Symbol: checkmark.circle - Deployment initiated!"
 echo ""
 
 # Wait for deployment
-echo "⏳ Waiting for deployment to complete..."
+echo "SF Symbol: hourglass - Waiting for deployment to complete..."
 sleep 5
 
 # Get the URL
@@ -91,14 +91,14 @@ URL=$(railway domain 2>/dev/null || echo "")
 
 if [ -z "$URL" ]; then
     echo ""
-    echo "⚠️  No domain found yet"
+    echo "SF Symbol: exclamationmark.triangle - No domain found yet"
     echo "Run 'railway domain' to generate a domain"
     echo ""
     echo "Or add a custom domain with:"
     echo "  railway domain add yourdomain.com"
 else
     echo ""
-    echo "🎉 Deployment Complete!"
+    echo "SF Symbol: party.popper - Deployment Complete!"
     echo ""
     echo "Backend URL: https://$URL"
     echo "Health Check: https://$URL/api/health"
@@ -111,6 +111,6 @@ else
 fi
 
 echo ""
-echo "📊 View logs: railway logs"
-echo "🔧 Manage project: railway open"
+echo "SF Symbol: chart.bar.fill - View logs: railway logs"
+echo "SF Symbol: wrench.and.screwdriver.fill - Manage project: railway open"
 echo ""

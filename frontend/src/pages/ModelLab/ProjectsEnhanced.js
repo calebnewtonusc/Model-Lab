@@ -116,7 +116,7 @@ const LastActivity = styled.div`
   gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
 
   &::before {
-    content: '🕒';
+    content: 'SF Symbol: clock.fill';
   }
 `;
 
@@ -326,7 +326,7 @@ const ProjectsEnhanced = () => {
 
       {projects.length === 0 ? (
         <EmptyState>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📁</div>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>SF Symbol: folder.fill</div>
           <div style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             No projects yet
           </div>

@@ -521,7 +521,7 @@ const Dashboard = ({ onNavigate }) => {
       <StatsGrid>
         <StatCard>
           <StatHeader>
-            <StatIcon>🔬</StatIcon>
+            <StatIcon>SF Symbol: flask.fill</StatIcon>
             <StatTrend positive={stats.runsTrend > 0}>
               {stats.runsTrend > 0 ? '↑' : '↓'} {Math.abs(stats.runsTrend)}%
             </StatTrend>
@@ -563,25 +563,25 @@ const Dashboard = ({ onNavigate }) => {
           console.log('Upload Dataset clicked', onNavigate);
           if (onNavigate) onNavigate('datasets');
         }}>
-          <QuickActionTitle>Upload Dataset</QuickActionTitle>
+          <QuickActionTitle>SF Symbol: arrow.up.doc.fill - Upload Dataset</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => {
           console.log('Create Run clicked', onNavigate);
           if (onNavigate) onNavigate('runs');
         }}>
-          <QuickActionTitle>Create Run</QuickActionTitle>
+          <QuickActionTitle>SF Symbol: play.circle.fill - Create Run</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => {
           console.log('Compare Runs clicked', onNavigate);
           if (onNavigate) onNavigate('compare');
         }}>
-          <QuickActionTitle>Compare Runs</QuickActionTitle>
+          <QuickActionTitle>SF Symbol: chart.bar.xaxis - Compare Runs</QuickActionTitle>
         </QuickActionCard>
         <QuickActionCard onClick={() => {
           console.log('View Artifacts clicked', onNavigate);
           if (onNavigate) onNavigate('runs');
         }}>
-          <QuickActionTitle>View Artifacts</QuickActionTitle>
+          <QuickActionTitle>SF Symbol: doc.text.fill - View Artifacts</QuickActionTitle>
         </QuickActionCard>
       </QuickActionsGrid>
 
