@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BarChart3, Flask, Package, Target, Rocket, Zap } from 'lucide-react';
+import { BarChart3, Beaker, Package, Target, Rocket, Zap } from 'lucide-react';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -294,7 +294,7 @@ function Landing({ onGetStarted }) {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon><Flask size={32} color="#10b981" /></FeatureIcon>
+            <FeatureIcon><Beaker size={32} color="#10b981" /></FeatureIcon>
             <FeatureTitle>Compare Experiments</FeatureTitle>
             <FeatureDescription>
               Side-by-side comparison of runs with metric deltas, parameter diffs,

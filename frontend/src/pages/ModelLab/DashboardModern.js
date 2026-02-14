@@ -17,7 +17,7 @@ import {
   SearchContainer
 } from '../../components/ModernComponents';
 import {
-  Flask,
+  Beaker,
   BarChart3,
   CheckCircle2,
   Target,
@@ -508,7 +508,7 @@ const DashboardModern = ({ onNavigate }) => {
       runs.slice(0, 5).forEach(run => {
         activities.push({
           type: 'run',
-          icon: <Flask className="w-6 h-6" />,
+          icon: <Beaker className="w-6 h-6" />,
           text: `Run "${run.name}" ${run.status}`,
           time: new Date(run.createdAt),
           badge: run.status
@@ -583,7 +583,7 @@ const DashboardModern = ({ onNavigate }) => {
         <ModernStatCard variant="medium" delay={0}>
           <StatHeader>
             <ModernStatIcon color="linear-gradient(135deg, #10b981, #059669)">
-              <Flask className="w-8 h-8" />
+              <Beaker className="w-8 h-8" />
             </ModernStatIcon>
             {stats.runsTrend > 0 && (
               <StatTrend positive={true}>
