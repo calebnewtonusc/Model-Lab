@@ -43,7 +43,10 @@ python tabular_regression.py data.csv --target price --project-id proj_123 --see
 ```bash
 pip install pandas numpy scikit-learn
 pip install xgboost  # Optional but recommended
-pip install modellab-client  # For experiment tracking
+
+# For experiment tracking (install from source)
+cd ../../python-sdk
+pip install -e .
 ```
 
 ## Features

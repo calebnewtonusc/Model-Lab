@@ -4,15 +4,14 @@ Track ML experiments with one line of code.
 
 ## Installation
 
-```bash
-pip install modellab-client
-```
+**Note:** This package is **not published to PyPI**. Install locally from source:
 
-Or install from source:
 ```bash
 cd python-sdk
 pip install -e .
 ```
+
+The package name is `modellab-client` but it must be installed in editable mode from the source directory.
 
 ## Quick Start
 
@@ -211,7 +210,9 @@ for epoch in range(100):
 ```
 
 ### `modellab.log_artifact(filepath, artifact_type="model")`
-Upload an artifact (model, plot, etc.).
+Log artifact metadata (file path and checksum).
+
+⚠️ **Note:** Currently only logs metadata to the API. Actual file upload is not implemented in the SDK. Files must be uploaded separately via the web UI or direct API calls.
 
 **Parameters:**
 - `filepath` (str): Path to file
