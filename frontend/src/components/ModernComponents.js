@@ -102,7 +102,7 @@ export const GlassCard = styled.div`
 
 // ===== GRADIENT CARD =====
 
-export const GradientCard = styled(GlassCard)`
+const GradientCard = styled(GlassCard)`
   position: relative;
   overflow: hidden;
 
@@ -285,7 +285,7 @@ export const StatTrend = styled.div`
 
 // ===== SIDEBAR NAVIGATION =====
 
-export const Sidebar = styled.nav`
+const Sidebar = styled.nav`
   position: fixed;
   left: 0;
   top: 0;
@@ -308,7 +308,7 @@ export const Sidebar = styled.nav`
              ${({ theme }) => theme.animations?.easing?.easeOut || 'ease-out'};
 `;
 
-export const SidebarLogo = styled.div`
+const SidebarLogo = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing?.[3] || '0.75rem'};
@@ -333,14 +333,14 @@ export const SidebarLogo = styled.div`
   }
 `;
 
-export const SidebarNav = styled.div`
+const SidebarNav = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing?.[2] || '0.5rem'};
 `;
 
-export const NavItem = styled.button`
+const NavItem = styled.button`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing?.[3] || '0.75rem'};
@@ -385,7 +385,7 @@ export const NavItem = styled.button`
 
 // ===== COMMAND PALETTE =====
 
-export const CommandPalette = styled.div`
+const CommandPalette = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -402,7 +402,7 @@ export const CommandPalette = styled.div`
   animation: ${fadeIn} ${({ theme }) => theme.animations?.duration?.fast || '150ms'};
 `;
 
-export const CommandPaletteContent = styled.div`
+const CommandPaletteContent = styled.div`
   width: 100%;
   max-width: 640px;
   background: ${({ theme }) => theme.glass?.dark?.light?.background || 'rgba(23, 23, 33, 0.9)'};
@@ -416,7 +416,7 @@ export const CommandPaletteContent = styled.div`
              ${({ theme }) => theme.animations?.easing?.spring || 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'};
 `;
 
-export const CommandInput = styled.input`
+const CommandInput = styled.input`
   width: 100%;
   padding: ${({ theme }) => theme.spacing?.[5] || '1.25rem'} ${({ theme }) => theme.spacing?.[6] || '1.5rem'};
   background: transparent;
@@ -431,7 +431,7 @@ export const CommandInput = styled.input`
   }
 `;
 
-export const CommandList = styled.div`
+const CommandList = styled.div`
   max-height: 400px;
   overflow-y: auto;
   border-top: 1px solid ${({ theme }) => theme.border || '#2a2a38'};
@@ -455,7 +455,7 @@ export const CommandList = styled.div`
   }
 `;
 
-export const CommandItem = styled.button`
+const CommandItem = styled.button`
   width: 100%;
   display: flex;
   align-items: center;
@@ -484,7 +484,7 @@ export const CommandItem = styled.button`
 
 // ===== LOADING STATES =====
 
-export const SkeletonPulse = styled.div`
+const SkeletonPulse = styled.div`
   background: linear-gradient(
     90deg,
     ${({ theme }) => theme.card || '#171721'} 0%,
@@ -529,7 +529,7 @@ export const SearchContainer = styled.div`
   max-width: ${({ maxWidth = '600px' }) => maxWidth};
 `;
 
-export const SearchInput = styled.input`
+const SearchInput = styled.input`
   width: 100%;
   padding: ${({ theme }) => theme.spacing?.[4] || '1rem'}
            ${({ theme }) => theme.spacing?.[6] || '1.5rem'}
@@ -557,7 +557,7 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const SearchIcon = styled.div`
+const SearchIcon = styled.div`
   position: absolute;
   left: ${({ theme }) => theme.spacing?.[4] || '1rem'};
   top: 50%;
@@ -570,28 +570,3 @@ export const SearchIcon = styled.div`
     height: 20px;
   }
 `;
-
-export default {
-  GlassCard,
-  GradientCard,
-  ModernButton,
-  StatCard,
-  StatIcon,
-  StatValue,
-  StatLabel,
-  StatTrend,
-  Sidebar,
-  SidebarLogo,
-  SidebarNav,
-  NavItem,
-  CommandPalette,
-  CommandPaletteContent,
-  CommandInput,
-  CommandList,
-  CommandItem,
-  SkeletonPulse,
-  LoadingDots,
-  SearchContainer,
-  SearchInput,
-  SearchIcon,
-};

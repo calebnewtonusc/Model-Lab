@@ -14,7 +14,7 @@ const getApiBaseUrl = () => {
   return '';
 };
 
-export const API_BASE_URL = getApiBaseUrl();
+const API_BASE_URL = getApiBaseUrl();
 
 // API endpoints
 export const API_ENDPOINTS = {
@@ -48,7 +48,7 @@ export const API_ENDPOINTS = {
 };
 
 // Helper function to build full URL
-export const buildUrl = (path) => {
+const buildUrl = (path) => {
   if (path.startsWith('http')) {
     return path;
   }
@@ -56,7 +56,7 @@ export const buildUrl = (path) => {
 };
 
 // Fetch wrapper with error handling
-export const apiFetch = async (url, options = {}) => {
+const apiFetch = async (url, options = {}) => {
   try {
     const response = await fetch(buildUrl(url), {
       ...options,
@@ -79,7 +79,7 @@ export const apiFetch = async (url, options = {}) => {
 };
 
 // Export config info for debugging
-export const getApiConfig = () => ({
+const getApiConfig = () => ({
   baseUrl: API_BASE_URL,
   environment: process.env.REACT_APP_ENVIRONMENT || 'development',
   apiUrlConfigured: !!process.env.REACT_APP_API_URL,

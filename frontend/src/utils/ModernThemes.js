@@ -4,7 +4,7 @@
  */
 
 // Modern color palettes with extended variants
-export const colorPalettes = {
+const colorPalettes = {
   // Primary gradient palette (Emerald/Teal)
   primary: {
     50: '#ecfdf5',
@@ -53,7 +53,7 @@ export const colorPalettes = {
 };
 
 // Glassmorphism styles
-export const glass = {
+const glass = {
   light: {
     background: 'rgba(255, 255, 255, 0.7)',
     backdropFilter: 'blur(20px) saturate(180%)',
@@ -106,7 +106,7 @@ export const glass = {
 };
 
 // Enhanced elevation system
-export const elevation = {
+const elevation = {
   xs: '0 1px 2px rgba(0, 0, 0, 0.05)',
   sm: '0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04)',
   md: '0 4px 6px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06)',
@@ -126,7 +126,7 @@ export const elevation = {
 };
 
 // Modern typography scale
-export const typography = {
+const typography = {
   fontFamily: {
     primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif',
     sans: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif',
@@ -182,7 +182,7 @@ export const typography = {
 };
 
 // Enhanced animation system
-export const animations = {
+const animations = {
   // Durations
   duration: {
     instant: '75ms',
@@ -319,7 +319,7 @@ export const animations = {
 };
 
 // Spacing system (8px grid)
-export const spacing = {
+const spacing = {
   0: '0',
   px: '1px',
   0.5: '0.125rem',  // 2px
@@ -358,7 +358,7 @@ export const spacing = {
 };
 
 // Border radius system
-export const borderRadius = {
+const borderRadius = {
   none: '0',
   sm: '0.125rem',   // 2px
   base: '0.25rem',  // 4px
@@ -529,5 +529,3 @@ export const modernLightTheme = {
   // Border radius
   borderRadius,
 };
-
-export default { modernDarkTheme, modernLightTheme };

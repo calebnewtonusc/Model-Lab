@@ -438,8 +438,9 @@ const Compare = () => {
       <SelectionGrid>
         {[0, 1, 2, 3, 4].map(index => (
           <SelectBox key={index}>
-            <Label>Run {index + 1}</Label>
+            <Label htmlFor={`run-select-${index}`}>Run {index + 1}</Label>
             <Select
+              id={`run-select-${index}`}
               value={selectedRunIds[index]}
               onChange={(e) => handleRunSelection(index, e.target.value)}
             >

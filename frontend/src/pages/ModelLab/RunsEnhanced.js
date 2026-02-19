@@ -521,8 +521,9 @@ const Runs = () => {
           <div>
             <h3 style={{ marginBottom: '1rem' }}>Basic Information</h3>
             <FormGroup>
-              <Label>Run Name *</Label>
+              <Label htmlFor="run-name">Run Name *</Label>
               <Input
+                id="run-name"
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -532,8 +533,9 @@ const Runs = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label>Description</Label>
+              <Label htmlFor="run-description">Description</Label>
               <TextArea
+                id="run-description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Describe this run"
@@ -542,8 +544,9 @@ const Runs = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label>Dataset</Label>
+              <Label htmlFor="run-dataset">Dataset</Label>
               <Select
+                id="run-dataset"
                 value={formData.datasetId}
                 onChange={(e) => setFormData({ ...formData, datasetId: e.target.value })}
               >
@@ -564,8 +567,9 @@ const Runs = () => {
           <div>
             <h3 style={{ marginBottom: '1rem' }}>Hyperparameters</h3>
             <FormGroup>
-              <Label>Hyperparameters (JSON)</Label>
+              <Label htmlFor="run-hyperparameters">Hyperparameters (JSON)</Label>
               <TextArea
+                id="run-hyperparameters"
                 value={JSON.stringify(formData.hyperparameters, null, 2)}
                 onChange={(e) => {
                   try {
@@ -580,8 +584,9 @@ const Runs = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label>Config (JSON)</Label>
+              <Label htmlFor="run-config">Config (JSON)</Label>
               <TextArea
+                id="run-config"
                 value={JSON.stringify(formData.config, null, 2)}
                 onChange={(e) => {
                   try {

@@ -644,8 +644,9 @@ const Datasets = () => {
           )}
 
           <FormGroup>
-            <Label>Dataset Name (optional)</Label>
+            <Label htmlFor="dataset-name">Dataset Name (optional)</Label>
             <Input
+              id="dataset-name"
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -654,8 +655,9 @@ const Datasets = () => {
           </FormGroup>
 
           <FormGroup>
-            <Label>Description (optional)</Label>
+            <Label htmlFor="dataset-description">Description (optional)</Label>
             <TextArea
+              id="dataset-description"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Describe your dataset"
@@ -663,8 +665,9 @@ const Datasets = () => {
           </FormGroup>
 
           <FormGroup>
-            <Label>Tags (comma-separated, optional)</Label>
+            <Label htmlFor="dataset-tags">Tags (comma-separated, optional)</Label>
             <Input
+              id="dataset-tags"
               type="text"
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
