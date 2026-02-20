@@ -251,14 +251,21 @@ router.post('/:id/latency', validateId('id'), validate(schemas.run.latency), asy
   }
 });
 
-// GET repro pack for run
-router.get('/:id/repro', validateId('id'), async (req, res) => {
+// GET repro pack for run (no strict ID validation - graceful 404 for any non-existent run)
+router.get('/:id/repro', async (req, res) => {
   try {
     const reproPack = require(path.join(__dirname, '../../lib/reproPack'));
-    const pack = await reproPack.generateReproPack(req.params.id);
-    res.json(pack);
+    const run = await db.getRunById(req.params.id);
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+    const pack = reproPack.generateReproPack(req.params.id);
+    res.json({ reproPack: pack });
   } catch (error) {
     console.error('Repro pack generation error:', error);
+    if (error.message && error.message.includes('not found')) {
+      return res.status(404).json({ error: error.message });
+    }
     res.status(500).json({ error: error.message });
   }
 });

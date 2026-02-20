@@ -90,10 +90,14 @@ const uploadLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 
 // API Routes
+const authRouter = require('./routes/auth');
 const datasetsRouter = require('./routes/modellab/datasets');
 const runsRouter = require('./routes/modellab/runs');
 const artifactsRouter = require('./routes/modellab/artifacts');
 const projectsRouter = require('./routes/modellab/projects');
+
+// Auth routes (public)
+app.use('/api/auth', authRouter);
 
 // Apply upload limiter to dataset uploads
 app.use('/api/modellab/datasets', uploadLimiter);
@@ -267,9 +271,11 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-const server = app.listen(PORT, () => {
-  console.log(`
+// Only start server if this file is run directly (not required by tests)
+let server;
+if (require.main === module) {
+  server = app.listen(PORT, () => {
+    console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║                     ModelLab Server                        ║
 ╚════════════════════════════════════════════════════════════╝
@@ -295,44 +301,45 @@ const server = app.listen(PORT, () => {
 
 ╚════════════════════════════════════════════════════════════╝
   `);
-});
-
-// Graceful shutdown handler
-const gracefulShutdown = (signal) => {
-  console.log(`\n${signal} received. Shutting down gracefully...`);
-
-  server.close(() => {
-    console.log('HTTP server closed');
-
-    // Close database connection
-    const db = require('./lib/database');
-    try {
-      db.close();
-      console.log('Database connection closed');
-    } catch (error) {
-      console.error('Error closing database:', error);
-    }
-
-    console.log('Shutdown complete');
-    process.exit(0);
   });
 
-  // Force shutdown after 10 seconds
-  setTimeout(() => {
-    console.error('Forced shutdown after timeout');
-    process.exit(1);
-  }, 10000);
-};
+  // Graceful shutdown handler
+  const gracefulShutdown = (signal) => {
+    console.log(`\n${signal} received. Shutting down gracefully...`);
 
-// Listen for termination signals
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    server.close(() => {
+      console.log('HTTP server closed');
 
-// Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error);
-  gracefulShutdown('UNCAUGHT_EXCEPTION');
-});
+      // Close database connection
+      const db = require('./lib/database');
+      try {
+        db.close();
+        console.log('Database connection closed');
+      } catch (error) {
+        console.error('Error closing database:', error);
+      }
+
+      console.log('Shutdown complete');
+      process.exit(0);
+    });
+
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+      console.error('Forced shutdown after timeout');
+      process.exit(1);
+    }, 10000);
+  };
+
+  // Listen for termination signals
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+  // Handle uncaught exceptions
+  process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+    gracefulShutdown('UNCAUGHT_EXCEPTION');
+  });
+}
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {

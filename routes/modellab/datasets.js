@@ -18,9 +18,16 @@ const { validate, validateId, schemas } = require(path.join(__dirname, '../../li
 // GET all datasets
 router.get('/', async (req, res) => {
   try {
-    const datasets = await db.getDatasets();
+    let datasets = await db.getDatasets();
     // Ensure datasets is always an array
-    const datasetsArray = Array.isArray(datasets) ? datasets : [];
+    let datasetsArray = Array.isArray(datasets) ? datasets : [];
+
+    // Apply query parameter filters
+    const { project_id } = req.query;
+    if (project_id) {
+      datasetsArray = datasetsArray.filter(d => d.project_id === project_id);
+    }
+
     res.json({ datasets: datasetsArray });
   } catch (error) {
     console.error('Error fetching datasets:', error);
@@ -35,14 +42,21 @@ router.get('/:id', validateId('id'), async (req, res) => {
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
     }
-    res.json({ dataset });
+
+    // Enrich with columns from schema
+    let columns = [];
+    if (dataset.schema && dataset.schema.columns) {
+      columns = dataset.schema.columns.map(c => c.name);
+    }
+
+    res.json({ dataset: { ...dataset, columns } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// POST upload dataset
-router.post('/', (req, res) => {
+// Upload handler (shared between POST / and POST /upload)
+const handleDatasetUpload = (req, res) => {
   const form = formidable({
     multiples: false,
     uploadDir: path.join(db.BASE_DIR, 'datasets'),
@@ -62,9 +76,15 @@ router.post('/', (req, res) => {
         return res.status(400).json({ error: 'No file uploaded' });
       }
 
+      // Validate name is present
+      const nameValue = Array.isArray(fields.name) ? fields.name[0] : fields.name;
+      if (!nameValue || nameValue.trim() === '') {
+        return res.status(400).json({ error: 'Validation Error', message: 'Dataset name is required' });
+      }
+
       // Validate fields using Joi schema
       const fieldsToValidate = {
-        name: Array.isArray(fields.name) ? fields.name[0] : fields.name,
+        name: nameValue,
         description: Array.isArray(fields.description) ? fields.description[0] : fields.description,
         tags: Array.isArray(fields.tags) ? fields.tags[0] : fields.tags,
         metadata: Array.isArray(fields.metadata) ? fields.metadata[0] : fields.metadata
@@ -128,24 +148,41 @@ router.post('/', (req, res) => {
         }
       }
 
+      // Get project_id
+      const project_id = Array.isArray(fields.project_id) ? fields.project_id[0] : fields.project_id;
+
+      // Extract columns from schema
+      const columns = schema && schema.columns ? schema.columns.map(c => c.name) : [];
+
       // Create dataset record
       const dataset = await db.createDataset({
-        name: (Array.isArray(fields.name) ? fields.name[0] : fields.name) || baseName,
+        name: nameValue || baseName,
         description: (Array.isArray(fields.description) ? fields.description[0] : fields.description) || '',
         fileName: newFileName,
         filePath: newFilePath,
         fileType,
         fileSize: fs.statSync(newFilePath).size,
+        total_size: fs.statSync(newFilePath).size,
+        file_count: data.length,
         checksum,
         schema,
         rowCount: data.length,
         version: 1,
         tags,
-        metadata
+        metadata,
+        project_id: project_id || null,
+        projectId: project_id || null
       });
 
+      // Add columns to the response dataset object
+      const responseDataset = {
+        ...dataset,
+        columns,
+        rowCount: data.length
+      };
+
       res.status(201).json({
-        dataset,
+        dataset: responseDataset,
         message: 'Dataset uploaded successfully'
       });
 
@@ -154,7 +191,11 @@ router.post('/', (req, res) => {
       res.status(500).json({ error: error.message });
     }
   });
-});
+};
+
+// POST upload dataset (both routes)
+router.post('/', handleDatasetUpload);
+router.post('/upload', handleDatasetUpload);
 
 // PUT update dataset
 router.put('/:id', validateId('id'), validate(schemas.dataset.update), async (req, res) => {
@@ -178,14 +219,15 @@ router.get('/:id/preview', validateId('id'), async (req, res) => {
       return res.status(404).json({ error: 'Dataset not found' });
     }
 
-    // Load dataset and return first 100 rows
+    // Load dataset and return rows (default limit 10, max 100)
     const { data } = schemaDetector.loadDatasetFile(dataset.filePath);
-    const preview = data.slice(0, 100);
+    const limit = Math.min(parseInt(req.query.limit, 10) || 10, 100);
+    const rows = data.slice(0, limit);
 
     res.json({
-      preview,
+      rows,
       total: data.length,
-      showing: preview.length
+      showing: rows.length
     });
   } catch (error) {
     console.error('Dataset preview error:', error);

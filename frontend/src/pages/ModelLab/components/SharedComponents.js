@@ -98,9 +98,9 @@ export const LoadingText = styled.div`
 export const Skeleton = styled.div`
   background: linear-gradient(
     90deg,
-    ${({ theme }) => theme.neutral?.[800] || '#374151'} 0%,
-    ${({ theme }) => theme.neutral?.[700] || '#4b5563'} 50%,
-    ${({ theme }) => theme.neutral?.[800] || '#374151'} 100%
+    ${({ theme }) => theme.card || '#1e1e3a'} 0%,
+    ${({ theme }) => theme.cardElevated || '#252548'} 40%,
+    ${({ theme }) => theme.card || '#1e1e3a'} 80%
   );
   background-size: 1000px 100%;
   animation: ${shimmer} 2s infinite linear;

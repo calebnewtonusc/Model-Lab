@@ -25,8 +25,15 @@ describe('Runs API', () => {
   });
 
   afterAll(async () => {
-    // Clean up
+    // Clean up - delete all runs in the project first, then the project
     if (projectId) {
+      // Get all runs for this project and delete them
+      const runsResponse = await request(app).get(`/api/modellab/runs?project_id=${projectId}`);
+      if (runsResponse.body.runs) {
+        for (const run of runsResponse.body.runs) {
+          await request(app).delete(`/api/modellab/runs/${run.id}`);
+        }
+      }
       await request(app).delete(`/api/modellab/projects/${projectId}`);
     }
   });

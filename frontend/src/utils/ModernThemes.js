@@ -3,52 +3,52 @@
  * Glassmorphism, gradients, and modern visual effects
  */
 
-// Modern color palettes with extended variants
+// Modern color palettes with extended variants - Dark Purple/Blue ML aesthetic
 const colorPalettes = {
-  // Primary gradient palette (Emerald/Teal)
+  // Primary gradient palette (Violet/Purple - ML aesthetic)
   primary: {
-    50: '#ecfdf5',
-    100: '#d1fae5',
-    200: '#a7f3d0',
-    300: '#6ee7b7',
-    400: '#34d399',
-    500: '#10b981',  // Main
-    600: '#059669',
-    700: '#047857',
-    800: '#065f46',
-    900: '#064e3b',
-    gradient: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
-    gradientHover: 'linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%)',
+    50: '#f5f3ff',
+    100: '#ede9fe',
+    200: '#ddd6fe',
+    300: '#c4b5fd',
+    400: '#a78bfa',
+    500: '#8b5cf6',  // Main violet
+    600: '#7c3aed',
+    700: '#6d28d9',
+    800: '#5b21b6',
+    900: '#4c1d95',
+    gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)',
+    gradientHover: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%)',
   },
 
-  // Secondary gradient palette (Purple/Pink)
+  // Secondary gradient palette (Indigo/Blue)
   secondary: {
-    50: '#faf5ff',
-    100: '#f3e8ff',
-    200: '#e9d5ff',
-    300: '#d8b4fe',
-    400: '#c084fc',
-    500: '#a855f7',
-    600: '#9333ea',
-    700: '#7e22ce',
-    800: '#6b21a8',
-    900: '#581c87',
-    gradient: 'linear-gradient(135deg, #a855f7 0%, #9333ea 50%, #7e22ce 100%)',
+    50: '#eef2ff',
+    100: '#e0e7ff',
+    200: '#c7d2fe',
+    300: '#a5b4fc',
+    400: '#818cf8',
+    500: '#6366f1',
+    600: '#4f46e5',
+    700: '#4338ca',
+    800: '#3730a3',
+    900: '#312e81',
+    gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%)',
   },
 
   // Accent gradient palette (Blue/Cyan)
   accent: {
-    50: '#ecfeff',
-    100: '#cffafe',
-    200: '#a5f3fc',
-    300: '#67e8f9',
-    400: '#22d3ee',
-    500: '#06b6d4',
-    600: '#0891b2',
-    700: '#0e7490',
-    800: '#155e75',
-    900: '#164e63',
-    gradient: 'linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #0891b2 100%)',
+    50: '#eff6ff',
+    100: '#dbeafe',
+    200: '#bfdbfe',
+    300: '#93c5fd',
+    400: '#60a5fa',
+    500: '#3b82f6',
+    600: '#2563eb',
+    700: '#1d4ed8',
+    800: '#1e40af',
+    900: '#1e3a8a',
+    gradient: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%)',
   },
 };
 
@@ -370,42 +370,42 @@ const borderRadius = {
   full: '9999px',
 };
 
-// Modern dark theme
+// Modern dark theme - Deep Purple/Blue ML aesthetic
 export const modernDarkTheme = {
   // Brand colors
   ...colorPalettes,
 
-  // Background layers
-  bg: '#0a0a0f',
-  bgLight: '#13131a',
-  bgElevated: '#1a1a24',
-  bgOverlay: 'rgba(10, 10, 15, 0.95)',
+  // Background layers - deep dark blue/purple
+  bg: '#080812',
+  bgLight: '#0e0e1e',
+  bgElevated: '#13132a',
+  bgOverlay: 'rgba(8, 8, 18, 0.95)',
 
   // Card variants
-  card: '#171721',
-  cardLight: '#1f1f2e',
-  cardElevated: '#252532',
-  cardHover: '#2a2a3a',
+  card: '#0f0f22',
+  cardLight: '#181830',
+  cardElevated: '#1e1e3a',
+  cardHover: '#252548',
 
   // Text hierarchy
-  text_primary: '#ffffff',
-  text_secondary: '#b4b4c8',
-  text_tertiary: '#808090',
-  text_disabled: '#545461',
-  text_inverse: '#0a0a0f',
+  text_primary: '#f0efff',
+  text_secondary: '#a8a0cc',
+  text_tertiary: '#6b6490',
+  text_disabled: '#3d3860',
+  text_inverse: '#080812',
 
   // Border colors
-  border: '#2a2a38',
-  borderLight: '#35354a',
-  borderMedium: '#40405c',
-  borderStrong: '#50506e',
+  border: '#1e1a3a',
+  borderLight: '#2a2550',
+  borderMedium: '#38306a',
+  borderStrong: '#504880',
 
   // Interactive states
-  hover: 'rgba(255, 255, 255, 0.08)',
-  hoverStrong: 'rgba(255, 255, 255, 0.12)',
-  active: 'rgba(255, 255, 255, 0.16)',
-  focus: 'rgba(16, 185, 129, 0.24)',
-  disabled: '#35354a',
+  hover: 'rgba(139, 92, 246, 0.08)',
+  hoverStrong: 'rgba(139, 92, 246, 0.14)',
+  active: 'rgba(139, 92, 246, 0.2)',
+  focus: 'rgba(139, 92, 246, 0.28)',
+  disabled: '#2a2550',
 
   // Semantic colors
   success: '#10b981',
@@ -421,20 +421,53 @@ export const modernDarkTheme = {
   infoLight: '#60a5fa',
   infoDark: '#2563eb',
 
-  // Glassmorphism
-  glass: glass.dark,
+  // Glassmorphism - purple tinted
+  glass: {
+    light: {
+      background: 'rgba(15, 12, 40, 0.7)',
+      backdropFilter: 'blur(20px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+      border: '1px solid rgba(139, 92, 246, 0.15)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    },
+    medium: {
+      background: 'rgba(15, 12, 40, 0.5)',
+      backdropFilter: 'blur(16px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+      border: '1px solid rgba(139, 92, 246, 0.1)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+    },
+    heavy: {
+      background: 'rgba(15, 12, 40, 0.3)',
+      backdropFilter: 'blur(12px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+      border: '1px solid rgba(139, 92, 246, 0.08)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+    },
+  },
 
   // Backdrop effects
   backdropBlur: 'blur(12px)',
 
-  // Elevation
-  elevation,
+  // Elevation - purple-tinted shadows
+  elevation: {
+    ...elevation,
+    primaryGlow: '0 0 30px rgba(139, 92, 246, 0.3), 0 10px 25px rgba(139, 92, 246, 0.2)',
+    secondaryGlow: '0 0 30px rgba(99, 102, 241, 0.3), 0 10px 25px rgba(99, 102, 241, 0.2)',
+    accentGlow: '0 0 30px rgba(59, 130, 246, 0.3), 0 10px 25px rgba(59, 130, 246, 0.2)',
+  },
 
   // Transitions
   transition: {
     fast: '0.15s ease',
     base: '0.3s ease',
     slow: '0.5s ease',
+  },
+
+  // Easing functions
+  easing: {
+    spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
   },
 
   // Typography (spread to root for easy access)

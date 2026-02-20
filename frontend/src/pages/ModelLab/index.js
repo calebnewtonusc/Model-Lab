@@ -9,6 +9,7 @@ import Compare from './CompareEnhanced';
 import Projects from './ProjectsEnhanced';
 import { Toast } from './components/SharedComponents';
 import { useToast } from './components/useToast';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -249,9 +250,54 @@ const CreatorName = styled.span`
   font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
 `;
 
-const ModelLab = () => {
+const UserBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing?.[3] || '0.75rem'};
+  padding: ${({ theme }) => `${theme.spacing?.[2] || '0.5rem'} ${theme.spacing?.[4] || '1rem'}`};
+  background: ${({ theme }) => theme.glass?.light?.background || 'rgba(255,255,255,0.05)'};
+  border: 1px solid ${({ theme }) => (theme.primary?.[500] || '#7c3aed') + '30'};
+  border-radius: ${({ theme }) => theme.borderRadius?.full || '9999px'};
+  font-size: ${({ theme }) => theme.fontSize?.sm || '0.875rem'};
+  color: ${({ theme }) => theme.text_secondary};
+`;
+
+const UserAvatar = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+`;
+
+const LogoutBtn = styled.button`
+  padding: ${({ theme }) => `${theme.spacing?.[2] || '0.5rem'} ${theme.spacing?.[4] || '1rem'}`};
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || '0.75rem'};
+  color: rgba(252, 165, 165, 0.8);
+  font-size: ${({ theme }) => theme.fontSize?.sm || '0.875rem'};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #fca5a5;
+  }
+`;
+
+const ModelLab = ({ user, onLogout, isDark, setIsDark }) => {
   const [activeTab, setActiveTab] = useState('home');
   const { toasts, removeToast } = useToast();
+  const auth = useAuth();
 
   const handleNavigation = (tab) => {
     console.log('Navigating to:', tab);
@@ -328,6 +374,19 @@ const ModelLab = () => {
               Compare
             </NavLink>
           </NavLinks>
+
+          {auth.user && (
+            <>
+              <UserBadge>
+                <UserAvatar>{auth.user.username?.[0] || 'U'}</UserAvatar>
+                <span style={{ fontWeight: 600 }}>{auth.user.username}</span>
+                <span style={{ opacity: 0.5, fontSize: '0.75rem' }}>{auth.user.role}</span>
+              </UserBadge>
+              <LogoutBtn onClick={auth.logout}>
+                Sign out
+              </LogoutBtn>
+            </>
+          )}
         </NavContent>
       </NavBar>
 

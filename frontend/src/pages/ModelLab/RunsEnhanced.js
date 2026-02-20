@@ -7,7 +7,7 @@ import {
 import {
   Card, Button, Input, TextArea, Select, Modal, ModalContent, ModalHeader,
   ModalTitle, ModalClose, Badge, Table, Th, Td, Tabs,
-  LoadingContainer, Spinner, LoadingText, EmptyState, EmptyStateTitle,
+  LoadingContainer, Spinner, LoadingText, Skeleton, EmptyState, EmptyStateTitle,
   EmptyStateText, ProgressBar, ProgressFill
 } from './components/SharedComponents';
 import { API_ENDPOINTS } from '../../config/api';
@@ -133,29 +133,77 @@ const MetaValue = styled.div`
 
 const MetricsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1rem;
 `;
 
 const MetricCard = styled.div`
-  padding: 1rem;
-  background: ${({ theme }) => theme.bg};
-  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  background: ${({ theme }) => theme.card || theme.bgElevated || theme.bg};
+  border: 1px solid ${({ theme }) => theme.borderLight || theme.border};
+  border-radius: 14px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: ${({ theme }) => theme.primary?.gradient || 'linear-gradient(135deg, #8b5cf6, #6366f1)'};
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+    border-color: ${({ theme }) => theme.primary?.[500] || '#8b5cf6'};
+
+    &::before {
+      opacity: 1;
+    }
+  }
 `;
 
 const MetricValue = styled.div`
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.primary};
-  margin-bottom: 0.25rem;
+  font-size: 1.875rem;
+  font-weight: 800;
+  background: ${({ theme }) => theme.primary?.gradient || 'linear-gradient(135deg, #a78bfa, #818cf8)'};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.375rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
 `;
 
 const MetricLabel = styled.div`
   font-size: 0.75rem;
   color: ${({ theme }) => theme.text_secondary};
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+`;
+
+const MetricBar = styled.div`
+  margin-top: 0.75rem;
+  height: 4px;
+  background: ${({ theme }) => theme.border || 'rgba(255,255,255,0.1)'};
+  border-radius: 9999px;
+  overflow: hidden;
+`;
+
+const MetricBarFill = styled.div`
+  height: 100%;
+  width: ${({ pct }) => Math.min(Math.max(pct || 0, 0), 100)}%;
+  background: ${({ theme }) => theme.primary?.gradient || 'linear-gradient(135deg, #8b5cf6, #6366f1)'};
+  border-radius: 9999px;
+  transition: width 0.6s ease;
 `;
 
 const WizardModal = styled(ModalContent)`
@@ -643,10 +691,29 @@ const Runs = () => {
   if (loading) {
     return (
       <Container>
-        <LoadingContainer>
-          <Spinner size="60px" />
-          <LoadingText>Loading runs...</LoadingText>
-        </LoadingContainer>
+        <Header>
+          <HeaderContent>
+            <Title>Runs</Title>
+            <Subtitle>Loading your ML experiments...</Subtitle>
+          </HeaderContent>
+        </Header>
+        <RunsGrid>
+          {[1, 2, 3].map(i => (
+            <Card key={i} style={{ padding: '1.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <Skeleton height="28px" width="40%" radius="lg" />
+                <Skeleton height="24px" width="80px" radius="full" />
+              </div>
+              <Skeleton height="16px" width="70%" style={{ marginBottom: '1.5rem' }} />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
+                {[1, 2, 3, 4].map(j => <Skeleton key={j} height="50px" radius="lg" />)}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                {[1, 2, 3].map(j => <Skeleton key={j} height="80px" radius="lg" />)}
+              </div>
+            </Card>
+          ))}
+        </RunsGrid>
       </Container>
     );
   }
@@ -736,16 +803,28 @@ const Runs = () => {
 
               {run.metrics && Object.keys(run.metrics).length > 0 && (
                 <MetricsGrid>
-                  {Object.entries(run.metrics).slice(0, 4).map(([key, value]) => (
-                    <MetricCard key={key}>
-                      <MetricValue>
-                        {typeof value === 'number'
-                          ? value.toFixed(4)
-                          : JSON.stringify(value)}
-                      </MetricValue>
-                      <MetricLabel>{key}</MetricLabel>
-                    </MetricCard>
-                  ))}
+                  {Object.entries(run.metrics).slice(0, 4).map(([key, value]) => {
+                    const numVal = typeof value === 'number' ? value : parseFloat(value);
+                    const isPercent = !isNaN(numVal) && numVal >= 0 && numVal <= 1;
+                    const pct = isPercent ? numVal * 100 : Math.min(Math.abs(numVal) * 10, 100);
+                    return (
+                      <MetricCard key={key}>
+                        <MetricValue>
+                          {!isNaN(numVal)
+                            ? isPercent
+                              ? `${(numVal * 100).toFixed(1)}%`
+                              : numVal.toFixed(4)
+                            : JSON.stringify(value)}
+                        </MetricValue>
+                        <MetricLabel>{key}</MetricLabel>
+                        {!isNaN(numVal) && (
+                          <MetricBar>
+                            <MetricBarFill pct={pct} />
+                          </MetricBar>
+                        )}
+                      </MetricCard>
+                    );
+                  })}
                 </MetricsGrid>
               )}
             </RunCard>
@@ -870,16 +949,64 @@ const Runs = () => {
               {activeDetailTab === 'metrics' && (
                 <div>
                   {selectedRun.metrics && Object.keys(selectedRun.metrics).length > 0 ? (
-                    <MetricsGrid>
-                      {Object.entries(selectedRun.metrics).map(([key, value]) => (
-                        <MetricCard key={key}>
-                          <MetricValue>
-                            {typeof value === 'number' ? value.toFixed(4) : JSON.stringify(value)}
-                          </MetricValue>
-                          <MetricLabel>{key}</MetricLabel>
-                        </MetricCard>
-                      ))}
-                    </MetricsGrid>
+                    <>
+                      <MetricsGrid>
+                        {Object.entries(selectedRun.metrics).map(([key, value]) => {
+                          const numVal = typeof value === 'number' ? value : parseFloat(value);
+                          const isPercent = !isNaN(numVal) && numVal >= 0 && numVal <= 1;
+                          const pct = isPercent ? numVal * 100 : Math.min(Math.abs(numVal) * 10, 100);
+                          return (
+                            <MetricCard key={key}>
+                              <MetricValue>
+                                {!isNaN(numVal)
+                                  ? isPercent
+                                    ? `${(numVal * 100).toFixed(2)}%`
+                                    : numVal.toFixed(4)
+                                  : JSON.stringify(value)}
+                              </MetricValue>
+                              <MetricLabel>{key}</MetricLabel>
+                              {!isNaN(numVal) && (
+                                <MetricBar>
+                                  <MetricBarFill pct={pct} />
+                                </MetricBar>
+                              )}
+                            </MetricCard>
+                          );
+                        })}
+                      </MetricsGrid>
+                      {/* Bar chart for numeric metrics */}
+                      {Object.values(selectedRun.metrics).some(v => typeof v === 'number') && (
+                        <div style={{ marginTop: '2rem', height: '220px' }}>
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                              data={Object.entries(selectedRun.metrics)
+                                .filter(([, v]) => typeof v === 'number')
+                                .map(([k, v]) => ({ name: k, value: parseFloat(v.toFixed(4)) }))}
+                              margin={{ top: 10, right: 20, left: 0, bottom: 30 }}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,92,246,0.15)" />
+                              <XAxis dataKey="name" tick={{ fill: '#a8a0cc', fontSize: 11 }} />
+                              <YAxis tick={{ fill: '#a8a0cc', fontSize: 11 }} />
+                              <Tooltip
+                                contentStyle={{
+                                  background: 'rgba(15,12,40,0.9)',
+                                  border: '1px solid rgba(139,92,246,0.3)',
+                                  borderRadius: '10px',
+                                  color: '#f0efff'
+                                }}
+                              />
+                              <Bar dataKey="value" fill="url(#metricGradient)" radius={[6, 6, 0, 0]} />
+                              <defs>
+                                <linearGradient id="metricGradient" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#8b5cf6" />
+                                  <stop offset="100%" stopColor="#6366f1" />
+                                </linearGradient>
+                              </defs>
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <EmptyState>No metrics available</EmptyState>
                   )}
