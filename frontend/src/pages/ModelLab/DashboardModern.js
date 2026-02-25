@@ -821,7 +821,7 @@ const DashboardModern = ({ onNavigate }) => {
         <HeaderLeft>
           <PageTitle>ModelLab</PageTitle>
           <PageSubtitle>
-            ML Experiment Platform — track runs, version datasets, compare models.
+            ML Experiment Platform: track runs, version datasets, compare models.
           </PageSubtitle>
         </HeaderLeft>
         <HeaderActions>

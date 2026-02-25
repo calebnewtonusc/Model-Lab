@@ -573,7 +573,7 @@ curl -X POST https://modellab-api-production.up.railway.app/api/modellab/runs \\
             {
               n: '1',
               title: 'Create a Project',
-              desc: 'Organize experiments into projects. Each project holds multiple datasets and runs — perfect for different research directions.',
+              desc: 'Organize experiments into projects. Each project holds multiple datasets and runs, perfect for different research directions.',
             },
             {
               n: '2',
@@ -612,7 +612,7 @@ curl -X POST https://modellab-api-production.up.railway.app/api/modellab/runs \\
         <FooterLink href="https://modellab.studio">API Docs</FooterLink>
         <FooterLink href="https://modellab.studio">Status</FooterLink>
       </FooterBar>
-      <FooterCopy>ModelLab — ML Experiment Tracking · Built with React &amp; Express</FooterCopy>
+      <FooterCopy>ModelLab: ML Experiment Tracking · Built with React &amp; Express</FooterCopy>
     </Page>
   );
 }
