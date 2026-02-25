@@ -8,7 +8,7 @@
 ![Docker](https://img.shields.io/badge/Docker-multi--stage-2496ED?logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-yellow)
 
-ML experiment tracking platform for organizing projects, versioning datasets, logging runs, and evaluating models — with a Python SDK, eval harness, and reproducibility packs built in.
+ML experiment tracking platform for organizing projects, versioning datasets, logging runs, and evaluating models, with a Python SDK, eval harness, and reproducibility packs built in.
 
 **Live site:** [modellab.studio](https://modellab.studio) &nbsp;|&nbsp; **API docs:** [modellab.studio/api-docs](https://modellab.studio/api-docs)
 
@@ -16,12 +16,12 @@ ML experiment tracking platform for organizing projects, versioning datasets, lo
 
 ## Features
 
-- **Experiment tracking** — log hyperparameters, seeds, Git commit hashes, and environment details per run
-- **Dataset versioning** — upload datasets with SHA-256 checksums for integrity verification and reproducibility
-- **Evaluation harness** — compute Accuracy, F1, ROC-AUC, PR-AUC, ECE, RMSE, and R² with 95% bootstrap confidence intervals
-- **Failure & stress analysis** — categorize error types and run data-corruption stress tests against trained models
-- **Reproducibility packs** — download a ZIP archive containing the full experiment config, metrics, and artifacts for any run
-- **Python SDK** — instrument training scripts with `start_run`, `log_params`, and `log_metrics` in a few lines of code
+- **Experiment tracking**: log hyperparameters, seeds, Git commit hashes, and environment details per run
+- **Dataset versioning**: upload datasets with SHA-256 checksums for integrity verification and reproducibility
+- **Evaluation harness**: compute Accuracy, F1, ROC-AUC, PR-AUC, ECE, RMSE, and R² with 95% bootstrap confidence intervals
+- **Failure & stress analysis**: categorize error types and run data-corruption stress tests against trained models
+- **Reproducibility packs**: download a ZIP archive containing the full experiment config, metrics, and artifacts for any run
+- **Python SDK**: instrument training scripts with `start_run`, `log_params`, and `log_metrics` in a few lines of code
 
 ## Tech Stack
 
@@ -111,4 +111,4 @@ ModelLab/
 
 ## Author
 
-**Caleb Newton** — [calebnewton.me](https://calebnewton.me) | [GitHub](https://github.com/calebnewtonusc)
+**Caleb Newton** | [calebnewton.me](https://calebnewton.me) | [GitHub](https://github.com/calebnewtonusc)
