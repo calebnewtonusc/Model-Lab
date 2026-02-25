@@ -2,20 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { API_ENDPOINTS } from '../../config/api';
 import {
-  AreaChart, Area, LineChart, Line, PieChart, Pie, Cell,
+  AreaChart, Area, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import {
-  GlassCard,
-  ModernButton,
-  StatCard,
-  StatIcon,
-  StatValue,
-  StatLabel,
-  StatTrend,
-  LoadingDots,
-  SearchContainer
-} from '../../components/ModernComponents';
+import { LoadingDots } from '../../components/ModernComponents';
 import {
   Beaker,
   BarChart3,
@@ -28,319 +18,478 @@ import {
   TrendingUp,
   Palette,
   Zap,
-  Clock
+  Clock,
+  ArrowUpRight
 } from 'lucide-react';
 
-const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing?.[8] || "2rem"};
-  max-width: 1600px;
-  margin: 0 auto;
-  min-height: 100vh;
-  position: relative;
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design tokens (local — no theme dependency for this page)
+───────────────────────────────────────────────────────────────────────────── */
 
-  /* Animated background gradient */
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-      circle at 20% 20%,
-      ${({ theme }) => theme.primary?.[500] || '#10b981'}10 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 80%,
-      ${({ theme }) => theme.secondary?.[500] || '#a855f7'}10 0%,
-      transparent 50%
-    );
-    pointer-events: none;
-    z-index: 0;
-    animation: ${({ theme }) => theme.animation?.pulse || 'pulse'} 8s ease-in-out infinite;
-  }
+const T = {
+  bg: '#f2f2f7',
+  card: '#ffffff',
+  textPrimary: '#1c1c1e',
+  textSecondary: '#3a3a3c',
+  textMuted: '#8e8e93',
+  accent: '#6366f1',
+  accentViolet: '#8b5cf6',
+  separator: 'rgba(60, 60, 67, 0.12)',
+  separatorMedium: 'rgba(60, 60, 67, 0.18)',
+  cardShadow: '0 2px 16px rgba(0, 0, 0, 0.08)',
+  cardBorder: '0.5px solid rgba(60, 60, 67, 0.10)',
+};
+
+const PIE_COLORS = ['#6366f1', '#8b5cf6', '#ef4444', '#f59e0b', '#34c759'];
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Page shell
+───────────────────────────────────────────────────────────────────────────── */
+
+const PageWrap = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
 `;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Loading / Empty
+───────────────────────────────────────────────────────────────────────────── */
+
+const LoadingWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+`;
+
+const LoadingMsg = styled.p`
+  font-size: 16px;
+  font-weight: 500;
+  color: ${T.textMuted};
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+`;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Page Header
+───────────────────────────────────────────────────────────────────────────── */
 
 const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
+  margin-bottom: 36px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
-  position: relative;
-  z-index: 1;
+  align-items: flex-end;
+  gap: 24px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     flex-direction: column;
+    align-items: flex-start;
   }
 `;
 
-const HeaderLeft = styled.div`
-  flex: 1;
+const HeaderLeft = styled.div``;
+
+const PageTitle = styled.h1`
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: ${T.textPrimary};
+  line-height: 1.05;
+  margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+
+  /* Fade in down on mount */
+  animation: slideInDown 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+
+  @keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 `;
 
-const Title = styled.h1`
-  font-size: ${({ theme }) => theme.typography?.display?.md || '2.25rem'};
-  font-weight: ${({ theme }) => theme.fontWeight?.extrabold || 800};
-  background: ${({ theme }) => theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)'};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0 0 ${({ theme }) => theme.spacing?.[3] || "0.75rem"} 0;
-  line-height: 1.2;
-  letter-spacing: -0.03em;
-  animation: ${({ theme }) => theme.animation?.slideDown || 'slideInDown'} 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
-`;
+const PageSubtitle = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+  color: ${T.textMuted};
+  line-height: 1.55;
+  max-width: 520px;
+  animation: slideInDown 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.07s both;
 
-const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
-  color: ${({ theme }) => theme.text_secondary};
-  line-height: 1.6;
-  margin: 0;
-  max-width: 600px;
-  animation: ${({ theme }) => theme.animation?.slideDown || 'slideInDown'} 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} 0.1s backwards;
+  @keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 `;
 
 const HeaderActions = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
-  align-items: flex-start;
-  animation: ${({ theme }) => theme.animation?.slideDown || 'slideInDown'} 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} 0.2s backwards;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 `;
 
-const LastUpdate = styled.div`
-  font-size: ${({ theme }) => theme.typography?.body?.sm || '0.875rem'};
-  color: ${({ theme }) => theme.text_tertiary};
-  background: ${({ theme }) => theme.glass?.light?.background || 'rgba(255, 255, 255, 0.05)'};
-  backdrop-filter: ${({ theme }) => theme.glass?.light?.backdropFilter || 'blur(12px)'};
-  border: ${({ theme }) => theme.glass?.light?.border || '1px solid rgba(255, 255, 255, 0.1)'};
-  padding: ${({ theme }) => `${theme.spacing?.[2] || "0.5rem"} ${theme.spacing?.[4] || "1rem"}`};
-  border-radius: ${({ theme }) => theme.borderRadius?.full || '9999px'};
-  white-space: nowrap;
-  display: flex;
+const TimestampPill = styled.div`
+  display: inline-flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
+  gap: 6px;
+  padding: 7px 14px;
+  background: ${T.card};
+  border: ${T.cardBorder};
+  border-radius: 9999px;
+  box-shadow: ${T.cardShadow};
+  font-size: 13px;
+  font-weight: 500;
+  color: ${T.textMuted};
+  white-space: nowrap;
 
   svg {
-    width: 1.1em;
-    height: 1.1em;
+    width: 13px;
+    height: 13px;
+    color: ${T.textMuted};
   }
 `;
+
+const RefreshBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: ${T.accent};
+  border: none;
+  border-radius: 9999px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  cursor: pointer;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  white-space: nowrap;
+
+  &:hover  { opacity: 0.88; }
+  &:active { transform: scale(0.97); }
+`;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Section Label
+───────────────────────────────────────────────────────────────────────────── */
+
+const SectionLabel = styled.p`
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: ${T.textMuted};
+  margin-bottom: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+`;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Stats Row — 4-up metric cards
+───────────────────────────────────────────────────────────────────────────── */
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
-  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
-  position: relative;
-  z-index: 1;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
+  @media (max-width: 900px)  { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 500px)  { grid-template-columns: 1fr; }
 `;
 
-const ModernStatCard = styled(GlassCard)`
-  position: relative;
-  overflow: hidden;
-  animation: ${({ theme }) => theme.animation?.scaleIn || 'scaleIn'} 0.5s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} ${({ delay }) => delay || 0}s backwards;
+const StatCard = styled.div`
+  background: ${T.card};
+  border-radius: 16px;
+  border: ${T.cardBorder};
+  box-shadow: ${T.cardShadow};
+  padding: 20px 22px 22px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  animation: fadeInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${({ delay }) => delay || 0}s both;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: ${({ theme, color }) => color || theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)'};
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.6s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
-  }
-
-  &:hover::before {
-    transform: scaleX(1);
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${({ theme }) => theme.glass?.medium?.boxShadow || '0 20px 40px rgba(0, 0, 0, 0.3)'};
+    transform: translateY(-3px);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.11);
   }
 `;
 
-const StatHeader = styled.div`
+const StatTop = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
+  margin-bottom: 16px;
 `;
 
-const ModernStatIcon = styled(StatIcon)`
-  background: ${({ theme, color }) => color || theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)'};
-  background-size: 200% 200%;
-  animation: ${({ theme }) => theme.animation?.gradientShift || 'gradientShift'} 6s ease infinite;
-  box-shadow: ${({ theme }) => theme.elevation?.primaryGlow || '0 8px 32px rgba(16, 185, 129, 0.4)'};
-  font-size: 1.8rem;
-`;
+const StatIconWrap = styled.div`
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: ${({ gradient }) => gradient || `linear-gradient(135deg, #6366f1, #8b5cf6)`};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
 
-const QuickActionsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
-  position: relative;
-  z-index: 1;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
+  svg {
+    width: 18px;
+    height: 18px;
   }
 `;
 
-const QuickActionCard = styled(GlassCard)`
-  text-align: center;
+const StatTrendBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ positive }) => positive ? '#34c759' : '#ff3b30'};
+  background: ${({ positive }) => positive ? 'rgba(52, 199, 89, 0.10)' : 'rgba(255, 59, 48, 0.10)'};
+  border-radius: 9999px;
+  padding: 3px 8px;
+`;
+
+const StatValueText = styled.div`
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: ${({ accent }) => accent || T.accent};
+  line-height: 1;
+  margin-bottom: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+`;
+
+const StatLabelText = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  color: ${T.textMuted};
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+`;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Quick Actions Row
+───────────────────────────────────────────────────────────────────────────── */
+
+const ActionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 40px;
+
+  @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 500px) { grid-template-columns: 1fr; }
+`;
+
+const ActionCard = styled.button`
+  background: ${T.card};
+  border: ${T.cardBorder};
+  border-radius: 16px;
+  box-shadow: ${T.cardShadow};
+  padding: 22px 20px;
   cursor: pointer;
-  border: 2px solid ${({ theme }) => theme.glass?.light?.border || 'rgba(255, 255, 255, 0.1)'};
-  transition: all 0.4s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
-  animation: ${({ theme }) => theme.animation?.scaleIn || 'scaleIn'} 0.5s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} ${({ delay }) => delay || 0}s backwards;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  animation: fadeInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${({ delay }) => delay || 0}s both;
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
   &:hover {
-    border-color: ${({ theme }) => theme.primary?.[500] || '#10b981'};
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: ${({ theme }) => theme.glass?.heavy?.boxShadow || theme.elevation?.primaryGlow || '0 30px 60px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(16, 185, 129, 0.4)'};
+    transform: translateY(-3px);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.11);
+    border-color: rgba(99, 102, 241, 0.30);
   }
 
   &:active {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-1px);
+    box-shadow: ${T.cardShadow};
   }
 `;
 
-const QuickActionIcon = styled.div`
-  font-size: 2.5rem;
-  margin-bottom: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+const ActionIconWrap = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: ${({ gradient }) => gradient || `linear-gradient(135deg, #6366f1, #8b5cf6)`};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
-const QuickActionTitle = styled.div`
-  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
-  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
-  color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
+const ActionTitle = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: ${T.textPrimary};
+  letter-spacing: -0.2px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
 `;
 
-const QuickActionDesc = styled.div`
-  font-size: ${({ theme }) => theme.typography?.body?.sm || '0.875rem'};
-  color: ${({ theme }) => theme.text_secondary};
+const ActionDesc = styled.div`
+  font-size: 13px;
+  font-weight: 400;
+  color: ${T.textMuted};
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 `;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Charts Row
+───────────────────────────────────────────────────────────────────────────── */
 
 const ChartsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
-  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
-  position: relative;
-  z-index: 1;
+  grid-template-columns: 1fr 380px;
+  gap: 16px;
+  margin-bottom: 40px;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 900px) {
     grid-template-columns: 1fr;
   }
 `;
 
-const ChartCard = styled(GlassCard)`
-  position: relative;
-  animation: ${({ theme }) => theme.animation?.fadeIn || 'fadeIn'} 0.8s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} ${({ delay }) => delay || 0}s backwards;
+const ChartCard = styled.div`
+  background: ${T.card};
+  border-radius: 20px;
+  border: ${T.cardBorder};
+  box-shadow: ${T.cardShadow};
+  padding: 24px;
+  animation: fadeInUp 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${({ delay }) => delay || 0}s both;
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 `;
 
-const ChartHeader = styled.div`
+const ChartCardHeader = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
-  padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  border-bottom: 2px solid ${({ theme }) => theme.glass?.light?.border || 'rgba(255, 255, 255, 0.1)'};
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid ${T.separator};
 `;
 
-const ChartTitle = styled.h3`
-  font-size: ${({ theme }) => theme.typography?.heading?.md || '1.5rem'};
-  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
-  color: ${({ theme }) => theme.text_primary};
-  margin: 0;
+const ChartCardTitle = styled.h3`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: ${T.textPrimary};
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: ${T.accent};
+  }
 `;
 
-const ChartTitleIcon = styled.span`
-  font-size: 1.4em;
-`;
+/* ─────────────────────────────────────────────────────────────────────────────
+   Activity Feed
+───────────────────────────────────────────────────────────────────────────── */
 
-const ActivitySection = styled(GlassCard)`
-  margin-bottom: ${({ theme }) => theme.spacing?.[8] || "2rem"};
-  position: relative;
-  z-index: 1;
-  animation: ${({ theme }) => theme.animation?.fadeIn || 'fadeIn'} 0.8s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'} 0.6s backwards;
+const ActivityCard = styled.div`
+  background: ${T.card};
+  border-radius: 20px;
+  border: ${T.cardBorder};
+  box-shadow: ${T.cardShadow};
+  padding: 24px;
+  margin-bottom: 40px;
+  animation: fadeInUp 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.35s both;
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 `;
 
 const ActivityHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
-  padding-bottom: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  border-bottom: 2px solid ${({ theme }) => theme.glass?.light?.border || 'rgba(255, 255, 255, 0.1)'};
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 0.5px solid ${T.separator};
 `;
 
 const ActivityTitle = styled.h3`
-  font-size: ${({ theme }) => theme.typography?.heading?.md || '1.5rem'};
-  font-weight: ${({ theme }) => theme.fontWeight?.bold || 700};
-  color: ${({ theme }) => theme.text_primary};
-  margin: 0;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing?.[2] || "0.5rem"};
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: ${T.textPrimary};
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: ${T.accent};
+  }
 `;
 
 const ActivityList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing?.[3] || "0.75rem"};
+  gap: 4px;
 `;
 
-const ActivityItem = styled.div`
+const ActivityRow = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  padding: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-  background: ${({ theme }) => theme.glass?.light?.background || 'rgba(255, 255, 255, 0.05)'};
-  backdrop-filter: ${({ theme }) => theme.glass?.light?.backdropFilter || 'blur(12px)'};
-  border: ${({ theme }) => theme.glass?.light?.border || '1px solid rgba(255, 255, 255, 0.1)'};
-  border-radius: ${({ theme }) => theme.borderRadius?.xl || '0.75rem'};
-  transition: all 0.3s ${({ theme }) => theme.easing?.spring || 'cubic-bezier(0.34, 1.56, 0.64, 1)'};
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
   cursor: pointer;
+  transition: background 0.18s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.glass?.medium?.background || 'rgba(255, 255, 255, 0.1)'};
-    backdrop-filter: ${({ theme }) => theme.glass?.medium?.backdropFilter || 'blur(16px)'};
-    transform: translateX(8px);
-    box-shadow: ${({ theme }) => theme.glass?.medium?.boxShadow || '0 20px 40px rgba(0, 0, 0, 0.3)'};
+    background: rgba(60, 60, 67, 0.04);
   }
 `;
 
-const ActivityIcon = styled.div`
-  width: 48px;
-  height: 48px;
+const ActivityIconWrap = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   flex-shrink: 0;
-  background: ${({ type, theme }) => {
-    if (type === 'run') return theme.primary?.gradient || 'linear-gradient(135deg, #10b981, #059669)';
-    if (type === 'dataset') return theme.secondary?.gradient || 'linear-gradient(135deg, #a855f7, #7c3aed)';
-    if (type === 'evaluation') return theme.accent?.gradient || 'linear-gradient(135deg, #06b6d4, #0891b2)';
-    return theme.neutral?.[700] || '#4b5563';
+  background: ${({ type }) => {
+    if (type === 'run')       return 'linear-gradient(135deg, #6366f1, #8b5cf6)';
+    if (type === 'dataset')   return 'linear-gradient(135deg, #8b5cf6, #7c3aed)';
+    if (type === 'evaluation') return 'linear-gradient(135deg, #06b6d4, #0891b2)';
+    return '#e5e5ea';
   }};
-  border-radius: ${({ theme }) => theme.borderRadius?.xl || '0.75rem'};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  box-shadow: ${({ theme }) => theme.elevation?.md || '0 4px 6px rgba(0, 0, 0, 0.1)'};
+  color: #ffffff;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 `;
 
 const ActivityContent = styled.div`
@@ -349,71 +498,164 @@ const ActivityContent = styled.div`
 `;
 
 const ActivityText = styled.div`
-  font-size: ${({ theme }) => theme.typography?.body?.base || '1rem'};
-  font-weight: ${({ theme }) => theme.fontWeight?.medium || 500};
-  color: ${({ theme }) => theme.text_primary};
-  margin-bottom: ${({ theme }) => theme.spacing?.[1] || '0.25rem'};
+  font-size: 14px;
+  font-weight: 500;
+  color: ${T.textPrimary};
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 `;
 
 const ActivityTime = styled.div`
-  font-size: ${({ theme }) => theme.typography?.body?.sm || '0.875rem'};
-  color: ${({ theme }) => theme.text_tertiary};
+  font-size: 12px;
+  font-weight: 400;
+  color: ${T.textMuted};
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 `;
 
-const Badge = styled.span`
-  display: inline-block;
-  padding: ${({ theme }) => `${theme.spacing?.[1] || "0.25rem"} ${theme.spacing?.[3] || "0.75rem"}`};
-  border-radius: ${({ theme }) => theme.borderRadius?.full || '9999px'};
-  font-size: ${({ theme }) => theme.typography?.body?.xs || '0.75rem'};
-  font-weight: ${({ theme }) => theme.fontWeight?.semibold || 600};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: ${({ variant, theme }) => {
-    if (variant === 'success') return theme.success + '20';
-    if (variant === 'error') return theme.error + '20';
-    if (variant === 'info') return theme.info + '20';
-    if (variant === 'warning') return theme.warning + '20';
-    return theme.neutral?.[700] || '#4b5563' + '20';
-  }};
-  color: ${({ variant, theme }) => {
-    if (variant === 'success') return theme.success;
-    if (variant === 'error') return theme.error;
-    if (variant === 'info') return theme.info;
-    if (variant === 'warning') return theme.warning;
-    return theme.text_secondary;
-  }};
-  border: 1px solid ${({ variant, theme }) => {
-    if (variant === 'success') return theme.success + '40';
-    if (variant === 'error') return theme.error + '40';
-    if (variant === 'info') return theme.info + '40';
-    if (variant === 'warning') return theme.warning + '40';
-    return theme.neutral?.[600] || '#6b7280' + '40';
-  }};
-`;
-
-const LoadingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const StatusBadge = styled.span`
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  gap: ${({ theme }) => theme.spacing?.[4] || "1rem"};
-`;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
 
-const LoadingMessage = styled.div`
-  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
-  color: ${({ theme }) => theme.text_secondary};
-  font-weight: ${({ theme }) => theme.fontWeight?.medium || 500};
+  background: ${({ variant }) => {
+    if (variant === 'success') return 'rgba(52, 199, 89, 0.12)';
+    if (variant === 'error')   return 'rgba(255, 59, 48, 0.12)';
+    if (variant === 'info')    return 'rgba(99, 102, 241, 0.12)';
+    if (variant === 'warning') return 'rgba(255, 149, 0, 0.12)';
+    return 'rgba(60, 60, 67, 0.08)';
+  }};
+
+  color: ${({ variant }) => {
+    if (variant === 'success') return '#248a3d';
+    if (variant === 'error')   return '#c0392b';
+    if (variant === 'info')    return '#4f46e5';
+    if (variant === 'warning') return '#c0720a';
+    return T.textMuted;
+  }};
 `;
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: ${({ theme }) => theme.spacing?.[12] || '3rem'} ${({ theme }) => theme.spacing?.[6] || "1.5rem"};
-  color: ${({ theme }) => theme.text_secondary};
-  font-size: ${({ theme }) => theme.typography?.body?.lg || '1.125rem'};
+  padding: 48px 24px;
+  color: ${T.textMuted};
+  font-size: 15px;
+  font-weight: 400;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 `;
 
-const CHART_COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899', '#14b8a6'];
+/* ─────────────────────────────────────────────────────────────────────────────
+   Chart tooltip style (recharts)
+───────────────────────────────────────────────────────────────────────────── */
+
+const tooltipStyle = {
+  contentStyle: {
+    backgroundColor: '#ffffff',
+    border: '0.5px solid rgba(60, 60, 67, 0.18)',
+    borderRadius: 12,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.10)',
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+    fontSize: 13,
+    color: '#1c1c1e',
+  },
+  itemStyle: { color: '#3a3a3c' },
+  labelStyle: { fontWeight: 600, color: '#1c1c1e' },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Stat card definitions
+───────────────────────────────────────────────────────────────────────────── */
+
+const STAT_DEFS = [
+  {
+    key: 'totalRuns',
+    label: 'Total Runs',
+    trendKey: 'runsTrend',
+    accent: T.accent,
+    gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+    Icon: Beaker,
+    delay: 0,
+  },
+  {
+    key: 'totalDatasets',
+    label: 'Datasets',
+    trendKey: 'datasetsTrend',
+    accent: '#8b5cf6',
+    gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+    Icon: BarChart3,
+    delay: 0.08,
+  },
+  {
+    key: 'completedRuns',
+    label: 'Completed Runs',
+    trendKey: 'completedTrend',
+    accent: '#06b6d4',
+    gradient: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+    Icon: CheckCircle2,
+    delay: 0.16,
+  },
+  {
+    key: 'avgAccuracy',
+    label: 'Avg Accuracy',
+    trendKey: 'accuracyTrend',
+    accent: '#34c759',
+    gradient: 'linear-gradient(135deg, #34c759, #248a3d)',
+    Icon: Target,
+    suffix: '%',
+    delay: 0.24,
+  },
+];
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Action card definitions
+───────────────────────────────────────────────────────────────────────────── */
+
+const ACTION_DEFS = [
+  {
+    id: 'datasets',
+    title: 'Upload Dataset',
+    desc: 'Add new training data',
+    gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+    Icon: Upload,
+    delay: 0.28,
+  },
+  {
+    id: 'runs',
+    title: 'New Run',
+    desc: 'Start an experiment',
+    gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+    Icon: Rocket,
+    delay: 0.34,
+  },
+  {
+    id: 'compare',
+    title: 'Compare Runs',
+    desc: 'Analyse performance',
+    gradient: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+    Icon: Scale,
+    delay: 0.40,
+  },
+  {
+    id: 'projects',
+    title: 'View Projects',
+    desc: 'Organise experiments',
+    gradient: 'linear-gradient(135deg, #34c759, #248a3d)',
+    Icon: Folder,
+    delay: 0.46,
+  },
+];
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Component
+───────────────────────────────────────────────────────────────────────────── */
 
 const DashboardModern = ({ onNavigate }) => {
   const [loading, setLoading] = useState(true);
@@ -425,7 +667,7 @@ const DashboardModern = ({ onNavigate }) => {
     runsTrend: 0,
     datasetsTrend: 0,
     completedTrend: 0,
-    accuracyTrend: 0
+    accuracyTrend: 0,
   });
   const [runsOverTime, setRunsOverTime] = useState([]);
   const [statusDistribution, setStatusDistribution] = useState([]);
@@ -436,7 +678,7 @@ const DashboardModern = ({ onNavigate }) => {
     fetchDashboardData();
     const interval = setInterval(fetchDashboardData, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchDashboardData = async () => {
     try {
@@ -449,14 +691,17 @@ const DashboardModern = ({ onNavigate }) => {
       const datasets = datasetsData.datasets || [];
 
       const completedRuns = runs.filter(r => r.status === 'completed');
-      const avgAccuracy = completedRuns.length > 0
-        ? completedRuns.reduce((sum, r) => sum + (r.metrics?.accuracy || 0), 0) / completedRuns.length
-        : 0;
+      const avgAccuracy =
+        completedRuns.length > 0
+          ? completedRuns.reduce((sum, r) => sum + (r.metrics?.accuracy || 0), 0) /
+            completedRuns.length
+          : 0;
 
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
       const recentRuns = runs.filter(r => new Date(r.createdAt) > sevenDaysAgo);
-      const runsTrend = runs.length > 0 ? ((recentRuns.length / runs.length) * 100) : 0;
+      const runsTrend =
+        runs.length > 0 ? ((recentRuns.length / runs.length) * 100) : 0;
 
       setStats({
         totalRuns: runs.length,
@@ -466,9 +711,10 @@ const DashboardModern = ({ onNavigate }) => {
         runsTrend: runsTrend.toFixed(0),
         datasetsTrend: datasets.length > 0 ? 12 : 0,
         completedTrend: completedRuns.length > 0 ? 8 : 0,
-        accuracyTrend: avgAccuracy > 0 ? 5.2 : 0
+        accuracyTrend: avgAccuracy > 0 ? 5.2 : 0,
       });
 
+      // Runs over time (14 days)
       const now = new Date();
       const last14Days = Array.from({ length: 14 }, (_, i) => {
         const date = new Date(now);
@@ -478,53 +724,52 @@ const DashboardModern = ({ onNavigate }) => {
 
       const runsByDate = last14Days.map(date => {
         const count = runs.filter(r => r.createdAt.split('T')[0] === date).length;
-        const completed = runs.filter(r =>
-          r.createdAt.split('T')[0] === date && r.status === 'completed'
+        const completed = runs.filter(
+          r => r.createdAt.split('T')[0] === date && r.status === 'completed'
         ).length;
         return {
           date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
           runs: count,
-          completed
+          completed,
         };
       });
       setRunsOverTime(runsByDate);
 
+      // Status distribution pie
       const statusCounts = {
         completed: runs.filter(r => r.status === 'completed').length,
-        running: runs.filter(r => r.status === 'running').length,
-        failed: runs.filter(r => r.status === 'failed').length,
-        pending: runs.filter(r => r.status === 'pending').length
+        running:   runs.filter(r => r.status === 'running').length,
+        failed:    runs.filter(r => r.status === 'failed').length,
+        pending:   runs.filter(r => r.status === 'pending').length,
       };
-
       const distribution = Object.entries(statusCounts)
-        .filter(([_, count]) => count > 0)
+        .filter(([, count]) => count > 0)
         .map(([status, count]) => ({
           name: status.charAt(0).toUpperCase() + status.slice(1),
-          value: count
+          value: count,
         }));
       setStatusDistribution(distribution);
 
+      // Recent activity
       const activities = [];
       runs.slice(0, 5).forEach(run => {
         activities.push({
           type: 'run',
-          icon: <Beaker className="w-6 h-6" />,
+          icon: <Beaker />,
           text: `Run "${run.name}" ${run.status}`,
           time: new Date(run.createdAt),
-          badge: run.status
+          badge: run.status,
         });
       });
-
       datasets.slice(0, 3).forEach(dataset => {
         activities.push({
           type: 'dataset',
-          icon: <BarChart3 className="w-6 h-6" />,
+          icon: <BarChart3 />,
           text: `Dataset "${dataset.name}" uploaded`,
           time: new Date(dataset.createdAt),
-          badge: 'new'
+          badge: 'new',
         });
       });
-
       activities.sort((a, b) => b.time - a.time);
       setRecentActivity(activities.slice(0, 10));
 
@@ -538,278 +783,242 @@ const DashboardModern = ({ onNavigate }) => {
 
   const formatTimeAgo = (date) => {
     const seconds = Math.floor((new Date() - date) / 1000);
-    if (seconds < 60) return `${seconds}s ago`;
+    if (seconds < 60)  return `${seconds}s ago`;
     const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes}m ago`;
+    if (minutes < 60)  return `${minutes}m ago`;
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
+    if (hours < 24)    return `${hours}h ago`;
     const days = Math.floor(hours / 24);
     return `${days}d ago`;
   };
 
+  const badgeVariant = (badge) => {
+    if (badge === 'completed') return 'success';
+    if (badge === 'failed')    return 'error';
+    if (badge === 'running')   return 'info';
+    if (badge === 'warning')   return 'warning';
+    return 'default';
+  };
+
+  /* ── Loading State ──────────────────────────────────────────────────────── */
   if (loading) {
     return (
-      <Container>
-        <LoadingContainer>
+      <PageWrap>
+        <LoadingWrap>
           <LoadingDots />
-          <LoadingMessage>Loading your dashboard...</LoadingMessage>
-        </LoadingContainer>
-      </Container>
+          <LoadingMsg>Loading your dashboard…</LoadingMsg>
+        </LoadingWrap>
+      </PageWrap>
     );
   }
 
+  /* ── Main Render ────────────────────────────────────────────────────────── */
   return (
-    <Container>
+    <PageWrap>
+
+      {/* ── Page Header ─────────────────────────────────────────────────── */}
       <Header>
         <HeaderLeft>
-          <Title>ModelLab Dashboard</Title>
-          <Subtitle>
-            Track your ML experiments with dataset versioning, run tracking, and reproducibility tools.
-            View metrics, compare models, and analyze performance.
-          </Subtitle>
+          <PageTitle>ModelLab</PageTitle>
+          <PageSubtitle>
+            ML Experiment Platform — track runs, version datasets, compare models.
+          </PageSubtitle>
         </HeaderLeft>
         <HeaderActions>
-          <LastUpdate>
-            <Clock className="w-4 h-4" />
+          <TimestampPill>
+            <Clock />
             {lastUpdate.toLocaleTimeString()}
-          </LastUpdate>
-          <ModernButton variant="gradient" onClick={fetchDashboardData}>
+          </TimestampPill>
+          <RefreshBtn onClick={fetchDashboardData}>
             Refresh
-          </ModernButton>
+          </RefreshBtn>
         </HeaderActions>
       </Header>
 
+      {/* ── Stats Row ───────────────────────────────────────────────────── */}
+      <SectionLabel>Overview</SectionLabel>
       <StatsGrid>
-        <ModernStatCard variant="medium" delay={0}>
-          <StatHeader>
-            <ModernStatIcon color="linear-gradient(135deg, #10b981, #059669)">
-              <Beaker className="w-8 h-8" />
-            </ModernStatIcon>
-            {stats.runsTrend > 0 && (
-              <StatTrend positive={true}>
-                ↑ {stats.runsTrend}%
-              </StatTrend>
-            )}
-          </StatHeader>
-          <StatValue>{stats.totalRuns}</StatValue>
-          <StatLabel>Total Runs</StatLabel>
-        </ModernStatCard>
-
-        <ModernStatCard variant="medium" delay={0.1} color="linear-gradient(135deg, #a855f7, #7c3aed)">
-          <StatHeader>
-            <ModernStatIcon color="linear-gradient(135deg, #a855f7, #7c3aed)">
-              <BarChart3 className="w-8 h-8" />
-            </ModernStatIcon>
-            {stats.datasetsTrend > 0 && (
-              <StatTrend positive={true}>
-                ↑ {stats.datasetsTrend}%
-              </StatTrend>
-            )}
-          </StatHeader>
-          <StatValue>{stats.totalDatasets}</StatValue>
-          <StatLabel>Datasets</StatLabel>
-        </ModernStatCard>
-
-        <ModernStatCard variant="medium" delay={0.2} color="linear-gradient(135deg, #06b6d4, #0891b2)">
-          <StatHeader>
-            <ModernStatIcon color="linear-gradient(135deg, #06b6d4, #0891b2)">
-              <CheckCircle2 className="w-8 h-8" />
-            </ModernStatIcon>
-            {stats.completedTrend > 0 && (
-              <StatTrend positive={true}>
-                ↑ {stats.completedTrend}%
-              </StatTrend>
-            )}
-          </StatHeader>
-          <StatValue>{stats.completedRuns}</StatValue>
-          <StatLabel>Completed Runs</StatLabel>
-        </ModernStatCard>
-
-        <ModernStatCard variant="medium" delay={0.3} color="linear-gradient(135deg, #10b981, #059669)">
-          <StatHeader>
-            <ModernStatIcon color="linear-gradient(135deg, #10b981, #059669)">
-              <Target className="w-8 h-8" />
-            </ModernStatIcon>
-            {stats.accuracyTrend > 0 && (
-              <StatTrend positive={true}>
-                ↑ {stats.accuracyTrend}%
-              </StatTrend>
-            )}
-          </StatHeader>
-          <StatValue>{stats.avgAccuracy}%</StatValue>
-          <StatLabel>Avg Accuracy</StatLabel>
-        </ModernStatCard>
+        {STAT_DEFS.map(({ key, label, trendKey, accent, gradient, Icon, suffix, delay }) => (
+          <StatCard key={key} delay={delay}>
+            <StatTop>
+              <StatIconWrap gradient={gradient}>
+                <Icon />
+              </StatIconWrap>
+              {stats[trendKey] > 0 && (
+                <StatTrendBadge positive>
+                  <ArrowUpRight size={11} />
+                  {stats[trendKey]}%
+                </StatTrendBadge>
+              )}
+            </StatTop>
+            <StatValueText accent={accent}>
+              {stats[key]}{suffix || ''}
+            </StatValueText>
+            <StatLabelText>{label}</StatLabelText>
+          </StatCard>
+        ))}
       </StatsGrid>
 
-      <QuickActionsGrid>
-        <QuickActionCard
-          variant="medium"
-          delay={0.3}
-          onClick={() => onNavigate && onNavigate('datasets')}
-        >
-          <QuickActionIcon><Upload className="w-10 h-10" /></QuickActionIcon>
-          <QuickActionTitle>Upload Dataset</QuickActionTitle>
-          <QuickActionDesc>Add new training data</QuickActionDesc>
-        </QuickActionCard>
+      {/* ── Quick Actions ────────────────────────────────────────────────── */}
+      <SectionLabel>Quick Actions</SectionLabel>
+      <ActionsGrid>
+        {ACTION_DEFS.map(({ id, title, desc, gradient, Icon, delay }) => (
+          <ActionCard
+            key={id}
+            delay={delay}
+            onClick={() => onNavigate && onNavigate(id)}
+          >
+            <ActionIconWrap gradient={gradient}>
+              <Icon />
+            </ActionIconWrap>
+            <div>
+              <ActionTitle>{title}</ActionTitle>
+              <ActionDesc>{desc}</ActionDesc>
+            </div>
+          </ActionCard>
+        ))}
+      </ActionsGrid>
 
-        <QuickActionCard
-          variant="medium"
-          delay={0.4}
-          onClick={() => onNavigate && onNavigate('runs')}
-        >
-          <QuickActionIcon><Rocket className="w-10 h-10" /></QuickActionIcon>
-          <QuickActionTitle>Create Run</QuickActionTitle>
-          <QuickActionDesc>Start new experiment</QuickActionDesc>
-        </QuickActionCard>
-
-        <QuickActionCard
-          variant="medium"
-          delay={0.5}
-          onClick={() => onNavigate && onNavigate('compare')}
-        >
-          <QuickActionIcon><Scale className="w-10 h-10" /></QuickActionIcon>
-          <QuickActionTitle>Compare Runs</QuickActionTitle>
-          <QuickActionDesc>Analyze performance</QuickActionDesc>
-        </QuickActionCard>
-
-        <QuickActionCard
-          variant="medium"
-          delay={0.6}
-          onClick={() => onNavigate && onNavigate('projects')}
-        >
-          <QuickActionIcon><Folder className="w-10 h-10" /></QuickActionIcon>
-          <QuickActionTitle>View Projects</QuickActionTitle>
-          <QuickActionDesc>Organize experiments</QuickActionDesc>
-        </QuickActionCard>
-      </QuickActionsGrid>
-
+      {/* ── Charts ──────────────────────────────────────────────────────── */}
+      <SectionLabel>Analytics</SectionLabel>
       <ChartsGrid>
-        <ChartCard variant="medium" delay={0.4}>
-          <ChartHeader>
-            <ChartTitle>
-              <ChartTitleIcon><TrendingUp className="w-6 h-6" /></ChartTitleIcon>
+
+        {/* Area: Runs over time */}
+        <ChartCard delay={0.28}>
+          <ChartCardHeader>
+            <ChartCardTitle>
+              <TrendingUp />
               Runs Over Time
-            </ChartTitle>
-          </ChartHeader>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={runsOverTime}>
+            </ChartCardTitle>
+          </ChartCardHeader>
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={runsOverTime} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <defs>
-                <linearGradient id="colorRuns" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.4}/>
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                <linearGradient id="mlRuns" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%"  stopColor="#6366f1" stopOpacity={0.22} />
+                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                 </linearGradient>
-                <linearGradient id="colorCompleted" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4}/>
-                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                <linearGradient id="mlCompleted" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%"  stopColor="#8b5cf6" stopOpacity={0.22} />
+                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#ffffff15" />
-              <XAxis dataKey="date" stroke="#888" style={{ fontSize: '12px' }} />
-              <YAxis stroke="#888" style={{ fontSize: '12px' }} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'rgba(10, 10, 15, 0.95)',
-                  backdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '12px',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                }}
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="rgba(60, 60, 67, 0.10)"
+                vertical={false}
               />
-              <Legend />
+              <XAxis
+                dataKey="date"
+                stroke="#c7c7cc"
+                tick={{ fontSize: 11, fill: '#8e8e93' }}
+                tickLine={false}
+                axisLine={{ stroke: 'rgba(60,60,67,0.12)' }}
+              />
+              <YAxis
+                stroke="#c7c7cc"
+                tick={{ fontSize: 11, fill: '#8e8e93' }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <Tooltip {...tooltipStyle} />
+              <Legend
+                wrapperStyle={{ fontSize: 12, color: '#8e8e93', paddingTop: 12 }}
+              />
               <Area
                 type="monotone"
                 dataKey="runs"
-                stroke="#10b981"
+                stroke="#6366f1"
                 strokeWidth={2}
                 fillOpacity={1}
-                fill="url(#colorRuns)"
+                fill="url(#mlRuns)"
                 name="Total Runs"
+                dot={false}
+                activeDot={{ r: 4, fill: '#6366f1', strokeWidth: 0 }}
               />
               <Area
                 type="monotone"
                 dataKey="completed"
-                stroke="#3b82f6"
+                stroke="#8b5cf6"
                 strokeWidth={2}
                 fillOpacity={1}
-                fill="url(#colorCompleted)"
+                fill="url(#mlCompleted)"
                 name="Completed"
+                dot={false}
+                activeDot={{ r: 4, fill: '#8b5cf6', strokeWidth: 0 }}
               />
             </AreaChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard variant="medium" delay={0.5}>
-          <ChartHeader>
-            <ChartTitle>
-              <ChartTitleIcon><Palette className="w-6 h-6" /></ChartTitleIcon>
+        {/* Pie: Status distribution */}
+        <ChartCard delay={0.36}>
+          <ChartCardHeader>
+            <ChartCardTitle>
+              <Palette />
               Status Distribution
-            </ChartTitle>
-          </ChartHeader>
-          <ResponsiveContainer width="100%" height={300}>
+            </ChartCardTitle>
+          </ChartCardHeader>
+          <ResponsiveContainer width="100%" height={260}>
             <PieChart>
               <Pie
                 data={statusDistribution}
                 cx="50%"
-                cy="50%"
+                cy="46%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                outerRadius={100}
-                fill="#8884d8"
+                label={({ name, percent }) =>
+                  `${name} ${(percent * 100).toFixed(0)}%`
+                }
+                outerRadius={88}
                 dataKey="value"
+                stroke="none"
               >
                 {statusDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={PIE_COLORS[index % PIE_COLORS.length]}
+                  />
                 ))}
               </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'rgba(10, 10, 15, 0.95)',
-                  backdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '12px',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                }}
-              />
+              <Tooltip {...tooltipStyle} />
             </PieChart>
           </ResponsiveContainer>
         </ChartCard>
       </ChartsGrid>
 
-      <ActivitySection variant="medium">
+      {/* ── Activity Feed ────────────────────────────────────────────────── */}
+      <SectionLabel>Recent Activity</SectionLabel>
+      <ActivityCard>
         <ActivityHeader>
           <ActivityTitle>
-            <Zap className="w-6 h-6" />
-            Recent Activity
+            <Zap />
+            Activity
           </ActivityTitle>
         </ActivityHeader>
+
         {recentActivity.length > 0 ? (
           <ActivityList>
             {recentActivity.map((activity, idx) => (
-              <ActivityItem key={idx}>
-                <ActivityIcon type={activity.type}>
+              <ActivityRow key={idx}>
+                <ActivityIconWrap type={activity.type}>
                   {activity.icon}
-                </ActivityIcon>
+                </ActivityIconWrap>
                 <ActivityContent>
-                  <ActivityText>
-                    {activity.text}{' '}
-                    <Badge variant={
-                      activity.badge === 'completed' ? 'success' :
-                      activity.badge === 'failed' ? 'error' :
-                      activity.badge === 'running' ? 'info' : 'default'
-                    }>
-                      {activity.badge}
-                    </Badge>
-                  </ActivityText>
+                  <ActivityText>{activity.text}</ActivityText>
                   <ActivityTime>{formatTimeAgo(activity.time)}</ActivityTime>
                 </ActivityContent>
-              </ActivityItem>
+                <StatusBadge variant={badgeVariant(activity.badge)}>
+                  {activity.badge}
+                </StatusBadge>
+              </ActivityRow>
             ))}
           </ActivityList>
         ) : (
           <EmptyState>No recent activity</EmptyState>
         )}
-      </ActivitySection>
-    </Container>
+      </ActivityCard>
+
+    </PageWrap>
   );
 };
 
