@@ -128,10 +128,10 @@ const elevation = {
 // Modern typography scale
 const typography = {
   fontFamily: {
-    primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif',
-    sans: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif',
+    primary: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif",
+    sans: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif",
     mono: '"SF Mono", "Monaco", "Inconsolata", "Fira Code", "Dank Mono", "Consolas", monospace',
-    display: '"Inter", -apple-system, system-ui, sans-serif',
+    display: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
   },
 
   fontSize: {
@@ -483,71 +483,115 @@ export const modernDarkTheme = {
   borderRadius,
 };
 
-// Modern light theme
+// Modern light theme — Apple-inspired design system
 export const modernLightTheme = {
   // Brand colors
   ...colorPalettes,
 
-  // Background layers
-  bg: '#ffffff',
-  bgLight: '#fafafa',
-  bgElevated: '#f5f5f7',
-  bgOverlay: 'rgba(255, 255, 255, 0.95)',
+  // Background layers — iOS system palette
+  bg: '#f2f2f7',
+  bgLight: '#f2f2f7',
+  bgElevated: '#ffffff',
+  bgOverlay: 'rgba(242, 242, 247, 0.95)',
 
   // Card variants
+  bg_card: '#ffffff',
+  bg_secondary: '#ffffff',
   card: '#ffffff',
-  cardLight: '#f9fafb',
-  cardElevated: '#f3f4f6',
-  cardHover: '#e5e7eb',
+  cardLight: '#ffffff',
+  cardElevated: '#ffffff',
+  cardHover: '#f2f2f7',
 
-  // Text hierarchy
-  text_primary: '#0a0a0f',
-  text_secondary: '#4b5563',
-  text_tertiary: '#9ca3af',
-  text_disabled: '#d1d5db',
+  // Text hierarchy — Apple HIG colors
+  text_primary: '#1c1c1e',
+  text_secondary: '#3a3a3c',
+  text_muted: '#8e8e93',
+  text_tertiary: '#8e8e93',
+  text_disabled: '#c7c7cc',
   text_inverse: '#ffffff',
 
-  // Border colors
-  border: '#e5e7eb',
-  borderLight: '#d1d5db',
-  borderMedium: '#9ca3af',
-  borderStrong: '#6b7280',
+  // Accent — indigo/violet ML identity
+  primary: '#6366f1',
+
+  // Border colors — Apple separator
+  border: 'rgba(60, 60, 67, 0.12)',
+  borderLight: 'rgba(60, 60, 67, 0.08)',
+  borderMedium: 'rgba(60, 60, 67, 0.18)',
+  borderStrong: 'rgba(60, 60, 67, 0.29)',
 
   // Interactive states
-  hover: 'rgba(0, 0, 0, 0.04)',
-  hoverStrong: 'rgba(0, 0, 0, 0.08)',
-  active: 'rgba(0, 0, 0, 0.12)',
-  focus: 'rgba(16, 185, 129, 0.24)',
-  disabled: '#e5e7eb',
+  hover: 'rgba(60, 60, 67, 0.04)',
+  hoverStrong: 'rgba(99, 102, 241, 0.08)',
+  active: 'rgba(99, 102, 241, 0.14)',
+  focus: 'rgba(99, 102, 241, 0.24)',
+  disabled: '#e5e5ea',
 
   // Semantic colors
-  success: '#10b981',
-  successLight: '#34d399',
-  successDark: '#047857',
-  error: '#ef4444',
-  errorLight: '#f87171',
-  errorDark: '#dc2626',
-  warning: '#f59e0b',
-  warningLight: '#fbbf24',
-  warningDark: '#d97706',
-  info: '#3b82f6',
-  infoLight: '#60a5fa',
-  infoDark: '#2563eb',
+  success: '#34c759',
+  successLight: '#30d158',
+  successDark: '#248a3d',
+  error: '#ff3b30',
+  errorLight: '#ff6961',
+  errorDark: '#c0392b',
+  warning: '#ff9500',
+  warningLight: '#ffcc00',
+  warningDark: '#c0720a',
+  info: '#007aff',
+  infoLight: '#409cff',
+  infoDark: '#0055b3',
 
-  // Glassmorphism
-  glass,
+  // Glassmorphism — adapted for light mode (white frosted glass)
+  glass: {
+    light: {
+      background: 'rgba(255, 255, 255, 0.85)',
+      backdropFilter: 'blur(20px) saturate(1.8)',
+      WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+      border: '0.5px solid rgba(60, 60, 67, 0.18)',
+      boxShadow: '0 1px 6px rgba(0, 0, 0, 0.07)',
+    },
+    medium: {
+      background: 'rgba(242, 242, 247, 0.85)',
+      backdropFilter: 'blur(20px) saturate(1.8)',
+      WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+      border: '0.5px solid rgba(60, 60, 67, 0.18)',
+      boxShadow: '0 1px 6px rgba(0, 0, 0, 0.07)',
+    },
+    heavy: {
+      background: 'rgba(242, 242, 247, 0.72)',
+      backdropFilter: 'blur(16px) saturate(1.6)',
+      WebkitBackdropFilter: 'blur(16px) saturate(1.6)',
+      border: '0.5px solid rgba(60, 60, 67, 0.14)',
+      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)',
+    },
+  },
 
   // Backdrop effects
-  backdropBlur: 'blur(12px)',
+  backdropBlur: 'blur(20px)',
 
-  // Elevation
-  elevation,
+  // Elevation — Apple-style subtle shadows
+  elevation: {
+    ...elevation,
+    xs: '0 1px 3px rgba(0, 0, 0, 0.05)',
+    sm: '0 1px 6px rgba(0, 0, 0, 0.07)',
+    md: '0 2px 12px rgba(0, 0, 0, 0.08)',
+    lg: '0 4px 24px rgba(0, 0, 0, 0.10)',
+    xl: '0 8px 40px rgba(0, 0, 0, 0.12)',
+    primaryGlow: '0 0 20px rgba(99, 102, 241, 0.20), 0 4px 16px rgba(99, 102, 241, 0.15)',
+    secondaryGlow: '0 0 20px rgba(139, 92, 246, 0.20), 0 4px 16px rgba(139, 92, 246, 0.15)',
+    accentGlow: '0 0 20px rgba(59, 130, 246, 0.20), 0 4px 16px rgba(59, 130, 246, 0.15)',
+  },
 
   // Transitions
   transition: {
     fast: '0.15s ease',
-    base: '0.3s ease',
-    slow: '0.5s ease',
+    base: '0.25s ease',
+    slow: '0.4s ease',
+  },
+
+  // Easing functions
+  easing: {
+    spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
   },
 
   // Typography (spread to root for easy access)
