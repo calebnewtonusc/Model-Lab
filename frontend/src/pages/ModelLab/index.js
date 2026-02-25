@@ -78,9 +78,12 @@ const LogoIcon = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.38);
+  background: #6366f1;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.3);
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const LogoText = styled.span`
@@ -158,7 +161,7 @@ const UserAvatar = styled.div`
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: #6366f1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,12 +260,12 @@ const CreatorImage = styled.img`
   border-radius: 50%;
   object-fit: cover;
   object-position: center 30%;
-  border: 1.5px solid rgba(99, 102, 241, 0.25);
+  border: 1.5px solid rgba(60, 60, 67, 0.14);
   flex-shrink: 0;
   transition: border-color 0.2s ease;
 
   ${BuiltBySection}:hover & {
-    border-color: #6366f1;
+    border-color: rgba(99, 102, 241, 0.4);
   }
 `;
 
