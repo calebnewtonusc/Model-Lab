@@ -18,3 +18,68 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ── AOS ──────────────────────────────────────────────────────────────────── */
+/* aos/dist/aos.css is imported in App.js */
+
+/* ── Whirl Spinners ─────────────────────────────────────────────────────── */
+
+@keyframes whirl-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes whirl-rotary {
+  0%   { transform: rotate(0deg) translateX(150%) scale(1); }
+  25%  { transform: rotate(90deg) translateX(150%) scale(0); }
+  75%  { transform: rotate(270deg) translateX(150%) scale(1.5); }
+  100% { transform: rotate(360deg) translateX(150%) scale(1); }
+}
+
+/* Duo ring spinner */
+.whirl-duo::before {
+  content: '';
+  display: block;
+  height: 30px;
+  width: 30px;
+  border-width: 3px;
+  border-style: solid;
+  border-bottom-color: #6366f1;
+  border-top-color: #6366f1;
+  border-left-color: rgba(99, 102, 241, 0.15);
+  border-right-color: rgba(99, 102, 241, 0.15);
+  border-radius: 50%;
+  animation: whirl-spin 0.65s infinite linear;
+}
+
+/* Rotary dot spinner */
+.whirl-rotary {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.whirl-rotary::before {
+  content: '';
+  display: block;
+  height: 8px;
+  width: 8px;
+  background-color: #6366f1;
+  border-radius: 50%;
+  animation: whirl-rotary 0.9s infinite linear;
+  position: absolute;
+}
+
+/* Wrapper for loading states */
+.whirl-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+/* Supplementary whirl class — sits alongside MUI CircularProgress
+   without conflicting. Apply class="whirl-duo" to a <span> next to
+   or wrapping a loading area. */

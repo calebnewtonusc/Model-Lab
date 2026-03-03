@@ -1,5 +1,7 @@
 import './App.css';
-import React, { useState } from 'react';
+import 'aos/dist/aos.css';
+import React, { useState, useEffect } from 'react';
+import AOS from 'aos';
 import styled, { ThemeProvider } from 'styled-components';
 import { modernDarkTheme, modernLightTheme } from './utils/ModernThemes';
 import GlobalStyles from './GlobalStyles';
@@ -19,6 +21,15 @@ function App() {
     const saved = localStorage.getItem('theme');
     return saved ? saved === 'dark' : false;
   });
+
+  useEffect(() => {
+    AOS.init({
+      duration: 600,
+      once: true,
+      easing: 'ease-out-cubic',
+      offset: 30,
+    });
+  }, []);
 
   return (
     <AuthProvider>

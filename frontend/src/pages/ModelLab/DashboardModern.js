@@ -805,7 +805,9 @@ const DashboardModern = ({ onNavigate }) => {
     return (
       <PageWrap>
         <LoadingWrap>
-          <LoadingDots />
+          {/* Whirl duo spinner as primary visual, LoadingDots as secondary */}
+          <span className="whirl-duo" style={{ display: 'inline-block' }} />
+          <LoadingDots style={{ opacity: 0.5 }} />
           <LoadingMsg>Loading your dashboard…</LoadingMsg>
         </LoadingWrap>
       </PageWrap>
@@ -838,8 +840,8 @@ const DashboardModern = ({ onNavigate }) => {
       {/* ── Stats Row ───────────────────────────────────────────────────── */}
       <SectionLabel>Overview</SectionLabel>
       <StatsGrid>
-        {STAT_DEFS.map(({ key, label, trendKey, accent, gradient, Icon, suffix, delay }) => (
-          <StatCard key={key} delay={delay}>
+        {STAT_DEFS.map(({ key, label, trendKey, accent, gradient, Icon, suffix, delay }, idx) => (
+          <StatCard key={key} delay={delay} data-aos="fade-up" data-aos-delay={String(idx * 80)}>
             <StatTop>
               <StatIconWrap gradient={gradient}>
                 <Icon />
@@ -862,10 +864,12 @@ const DashboardModern = ({ onNavigate }) => {
       {/* ── Quick Actions ────────────────────────────────────────────────── */}
       <SectionLabel>Quick Actions</SectionLabel>
       <ActionsGrid>
-        {ACTION_DEFS.map(({ id, title, desc, gradient, Icon, delay }) => (
+        {ACTION_DEFS.map(({ id, title, desc, gradient, Icon, delay }, idx) => (
           <ActionCard
             key={id}
             delay={delay}
+            data-aos="fade-up"
+            data-aos-delay={String(280 + idx * 60)}
             onClick={() => onNavigate && onNavigate(id)}
           >
             <ActionIconWrap gradient={gradient}>

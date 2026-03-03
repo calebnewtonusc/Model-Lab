@@ -33,11 +33,11 @@ const NavBar = styled.nav`
   top: 0;
   z-index: 100;
   height: 56px;
-  background: rgba(242, 242, 247, 0.88);
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
   backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border-bottom: 0.5px solid rgba(60, 60, 67, 0.15);
-  box-shadow: none;
+  border-bottom: 0.5px solid rgba(99, 102, 241, 0.18);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
   transition: background 0.25s ease, border-color 0.25s ease;
 `;
 
@@ -90,7 +90,7 @@ const LogoText = styled.span`
   font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: #1c1c1e;
+  color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   line-height: 1;
 `;
@@ -100,7 +100,7 @@ const LogoText = styled.span`
 const NavLinks = styled.div`
   display: flex;
   align-items: center;
-  background: rgba(116, 116, 128, 0.12);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   padding: 3px;
   gap: 2px;
@@ -109,18 +109,18 @@ const NavLinks = styled.div`
 const NavLink = styled.button`
   position: relative;
   padding: 5px 13px;
-  background: ${({ active }) => active ? '#ffffff' : 'transparent'};
+  background: ${({ active }) => active ? 'rgba(255, 255, 255, 0.12)' : 'transparent'};
   border: none;
   border-radius: 8px;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   font-size: 13px;
   font-weight: ${({ active }) => active ? 600 : 500};
-  color: ${({ active }) => active ? '#1c1c1e' : '#8e8e93'};
+  color: ${({ active }) => active ? '#ffffff' : 'rgba(255, 255, 255, 0.55)'};
   cursor: pointer;
   white-space: nowrap;
   box-shadow: ${({ active }) =>
     active
-      ? '0 1px 4px rgba(0,0,0,0.12), 0 0.5px 1px rgba(0,0,0,0.08)'
+      ? '0 1px 4px rgba(0,0,0,0.25), 0 0.5px 1px rgba(0,0,0,0.15)'
       : 'none'};
   transition:
     background 0.18s ease,
@@ -128,7 +128,7 @@ const NavLink = styled.button`
     box-shadow 0.18s ease;
 
   &:hover {
-    color: ${({ active }) => active ? '#1c1c1e' : '#3a3a3c'};
+    color: ${({ active }) => active ? '#ffffff' : 'rgba(255, 255, 255, 0.85)'};
   }
 
   &:active {
@@ -150,10 +150,10 @@ const UserBadge = styled.div`
   align-items: center;
   gap: 8px;
   padding: 5px 12px 5px 5px;
-  background: #ffffff;
-  border: 0.5px solid rgba(60, 60, 67, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 `;
 
@@ -175,7 +175,7 @@ const UserAvatar = styled.div`
 const UserName = styled.span`
   font-size: 13px;
   font-weight: 600;
-  color: #1c1c1e;
+  color: #ffffff;
 `;
 
 const UserRole = styled.span`

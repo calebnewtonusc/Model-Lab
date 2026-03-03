@@ -694,7 +694,10 @@ const Runs = () => {
         <Header>
           <HeaderContent>
             <Title>Runs</Title>
-            <Subtitle>Loading your ML experiments...</Subtitle>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span className="whirl-duo" style={{ display: 'inline-block' }} />
+              <Subtitle>Loading your ML experiments...</Subtitle>
+            </div>
           </HeaderContent>
         </Header>
         <RunsGrid>
@@ -761,8 +764,13 @@ const Runs = () => {
         </EmptyState>
       ) : (
         <RunsGrid>
-          {filteredRuns.map(run => (
-            <RunCard key={run.id} onClick={() => viewRunDetails(run)}>
+          {filteredRuns.map((run, idx) => (
+            <RunCard
+              key={run.id}
+              data-aos="fade-up"
+              data-aos-delay={String(idx * 80)}
+              onClick={() => viewRunDetails(run)}
+            >
               <RunHeader>
                 <RunName>{run.name}</RunName>
                 <Badge variant={
